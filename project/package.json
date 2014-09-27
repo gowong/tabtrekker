@@ -1,0 +1,18 @@
+{
+    "name": "project",
+    "title": "project",
+    "id": "jid1-AahxeYITR16k5Q",
+    "description": "a basic add-on",
+    "author": "Gordon Wong ( gwong001@gmail.com )",
+    "license": "MPL 2.0",
+    "version": "0.1",
+    "preferences": [
+        {
+            "name": "enabled",
+            "title": "Enabled",
+            "description": "",
+            "type": "bool",
+            "value": true
+        }
+    ]
+}
