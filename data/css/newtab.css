@@ -1,0 +1,24 @@
+html { 
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: url('../images/test.jpg') no-repeat center center fixed; 
+    background-size: cover;
+}
+
+#clock_container {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 0 1em;
+}
+#time {
+    font-weight: 200;
+    font-size: 3.5em;
+    opacity: 0.9;
+    color: #fff;
+}
+#time_ampm {
+    font-weight: 200;
+    font-size: 2em;
+    opacity: 0.9;
+    color: #fff;
+}
