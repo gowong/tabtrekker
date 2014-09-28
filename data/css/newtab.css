@@ -1,9 +1,22 @@
+/* Fonts */
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('../assets/HelveticaNeue-Thin.ttf');
+    font-weight: 200;
+}
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('../assets/HelveticaNeue-Light.ttf');
+    font-weight: 300;
+}
+
 html { 
     font-family: 'Helvetica Neue', Arial, sans-serif;
     background: url('../images/test.jpg') no-repeat center center fixed; 
     background-size: cover;
 }
 
+/* IDs */
 #clock_container {
     position: fixed;
     bottom: 0;
