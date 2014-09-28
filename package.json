@@ -1,15 +1,18 @@
 {
-    "name": "project",
-    "title": "project",
+    "name": "newtab",
     "id": "jid1-AahxeYITR16k5Q",
-    "description": "a basic add-on",
-    "author": "Gordon Wong ( gwong001@gmail.com )",
     "license": "MPL 2.0",
     "version": "0.1",
+
+    "title": "New Tab",
+    "description": "",
+    "author": "Gordon Wong",
+    "homepage": "www.gordonwong.com",
+
     "preferences": [
         {
             "name": "enabled",
-            "title": "Enabled",
+            "title": "Override New Tab Page",
             "description": "",
             "type": "bool",
             "value": true
