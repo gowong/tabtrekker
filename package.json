@@ -23,6 +23,22 @@
             "description": "",
             "type": "bool",
             "value": false
+        },
+        {
+            "name": "temperature_units",
+            "type": "radio",
+            "title": "Temperature",
+            "value": "F",
+            "options": [
+                {
+                    "value": "F",
+                    "label": "°F"
+                },
+                {
+                    "value": "C",
+                    "label": "°C"
+                }
+            ]
         }
     ]
 }
