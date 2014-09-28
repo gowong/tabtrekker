@@ -1,22 +1,23 @@
 /* Constants */
+const _24HOUR_PREF = '24hour';
 const DISPLAY_TIME_INTERVAL = 1000;
 
 var displayTimeInterval;
 
 //listen for messages
-self.port.on('time_24hour', resetTime);
+self.port.on('time', setTime);
 
 /**
- * Immediately displays the current time and resets the interval for displaying the time.
+ * Immediately displays the current time and sets the interval for displaying the time.
  */
-function resetTime(is24hour) {
+function setTime(prefs) {
     //set locale
     moment.locale(navigator.language);
 
     //display time and reset interval
     clearInterval(displayTimeInterval);
     displayTimeInterval = setInterval(function displayTimeFunc() {
-        displayTime(is24hour);
+        displayTime(prefs[_24HOUR_PREF]);
         return displayTimeFunc;
     }(), DISPLAY_TIME_INTERVAL);
 }
