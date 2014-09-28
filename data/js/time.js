@@ -1,16 +1,30 @@
 /* Constants */
 const DISPLAY_TIME_INTERVAL = 1000;
 
-var force24hour;
 var displayTimeInterval;
 
 //listen for messages
 self.port.on('time_24hour', resetTime);
 
 /**
+ * Immediately displays the current time and resets the interval for displaying the time.
+ */
+function resetTime(is24hour) {
+    //set locale
+    moment.locale(navigator.language);
+
+    //display time and reset interval
+    clearInterval(displayTimeInterval);
+    displayTimeInterval = setInterval(function displayTimeFunc() {
+        displayTime(is24hour);
+        return displayTimeFunc;
+    }(), DISPLAY_TIME_INTERVAL);
+}
+
+/**
  * Displays time based on the current locale and user preferences. 
  */
-function displayTime() {
+function displayTime(force24hour) {
     var now = new moment();
 
     //user-specified 24-hour format
@@ -30,19 +44,4 @@ function displayTime() {
             $('#time').html(formattedTime);
         }
     }
-}
-
-/**
- * Immediately displays the current time and resets the interval for displaying the time.
- */
-function resetTime(is24hour) {
-    force24hour = is24hour;
-
-    //set locale
-    moment.locale(navigator.language);
-
-    //display time and reset interval
-    clearInterval(displayTimeInterval);
-    displayTime();
-    displayTimeInterval = setInterval(displayTime, DISPLAY_TIME_INTERVAL);
 }
