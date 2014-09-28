@@ -12,10 +12,17 @@
     "preferences": [
         {
             "name": "enabled",
-            "title": "Override New Tab Page",
+            "title": "Enable ADDON-NAME",
             "description": "",
             "type": "bool",
             "value": true
+        },
+        {
+            "name": "24hour",
+            "title": "Use 24-hour clock",
+            "description": "",
+            "type": "bool",
+            "value": false
         }
     ]
 }
