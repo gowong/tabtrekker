@@ -39,6 +39,13 @@
                     "label": "°C"
                 }
             ]
+        },
+        {
+            "name": "location",
+            "type": "string",
+            "title": "Location (city)",
+            "description": "Leave blank to use your current location.",
+            "value": ""
         }
     ]
 }
