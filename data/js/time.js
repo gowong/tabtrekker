@@ -1,11 +1,12 @@
 /* Constants */
 const _24HOUR_PREF = '24hour';
 const DISPLAY_TIME_INTERVAL = 1000;
+const TIME_MSG = 'time';
 
 var displayTimeInterval;
 
 //listen for messages
-self.port.on('time', setTime);
+self.port.on(TIME_MSG, setTime);
 
 /**
  * Immediately displays the current time and sets the interval for displaying the time.
