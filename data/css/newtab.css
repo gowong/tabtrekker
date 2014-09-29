@@ -22,6 +22,30 @@ html {
 }
 
 /* IDs */
+#top_menu_container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin: 1em;
+}
+#top_menu {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+#top_menu li {
+    display: inline-block;
+}
+#top_menu li a {
+    margin: 0 0.25em;
+    padding: 0.5em 0.75em;
+    border-radius: 3px;
+    transition: background .3s ease;
+    text-decoration: none;
+}
+#top_menu li a:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}
 #clock_container {
     position: fixed;
     bottom: 0;
