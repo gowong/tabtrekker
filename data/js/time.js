@@ -11,14 +11,14 @@ self.port.on(TIME_MSG, setTime);
 /**
  * Immediately displays the current time and sets the interval for displaying the time.
  */
-function setTime(prefs) {
+function setTime(options) {
     //set locale
     moment.locale(navigator.language);
 
     //display time and reset interval
     clearInterval(displayTimeInterval);
     displayTimeInterval = setInterval(function displayTimeFunc() {
-        displayTime(prefs[_24HOUR_PREF]);
+        displayTime(options[_24HOUR_PREF]);
         return displayTimeFunc;
     }(), DISPLAY_TIME_INTERVAL);
 }
