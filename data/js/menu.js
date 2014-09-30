@@ -4,7 +4,7 @@ const SETTINGS_MSG = 'settings';
 //called on document ready
 $(function() {
     //register click handlers
-    $('#settings_link').click(clickHandler(SETTINGS_MSG));
+    $('#top_menu_settings').click(clickHandler(SETTINGS_MSG));
 });
 
 /**
