@@ -13,7 +13,7 @@
         {
             "name": "enabled",
             "title": "Enable ADDON-NAME",
-            "description": "",
+            "description": "Refresh new tab pages for settings to take effect.",
             "type": "bool",
             "value": true
         },
