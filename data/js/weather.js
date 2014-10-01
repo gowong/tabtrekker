@@ -11,13 +11,16 @@ self.port.on(WEATHER_GEOLOCATION_REQUEST_MSG, getGeolocation);
  * Displays weather information on the page.
  */
 function displayWeather(data) {
+    if(!data) {
+        return;
+    }
     //location
     $('#weather_location').html(data.location.toUpperCase());
     //conditions
     var icon = getConditionsIcon(data.conditions);
     $('#weather_temperature').attr('data-icon', icon);
     //temperature
-    var temperature = parseInt(data.temperature);
+    var temperature = parseInt(data.temperature) || data.temperature;
     $('#weather_temperature').html(temperature);
     //temperature units
     $('#weather_temperature_units').html(data.temperatureUnits);
