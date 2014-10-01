@@ -34,7 +34,7 @@ function displayWeather(data) {
 
         var options = {
           enableHighAccuracy: true,
-          timeout: 5000
+          timeout: 10000
         };
 
         navigator.geolocation.getCurrentPosition(function(position) {
