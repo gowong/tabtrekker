@@ -14,30 +14,12 @@
     src: url('../assets/HelveticaNeue-Medium.ttf');
     font-weight: 500;
 }
-@font-face {
-    font-family: 'MeteoconsRegular';
-    src: url('../assets/meteocons-webfont.eot');
-    src: url('../assets/meteocons-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../assets/meteocons-webfont.woff') format('woff'),
-         url('../assets/meteocons-webfont.ttf') format('truetype'),
-         url('../assets/meteocons-webfont.svg#MeteoconsRegular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
 
 html { 
     font-family: 'Helvetica Neue', Arial, sans-serif;
     background: url('../images/test.jpg') no-repeat center center fixed; 
     background-size: cover;
     font-weight: 300;
-}
-
-[data-icon]:before {
-    font-family: 'MeteoconsRegular';
-    position: relative;
-    top: 0.1em;
-    margin-right: 0.15em;
-    content: attr(data-icon);
 }
 
 /* Classes */
@@ -113,7 +95,6 @@ html {
     font-weight: 500;
 }
 #weather_location {
-    display: block;
     position: relative;
     top: 0.25em;
     text-align: right;
