@@ -6,14 +6,33 @@
 </head>
 
 <body>
+    <!-- Top menu -->
     <div id="top_menu_container">
         <ul id="top_menu">
+            <!-- Settings -->
             <li><a id="top_menu_settings" class="white_text" href="" data-l10n-id="settings"></a></li>
         </ul>
     </div>
 
-    <div id="clock_container">
-        <span id="time" class="white_text"></span>
-        <span id="time_ampm" class="white_text"></span>
+    <div id="bottom_right_container">
+
+        <!-- Clock -->
+        <div id="clock_container">
+            <span id="time" class="white_text"></span>
+            <span id="time_ampm" class="white_text"></span>
+        </div>
+
+        <!-- Weather -->
+        <div id="weather_container">
+            <!-- Temperature -->
+            <div id="weather_temperature_container">
+                <span id="weather_temperature" class="white_text"></span>
+                <span id="weather_temperature_units" class="white_text"></span>
+            </div>
+            <!-- Location -->
+            <span id="weather_location" class="white_text"></span>
+        </div>
+
     </div>
+
 </body>

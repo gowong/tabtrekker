@@ -53,17 +53,48 @@ html {
 #top_menu li a:hover {
     background-color: rgba(0, 0, 0, 0.4);
 }
-#clock_container {
+#bottom_right_container {
     position: fixed;
     bottom: 0;
     right: 0;
-    margin: 0 1em;
+}
+#clock_container {
+    float: left;
+    margin-right: 0.5em;
 }
 #time {
     font-size: 3.75em;
     font-weight: 200;
 }
 #time_ampm {
+    position: relative;
+    left: -0.5em;
     font-size: 1.25em;
     font-weight: 300;
+}
+#weather_container {
+    position: relative;
+    top: 0.25em;
+    float: right;
+    margin-right: 1em;
+}
+#weather_temperature_container {
+    display: block;
+    position: relative;
+    top: 0.25em;
+    text-align: right;
+}
+#weather_temperature {
+    font-size: 2em;
+    font-weight: 300;
+}
+#weather_temperature_units {
+    position: relative;
+    top: 0.3em;
+    vertical-align: top;
+    font-weight: 500;
+}
+#weather_location {
+    font-size: 0.8125em;
+    font-weight: 500;
 }
