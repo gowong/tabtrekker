@@ -24,7 +24,7 @@ html {
 
 /* Classes */
 .white_text {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.85);
 }
 
 /* IDs */
@@ -48,6 +48,7 @@ html {
     border-radius: 3px;
     transition: background .3s ease;
     text-decoration: none;
+    font-weight: 300;
 }
 #top_menu li a:hover {
     background-color: rgba(0, 0, 0, 0.4);
@@ -59,10 +60,10 @@ html {
     margin: 0 1em;
 }
 #time {
+    font-size: 3.75em;
     font-weight: 200;
-    font-size: 3.5em;
 }
 #time_ampm {
-    font-weight: 200;
-    font-size: 2em;
+    font-size: 1.25em;
+    font-weight: 300;
 }
