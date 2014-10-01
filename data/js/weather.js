@@ -46,6 +46,7 @@ function displayWeather(data) {
             });
         }, function(err) {
             console.warn('ERROR(' + err.code + '): ' + err.message);
+            self.port.emit(WEATHER_GEOLOCATION_RESULT_MSG, null);
         }, options);
     } else {
         console.warn('Geolocation not supported.');
