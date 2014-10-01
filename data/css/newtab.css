@@ -9,11 +9,17 @@
     src: url('../assets/HelveticaNeue-Light.ttf');
     font-weight: 300;
 }
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('../assets/HelveticaNeue-Medium.ttf');
+    font-weight: 500;
+}
 
 html { 
     font-family: 'Helvetica Neue', Arial, sans-serif;
     background: url('../images/test.jpg') no-repeat center center fixed; 
     background-size: cover;
+    font-weight: 300;
 }
 
 /* Classes */
