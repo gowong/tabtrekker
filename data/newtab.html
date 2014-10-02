@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <link href="css/meteocons.css" rel="stylesheet" type="text/css">
 <link href="css/newtab.css" rel="stylesheet" type="text/css">
+<link href="css/spinner.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -25,11 +26,19 @@
 
         <!-- Weather -->
         <div id="weather_container">
+            
             <!-- Conditions and Temperature -->
             <div id="weather_temperature_container">
                 <span id="weather_temperature" class="white_text"></span>
                 <span id="weather_temperature_units" class="white_text"></span>
             </div>
+
+            <!-- Loading spinner -->
+            <div id="weather_spinner" class="spinner">
+                <div id="weather_double_bounce1" class="double_bounce1"></div>
+                <div id="weather_double_bounce2" class="double_bounce2"></div>
+            </div>
+            
             <!-- Location -->
             <span id="weather_location" class="white_text"></span>
         </div>

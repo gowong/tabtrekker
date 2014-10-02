@@ -2,10 +2,12 @@
 const WEATHER_MSG = 'weather';
 const WEATHER_GEOLOCATION_REQUEST_MSG = 'weather_geolocation_request';
 const WEATHER_GEOLOCATION_RESULT_MSG = 'weather_geolocation_result';
+const WEATHER_SHOW_LOADING_MSG = 'weather_show_loading';
 
 //listen for messages
 self.port.on(WEATHER_MSG, displayWeather);
 self.port.on(WEATHER_GEOLOCATION_REQUEST_MSG, getGeolocation);
+self.port.on(WEATHER_SHOW_LOADING_MSG, showLoadingSpinner);
 
 /**
  * Displays weather information on the page.
@@ -24,6 +26,8 @@ function displayWeather(data) {
     $('#weather_temperature').html(temperature);
     //temperature units
     $('#weather_temperature_units').html(data.temperatureUnits);
+    //hide loading spinner when weather has been updated
+    hideLoadingSpinner();
 }
 
 /**
@@ -134,4 +138,22 @@ function getConditionsIcon(conditions) {
         case '50n':
             return 'M';
     }
+}
+
+/**
+ * Shows loading spinner indicating that the weather is being updated.
+ */
+ function showLoadingSpinner() {
+    $('#weather_spinner').css('visibility', 'visible');
+    $('#weather_double_bounce1').css('animation-play-state', 'running');
+    $('#weather_double_bounce2').css('animation-play-state', 'running');
+ }
+
+/**
+ * Hides loading spinner.
+ */
+function hideLoadingSpinner() {
+    $('#weather_spinner').css('visibility', 'hidden');
+    $('#weather_double_bounce1').css('animation-play-state', 'paused');
+    $('#weather_double_bounce2').css('animation-play-state', 'paused');
 }
