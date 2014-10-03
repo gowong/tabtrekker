@@ -23,6 +23,13 @@ html {
 }
 
 /* Classes */
+.hover_container:hover > .hover_item {
+    opacity: 1;
+}
+.hover_item {
+    opacity: 0;
+    transition: opacity .3s ease;
+}
 .white_text {
     color: rgba(255, 255, 255, 0.75);
 }
@@ -59,6 +66,7 @@ html {
     right: 0;
 }
 #time_container {
+    display: none;
     float: left;
     margin-right: 0.5em;
 }
@@ -73,6 +81,7 @@ html {
     font-weight: 300;
 }
 #weather_container {
+    display: none;
     position: relative;
     top: 0.25em;
     float: right;

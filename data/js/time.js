@@ -3,32 +3,28 @@
 const TIME_MSG = 'time';
 //preferences
 const _24HOUR_PREF = '24hour';
+const SHOW_TIME_PREF = 'show_time';
 //others
 const DISPLAY_TIME_INTERVAL = 1000;
 
 var displayTimeInterval;
 
 //listen for messages
-self.port.on(TIME_MSG, setTimeInterval);
+self.port.on(TIME_MSG, initTime);
 
 /**
  * Immediately displays the current time and sets the interval for updating
  * the time.
  */
-function setTimeInterval(options) {
+function initTime(options) {
     //set locale
     moment.locale(navigator.language);
+    //set visibility
+    setTimeVisibility(options[SHOW_TIME_PREF]);
     //reset interval and display time
     clearInterval(displayTimeInterval);
-    displayTimeInterval = setInterval(initTime(options), DISPLAY_TIME_INTERVAL);
-}
-
-/**
- * Initializes time with the proper configuration options.
- */
-function initTime(options) {
-    displayTime(options[_24HOUR_PREF]);
-    return function() { initTime(options); };
+    displayTimeInterval = setInterval(displayTime(options[_24HOUR_PREF]),
+        DISPLAY_TIME_INTERVAL);
 }
 
 /**
@@ -53,5 +49,25 @@ function displayTime(force24hour) {
         else {
             $('#time').html(formattedTime);
         }
+    }
+    return function() { displayTime(force24hour) };
+}
+
+/**
+ * Sets visibility of the time based on user preferences.
+ */
+function setTimeVisibility(visbilityPref) {
+    switch(visbilityPref) {
+        case 'always':
+            $('#time_container').css('display', 'block');
+            $('#time_container').css('opacity', 1);
+            break;
+        case 'hover':
+            $('#time_container').css('display', 'block');
+            break;
+        case 'never':
+            $('#time_container').css('display', 'none');
+            clearInterval(displayTimeInterval);
+            break;
     }
 }

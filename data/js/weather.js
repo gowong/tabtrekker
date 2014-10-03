@@ -1,8 +1,11 @@
 /* Constants */
+//messages
 const WEATHER_MSG = 'weather';
 const WEATHER_GEOLOCATION_REQUEST_MSG = 'weather_geolocation_request';
 const WEATHER_GEOLOCATION_RESULT_MSG = 'weather_geolocation_result';
 const WEATHER_SHOW_LOADING_MSG = 'weather_show_loading';
+//preferences
+const SHOW_WEATHER_PREF = 'show_weather';
 
 //listen for messages
 self.port.on(WEATHER_MSG, displayWeather);
@@ -28,6 +31,7 @@ function displayWeather(data) {
     $('#weather_temperature_units').html(data.temperatureUnits);
     //hide loading spinner when weather has been updated
     hideLoadingSpinner();
+    setWeatherVisbility(data[SHOW_WEATHER_PREF]);
 }
 
 /**
@@ -156,4 +160,22 @@ function hideLoadingSpinner() {
     $('#weather_spinner').css('visibility', 'hidden');
     $('#weather_double_bounce1').css('animation-play-state', 'paused');
     $('#weather_double_bounce2').css('animation-play-state', 'paused');
+}
+
+/**
+ * Sets visibility of the weather based on user preferences.
+ */
+function setWeatherVisbility(visbilityPref) {
+    switch(visbilityPref) {
+        case 'always':
+            $('#weather_container').css('display', 'block');
+            $('#weather_container').css('opacity', 1);
+            break;
+        case 'hover':
+            $('#weather_container').css('display', 'block');
+            break;
+        case 'never':
+            $('#weather_container').css('display', 'none');
+            break;
+    }
 }
