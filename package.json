@@ -18,16 +18,55 @@
             "value": true
         },
         {
+            "name": "show_time",
+            "title": "Show time",
+            "type": "radio",
+            "value": "always",
+            "options": [
+                {
+                    "value": "always",
+                    "label": "Always"
+                },
+                {
+                    "value": "hover",
+                    "label": "On hover"
+                },
+                {
+                    "value": "never",
+                    "label": "Never"
+                }
+            ]
+        },
+        {
             "name": "24hour",
             "title": "Use 24-hour clock",
-            "description": "",
             "type": "bool",
             "value": false
         },
         {
-            "name": "temperature_units",
+            "name": "show_Weather",
+            "title": "Show weather",
             "type": "radio",
+            "value": "always",
+            "options": [
+                {
+                    "value": "always",
+                    "label": "Always"
+                },
+                {
+                    "value": "hover",
+                    "label": "On hover"
+                },
+                {
+                    "value": "never",
+                    "label": "Never"
+                }
+            ]
+        },
+        {
+            "name": "temperature_units",
             "title": "Temperature",
+            "type": "radio",
             "value": "F",
             "options": [
                 {
@@ -42,9 +81,9 @@
         },
         {
             "name": "location",
-            "type": "string",
             "title": "Location (city)",
             "description": "Leave blank to use your current location.",
+            "type": "string",
             "value": ""
         }
     ]
