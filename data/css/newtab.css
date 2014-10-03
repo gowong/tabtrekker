@@ -58,7 +58,7 @@ html {
     bottom: 0;
     right: 0;
 }
-#clock_container {
+#time_container {
     float: left;
     margin-right: 0.5em;
 }

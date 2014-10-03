@@ -1,26 +1,34 @@
 /* Constants */
-const _24HOUR_PREF = '24hour';
-const DISPLAY_TIME_INTERVAL = 1000;
+//messages
 const TIME_MSG = 'time';
+//preferences
+const _24HOUR_PREF = '24hour';
+//others
+const DISPLAY_TIME_INTERVAL = 1000;
 
 var displayTimeInterval;
 
 //listen for messages
-self.port.on(TIME_MSG, setTime);
+self.port.on(TIME_MSG, setTimeInterval);
 
 /**
- * Immediately displays the current time and sets the interval for displaying the time.
+ * Immediately displays the current time and sets the interval for updating
+ * the time.
  */
-function setTime(options) {
+function setTimeInterval(options) {
     //set locale
     moment.locale(navigator.language);
-
-    //display time and reset interval
+    //reset interval and display time
     clearInterval(displayTimeInterval);
-    displayTimeInterval = setInterval(function displayTimeFunc() {
-        displayTime(options[_24HOUR_PREF]);
-        return displayTimeFunc;
-    }(), DISPLAY_TIME_INTERVAL);
+    displayTimeInterval = setInterval(initTime(options), DISPLAY_TIME_INTERVAL);
+}
+
+/**
+ * Initializes time with the proper configuration options.
+ */
+function initTime(options) {
+    displayTime(options[_24HOUR_PREF]);
+    return function() { initTime(options); };
 }
 
 /**
