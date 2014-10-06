@@ -85,6 +85,26 @@
             "description": "Leave blank to use your current location.",
             "type": "string",
             "value": ""
+        },
+        {
+            "name": "show_search",
+            "title": "Show search",
+            "type": "radio",
+            "value": "hover",
+            "options": [
+                {
+                    "value": "always",
+                    "label": "Always"
+                },
+                {
+                    "value": "hover",
+                    "label": "On hover"
+                },
+                {
+                    "value": "never",
+                    "label": "Never"
+                }
+            ]
         }
     ]
 }
