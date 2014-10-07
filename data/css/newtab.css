@@ -15,11 +15,13 @@
     font-weight: 500;
 }
 
-html { 
+body { 
     font-family: 'Helvetica Neue', Arial, sans-serif;
     background: url('../images/test.jpg') no-repeat center center fixed; 
     background-size: cover;
+    font-size: 16px;
     font-weight: 300;
+    line-height: normal;
 }
 
 /* Classes */
@@ -31,7 +33,7 @@ html {
     transition: opacity .3s ease;
 }
 .white_text {
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.75) !important;
 }
 
 /* IDs */
@@ -54,7 +56,7 @@ html {
     padding: 0.5em 0.75em;
     border-radius: 3px;
     transition: background .3s ease;
-    text-decoration: none;
+    text-decoration: none !important;
     font-weight: 300;
 }
 #top_menu li a:hover {
