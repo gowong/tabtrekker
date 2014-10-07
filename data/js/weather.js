@@ -1,5 +1,6 @@
 /* Constants */
 //messages
+const HIDE_WEATHER_MSG = 'hide_weather';
 const WEATHER_MSG = 'weather';
 const WEATHER_GEOLOCATION_REQUEST_MSG = 'weather_geolocation_request';
 const WEATHER_GEOLOCATION_RESULT_MSG = 'weather_geolocation_result';
@@ -8,6 +9,7 @@ const WEATHER_SHOW_LOADING_MSG = 'weather_show_loading';
 const SHOW_WEATHER_PREF = 'show_weather';
 
 //listen for messages
+self.port.on(HIDE_WEATHER_MSG, hideWeather);
 self.port.on(WEATHER_MSG, displayWeather);
 self.port.on(WEATHER_GEOLOCATION_REQUEST_MSG, getGeolocation);
 self.port.on(WEATHER_SHOW_LOADING_MSG, showLoadingSpinner);
@@ -175,7 +177,14 @@ function setWeatherVisbility(visbilityPref) {
             $('#weather_container').css('display', 'block');
             break;
         case 'never':
-            $('#weather_container').css('display', 'none');
+            hideWeather();
             break;
     }
+}
+
+/**
+ * Hides the weather.
+ */
+function hideWeather() {
+    $('#weather_container').css('display', 'none');
 }

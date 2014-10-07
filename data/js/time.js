@@ -1,5 +1,6 @@
 /* Constants */
 //messages
+const HIDE_TIME_MSG = 'hide_time';
 const TIME_MSG = 'time';
 //preferences
 const _24HOUR_PREF = '24hour';
@@ -10,6 +11,7 @@ const DISPLAY_TIME_INTERVAL = 1000;
 var displayTimeInterval;
 
 //listen for messages
+self.port.on(HIDE_TIME_MSG, hideTime);
 self.port.on(TIME_MSG, initTime);
 
 /**
@@ -69,8 +71,15 @@ function setTimeVisibility(visbilityPref) {
             $('#time_container').css('display', 'block');
             break;
         case 'never':
-            $('#time_container').css('display', 'none');
-            clearInterval(displayTimeInterval);
+            hideTime();
             break;
     }
+}
+
+/**
+ * Hides the time.
+ */
+function hideTime() {
+    $('#time_container').css('display', 'none');
+    clearInterval(displayTimeInterval);
 }
