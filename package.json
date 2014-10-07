@@ -90,7 +90,7 @@
             "name": "show_search",
             "title": "Show search",
             "type": "radio",
-            "value": "hover",
+            "value": "always",
             "options": [
                 {
                     "value": "always",
