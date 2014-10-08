@@ -5,7 +5,6 @@
     position: relative;
     top: -0.05em;
     right: 0.25em;
-    visibility: hidden;
 }
 
 .double_bounce1, .double_bounce2 {
@@ -18,7 +17,6 @@
     top: 0;
     left: 0;
     animation: bounce 2.5s infinite ease-in-out;
-    animation-play-state: paused;
 }
 
 .double_bounce2 {

@@ -187,4 +187,5 @@ function setWeatherVisbility(visbilityPref) {
  */
 function hideWeather() {
     $('#weather_container').css('display', 'none');
+    hideLoadingSpinner();
 }
