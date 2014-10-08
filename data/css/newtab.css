@@ -41,7 +41,7 @@ input:focus::-moz-placeholder {
     opacity: 0;
     transition: opacity .3s ease;
 }
-.hover_container:hover .hover_item, .hover_item.focused{
+.hover_container:hover .hover_item, .hover_item.focus{
     opacity: 1;
 }
 .white_text, .white_text:hover, .white_text:focus {
@@ -92,7 +92,7 @@ input:focus::-moz-placeholder {
     transition: background .3s ease, border .3s ease, color .3s ease;
     width: 100%;
 }
-#search_input + .glyphicon {
+#search_button {
     background: none;
     border: none;
     font-size: 2em;
@@ -107,17 +107,17 @@ input:focus::-moz-placeholder {
     border-radius: 3px;
 }
 #search_input:hover {
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.4) !important;
 }
-#search_input:hover, #search_input:hover + .glyphicon {
-    color: #fff;
+#search_input:hover, #search_button.hover {
+    color: #fff !important;
 }
 #search_input:focus {
-    background-color: rgba(255, 255, 255, 0.85);
-    color: rgba(25, 25, 25, 0.85);
+    background-color: rgba(255, 255, 255, 0.85) !important;
+    color: rgba(25, 25, 25, 0.85) !important;
 }
-#search_input:focus + .glyphicon {
-    color: rgba(75, 75, 75, 0.75);
+#search_button.focus {
+    color: rgba(75, 75, 75, 0.75) !important;
 }
 #bottom_right_container {
     position: fixed;

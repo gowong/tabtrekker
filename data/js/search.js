@@ -22,6 +22,7 @@ function initSearch(data) {
     $('#search_input').attr('placeholder', data.input.placeholder);
 
     setSearchVisibility(data[SHOW_SEARCH_PREF]);
+    setInputHoverHandler();
     setInputFocusHandler();
 }
 
@@ -51,12 +52,25 @@ function hideSearch() {
  }
 
 /**
+ * Set search input hover handler.
+ */
+function setInputHoverHandler() {
+    $('#search_input').hover(function() {
+        $('#search_button').addClass('hover');
+    }, function() {
+        $('#search_button').removeClass('hover');
+    });
+}
+
+/**
  * Set search input focus handler.
  */
 function setInputFocusHandler() {
     $('#search_input').focusin(function() {
-        $('#search_form').addClass('focused');
+        $('#search_form').addClass('focus');
+        $('#search_button').addClass('focus');
     }).focusout(function() {
-        $('#search_form').removeClass('focused');
+        $('#search_form').removeClass('focus');
+        $('#search_button').removeClass('focus');
     });
 }
