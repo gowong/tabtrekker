@@ -45,7 +45,7 @@ input:focus::-moz-placeholder {
     opacity: 1;
 }
 .white_text, .white_text:hover, .white_text:focus {
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.85);
 }
 
 /* IDs */
@@ -85,7 +85,7 @@ input:focus::-moz-placeholder {
     transform: translateY(-50%);
 }
 #search_input {
-    border-bottom: 2px solid rgba(255, 255, 255, 0.75);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.85);
     font-size: 2em;
     font-weight: 300;
     padding: 0.3em 1.5em 0.3em 0.6em;
