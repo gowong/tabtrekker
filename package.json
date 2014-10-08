@@ -105,6 +105,26 @@
                     "label": "Never"
                 }
             ]
+        },
+        {
+            "name": "search_engine",
+            "title": "Search engine",
+            "type": "radio",
+            "value": "google",
+            "options": [
+                {
+                    "value": "bing",
+                    "label": "Bing"
+                },
+                {
+                    "value": "google",
+                    "label": "Google"
+                },
+                {
+                    "value": "yahoo",
+                    "label": "Yahoo!"
+                }
+            ]
         }
     ]
 }
