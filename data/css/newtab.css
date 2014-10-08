@@ -44,7 +44,7 @@ input:focus::-moz-placeholder {
 .hover_container:hover .hover_item, .hover_item.focused{
     opacity: 1;
 }
-.white_text, .white_text:hover {
+.white_text, .white_text:hover, .white_text:focus {
     color: rgba(255, 255, 255, 0.75);
 }
 
