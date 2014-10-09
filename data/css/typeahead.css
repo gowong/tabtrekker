@@ -1,0 +1,49 @@
+/* Typeahead container */
+.twitter-typeahead, .tt-hint, .tt-dropdown-menu {
+    width: 100%;
+}
+
+/* Input background */
+.twitter-typeahead {
+    border-radius: 3px;
+    transition: background .3s ease, box-shadow .3s ease;
+}
+.twitter-typeahead:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+.twitter-typeahead.focus {
+    background-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Input suggestion hint text */
+.tt-hint {
+    border-bottom: 2px solid transparent; /* match search input border */
+    color: rgba(75, 75, 75, 0.75);
+    font-size: 2em;
+    padding: 0.3em 1.5em 0.3em 0.6em;
+}
+
+/* Suggestions dropdown */
+.tt-dropdown-menu {
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 3px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    margin-top: 0.75em;
+    padding: 0.5em 0;
+}
+
+/* Suggestion text */
+.tt-suggestion {
+    font-size: 1.5em;
+    padding: 0.3em 0.75em;
+}
+.tt-suggestion p {
+    margin: 0;
+}
+
+/* Highlighted suggestions */
+.tt-suggestion.tt-cursor {
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #fff;
+}

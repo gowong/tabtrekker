@@ -69,8 +69,10 @@ function setInputFocusHandler() {
     $('#search_input').focusin(function() {
         $('#search_form').addClass('focus');
         $('#search_button').addClass('focus');
+        $('#search_form .twitter-typeahead').addClass('focus');
     }).focusout(function() {
         $('#search_form').removeClass('focus');
         $('#search_button').removeClass('focus');
+        $('#search_form .twitter-typeahead').removeClass('focus');
     });
 }

@@ -104,16 +104,11 @@ input:focus::-moz-placeholder {
 }
 #search_input:hover, #search_input:focus {
     border-color: transparent;
-    border-radius: 3px;
-}
-#search_input:hover {
-    background-color: rgba(255, 255, 255, 0.4) !important;
 }
 #search_input:hover, #search_button.hover {
     color: #fff !important;
 }
 #search_input:focus {
-    background-color: rgba(255, 255, 255, 0.85) !important;
     color: rgba(25, 25, 25, 0.85) !important;
 }
 #search_button.focus {
