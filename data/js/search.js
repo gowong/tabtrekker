@@ -2,12 +2,19 @@
 //messages
 const HIDE_SEARCH_MSG = 'hide_search';
 const SEARCH_MSG = 'search';
+const SEARCH_SUGGESTIONS_REQUEST_MSG = 'search_suggestions_request';
+const SEARCH_SUGGESTIONS_RESULT_MSG = 'search_suggestions_result';
 //preferences
 const SHOW_SEARCH_PREF = 'show_search';
+//other
+const SEARCH_SUGGESTIONS_INTERVAL = 300;
+
+var googleSearchSuggestions;
 
 //listen for messages
 self.port.on(HIDE_SEARCH_MSG, hideSearch);
 self.port.on(SEARCH_MSG, initSearch);
+self.port.on(SEARCH_SUGGESTIONS_RESULT_MSG, addSearchSuggestions);
 
 /**
  * Initializes search bar.
@@ -21,9 +28,59 @@ function initSearch(data) {
     $('#search_input').attr('name', data.input.name);
     $('#search_input').attr('placeholder', data.input.placeholder);
 
+    initTypeahead();
     setSearchVisibility(data[SHOW_SEARCH_PREF]);
     setInputHoverHandler();
     setInputFocusHandler();
+    setInputChangeHandler();
+}
+
+/**
+ * Initializes typeahead plugin to provide search suggestions.
+ */
+function initTypeahead() {
+    //bloodhound suggestion engine
+    googleSearchSuggestions = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        local: []
+    });
+    googleSearchSuggestions.initialize();
+
+    //initialize typeahead input
+    var options = {
+        hint: true,
+        highlight: true,
+        minLength: 1
+    };
+    $('#search_input').typeahead(options, {
+        displayKey: 'value',
+        source: googleSearchSuggestions.ttAdapter()
+    });
+}
+
+/**
+ * Adds suggestions to the search suggestion index.
+ */
+function addSearchSuggestions(suggestions) {
+    //clear index
+    googleSearchSuggestions.clear();
+    if(!suggestions || !suggestions.length) {
+        return;
+    }
+
+    //add suggestions
+    suggestions = $.map(suggestions, function(suggestion) {
+        return {
+            value: suggestion
+        };
+    });
+    googleSearchSuggestions.add(suggestions);
+
+    //force dropdown to open
+    var val = $("#search_input").typeahead('val');
+    $("#search_input").typeahead('val', '');
+    $("#search_input").typeahead('val', val);
 }
 
 /**
@@ -75,4 +132,31 @@ function setInputFocusHandler() {
         $('#search_button').removeClass('focus');
         $('#search_form .twitter-typeahead').removeClass('focus');
     });
+}
+
+/**
+ * Sets search input change handler.
+ */
+function setInputChangeHandler() {
+    $('#search_input').on("input", function() {
+        var input = this.value;
+
+        //clear existing timer
+        clearTimeout($.data(this, 'timer'));
+
+        //set timer
+        var wait = setTimeout(function() {
+            requestSearchSuggestions(input);
+        }, SEARCH_SUGGESTIONS_INTERVAL);
+
+        //attach timer to input element
+        $(this).data('timer', wait);
+    });
+}
+
+ /**
+  * Requests search suggestions for the given input from the addon.
+  */
+function requestSearchSuggestions(input) {
+    self.port.emit(SEARCH_SUGGESTIONS_REQUEST_MSG, input);
 }
