@@ -106,13 +106,13 @@ input:focus::-moz-placeholder {
     border-color: transparent;
 }
 #search_input:hover, #search_button.hover {
-    color: #fff !important;
+    color: #fff ;
 }
 #search_input:focus {
-    color: rgba(25, 25, 25, 0.85) !important;
+    color: rgba(25, 25, 25, 0.85) ;
 }
 #search_button.focus {
-    color: rgba(75, 75, 75, 0.75) !important;
+    color: rgba(75, 75, 75, 0.75) ;
 }
 #bottom_right_container {
     position: fixed;
