@@ -78,9 +78,9 @@ function addSearchSuggestions(suggestions) {
     googleSearchSuggestions.add(suggestions);
 
     //force dropdown to open
-    var val = $("#search_input").typeahead('val');
-    $("#search_input").typeahead('val', '');
-    $("#search_input").typeahead('val', val);
+    var val = $('#search_input').typeahead('val');
+    $('#search_input').typeahead('val', '');
+    $('#search_input').typeahead('val', val);
 }
 
 /**
