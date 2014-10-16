@@ -44,6 +44,17 @@ input:focus::-moz-placeholder {
 .hover_container:hover .hover_item, .hover_item.focus{
     opacity: 1;
 }
+.top_menu_link {
+    margin: 0 0.25em;
+    padding: 0.5em 0.75em;
+    border-radius: 3px;
+    transition: background .3s ease;
+    text-decoration: none !important;
+    font-weight: 300;
+}
+.top_menu_link:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}
 .white_text, .white_text:hover, .white_text:focus {
     color: rgba(255, 255, 255, 0.85);
 }
@@ -62,17 +73,6 @@ input:focus::-moz-placeholder {
 }
 #top_menu li {
     display: inline-block;
-}
-#top_menu li a {
-    margin: 0 0.25em;
-    padding: 0.5em 0.75em;
-    border-radius: 3px;
-    transition: background .3s ease;
-    text-decoration: none !important;
-    font-weight: 300;
-}
-#top_menu li a:hover {
-    background-color: rgba(0, 0, 0, 0.4);
 }
 #search_container {
     height: 50vh;
