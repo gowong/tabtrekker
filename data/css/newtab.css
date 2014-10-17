@@ -71,7 +71,7 @@ input:focus::-moz-placeholder {
     margin: 0;
     list-style-type: none;
 }
-#top_menu li {
+#top_menu > li {
     display: inline-block;
 }
 #search_container {
