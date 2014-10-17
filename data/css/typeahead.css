@@ -30,7 +30,6 @@
     border-radius: 3px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     margin-top: 0.75em;
-    padding: 0.5em 0;
 }
 
 /* Suggestion text */
@@ -46,5 +45,6 @@
 /* Highlighted suggestions */
 .tt-suggestion.tt-cursor {
     background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 3px;
     color: #fff;
 }
