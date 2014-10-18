@@ -74,6 +74,65 @@ input:focus::-moz-placeholder {
 #top_menu > li {
     display: inline-block;
 }
+#history_list {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    margin: 0;
+    padding: 28px;
+    position: fixed;
+    right: 2em;
+    top: 3.25em;
+    width: 320px;
+}
+#history_list:after {
+    position: absolute;
+    top: -6px;
+    left: 171px;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid rgba(255, 255, 255, 0.9);
+    border-left: 6px solid transparent;
+    content: '';
+}
+#history_list > li {
+    display: inline-block;
+    height: 115px;
+    vertical-align: top;
+    width: 86px;
+}
+#history_list > li > a {
+    border: 1px solid transparent;
+    color: rgba(25, 25, 25, 0.85);
+    font-size: 12px;
+    font-weight: 300;
+    height: 100%;
+    line-height: normal;
+    padding: 13px 10px;
+    text-align: center;
+    transition: background .3s ease, border .3s ease;
+    white-space: normal;
+}
+#history_list > li > a:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
+}
+#history_list > li > a > object {
+    display: block;
+    font-size: 48px;
+    line-height: 48px;
+    margin: 0 auto 10px auto;
+    height: 48px;
+    width: 48px;
+}
+#history_list > li > a > span {
+    display: block;
+    height: 32px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 #search_container {
     height: 50vh;
     margin: 25vh 10vh;
