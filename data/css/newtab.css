@@ -98,7 +98,7 @@ input:focus::-moz-placeholder {
 }
 #history_list > li {
     display: inline-block;
-    height: 115px;
+    height: 123px;
     vertical-align: top;
     width: 86px;
 }
@@ -120,12 +120,26 @@ input:focus::-moz-placeholder {
     border-radius: 2px;
 }
 #history_list > li > a > object {
+    border-radius: 2px;
     display: block;
-    font-size: 48px;
-    line-height: 48px;
+    font-size: 56px;
+    line-height: 56px;
     margin: 0 auto 10px auto;
-    height: 48px;
-    width: 48px;
+    height: 56px;
+    width: 56px;
+}
+#history_list > li > a > object > span {
+    color: rgba(125, 125, 125, 0.5);
+}
+#history_list > li > a > object > span:not(.glyphicon) {
+    background-color: rgba(0, 0, 0, 0.05);
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
+    display: block;
+    height: 100%;
+    width: 100%;
 }
 #history_list > li > a > span {
     display: block;
