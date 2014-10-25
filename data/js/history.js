@@ -21,8 +21,8 @@ function initHistory(results) {
  * Appends history link's title, url, and favicon to list of history results.
  */
 function appendHistoryResult(result) {
-    var title = result.title;
     var url = result.url;
+    var title = result.title || url;
     //small favicon url
     var iconUrl = result.iconUri ? 
         result.iconUri.substring('moz-anno:favicon:'.length) : '';
