@@ -72,7 +72,7 @@ function updateIcon(data) {
  */
 function getIconUrl(baseUrl, icon) {
     var iconUrl = icon.appleIcon || icon.metaImage || icon.msTile
-        || icon.ogImage || icon.relIcon;
+        || icon.msTileLogo || icon.ogImage || icon.relIcon;
     if(iconUrl) {
         //resolve relative links
         iconUrl = iconUrl.substring(0, 4) === 'http' ? iconUrl :
