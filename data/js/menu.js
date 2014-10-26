@@ -4,17 +4,23 @@ const SETTINGS_MSG = 'settings';
 //called on document ready
 $(function() {
     //register click handlers
-    $('#settings').click(clickHandler(SETTINGS_MSG));
+    $('#settings').click(Menu.clickHandler(SETTINGS_MSG));
 });
 
 /**
- * Handles a click event by sending a message of the event to the addon. 
+ * Menu module.
  */
-function clickHandler(message, event) {
-    if(arguments.length < 2) {
-        return function(event) { clickHandler(message, event) };
+var Menu = {
+
+    /**
+     * Handles a click event by sending a message of the event to the addon. 
+     */
+    clickHandler: function(message, event) {
+        if(arguments.length < 2) {
+            return function(event) { Menu.clickHandler(message, event) };
+        }
+        self.port.emit(message);
+        event.stopPropagation();
+        event.preventDefault();
     }
-    self.port.emit(message);
-    event.stopPropagation();
-    event.preventDefault();
-}
+};
