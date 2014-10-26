@@ -60,6 +60,16 @@ function updateIcon(data) {
 
     //find object inside link list item with specified url
     var object = $('#history_list > li > a[href="' + url + '"]').find('object:first-child');
+    
     //set icon
     $(object).attr('data', iconUrl);
+    
+    //set microsoft tile styling
+    var useMsTile = !icon.appleIcon && !icon.metaImage && icon.msTile;
+    if(useMsTile) {
+        if(data.icon.hasOwnProperty('msTileColor') && data.icon.msTileColor) {
+            $(object).css('background-color', data.icon.msTileColor);
+            $(object).addClass('ms_tile_color');
+        }
+    }
 }

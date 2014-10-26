@@ -87,6 +87,7 @@ input:focus::-moz-placeholder {
     top: 3.25em;
     width: 320px;
 }
+/* Dropdown triangle */
 #history_list:after {
     position: absolute;
     top: -6px;
@@ -119,6 +120,7 @@ input:focus::-moz-placeholder {
     border-color: rgba(0, 0, 0, 0.15);
     border-radius: 2px;
 }
+/* Large icons */
 #history_list > li > a > object {
     border-radius: 2px;
     display: block;
@@ -128,9 +130,15 @@ input:focus::-moz-placeholder {
     height: 56px;
     width: 56px;
 }
+/* Microsoft tiles with background colors */
+#history_list > li > a > object.ms_tile_color {
+    padding: 5px;
+}
+/* Generic web page icon */
 #history_list > li > a > object > span {
     color: rgba(125, 125, 125, 0.5);
 }
+/* Small favicons */
 #history_list > li > a > object > span:not(.glyphicon) {
     background-color: rgba(0, 0, 0, 0.05);
     background-repeat: no-repeat;
@@ -141,6 +149,7 @@ input:focus::-moz-placeholder {
     height: 100%;
     width: 100%;
 }
+/* Link titles */
 #history_list > li > a > span {
     display: block;
     height: 32px;
