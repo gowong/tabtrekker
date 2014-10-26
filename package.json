@@ -8,7 +8,9 @@
     "description": "",
     "author": "Gordon Wong",
     "homepage": "www.gordonwong.com",
-
+    "permissions": {
+        "private-browsing": true
+    },
     "preferences": [
         {
             "name": "enabled",
