@@ -59,8 +59,8 @@ function updateIcon(data) {
     //set icon
     $(object).attr('data', iconUrl);
     
-    //set microsoft tile styling
-    if(useMsTile(icon) && data.icon.hasOwnProperty('msTileColor') 
+    //microsoft tile image styling
+    if(useMsTileImage(icon) && data.icon.hasOwnProperty('msTileColor') 
         && data.icon.msTileColor) {
         $(object).css('background-color', data.icon.msTileColor);
         $(object).addClass('ms_tile_color');
@@ -71,8 +71,8 @@ function updateIcon(data) {
  * Returns absolute url of the most preferred icon. 
  */
 function getIconUrl(baseUrl, icon) {
-    var iconUrl = icon.appleIcon || icon.metaImage || icon.msTile
-        || icon.msTileLogo || icon.ogImage || icon.relIcon;
+    var iconUrl = icon.msTileImage || icon.appleIcon || icon.msTileLogo
+        || icon.ogImage || icon.metaImage || icon.relIcon;
     if(iconUrl) {
         //resolve relative links
         iconUrl = iconUrl.substring(0, 4) === 'http' ? iconUrl :
@@ -82,8 +82,8 @@ function getIconUrl(baseUrl, icon) {
 }
 
 /**
- * Returns whether the microsoft tile should be used as the large icon.
+ * Returns whether the microsoft tile image should be used as the large icon.
  */
-function useMsTile(icon) {
-    return icon.msTile; //ms tile is the top choice
+function useMsTileImage(icon) {
+    return icon.msTileImage; //ms tile image is the top choice
 }
