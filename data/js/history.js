@@ -43,12 +43,21 @@ function appendHistoryResult(result) {
  * Updates the icon of the specified url.
  */
 function updateIcon(data) {
-    if(!data.url || !data.iconUrl) {
+    var url = data.url;
+    var icon = data.icon;
+    if(!url || !icon) {
         return;
     }
-    var url = data.url;
-    var iconUrl = data.iconUrl.substring(0, 4) === 'http' ? data.iconUrl :
-        URL.resolve(url, data.iconUrl);
+    var iconUrl = icon.appleIcon || icon.metaImage || icon.msTile
+        || icon.ogImage || icon.relIcon;
+    if(!iconUrl) {
+        return;
+    }
+
+    //resolve relative links
+    iconUrl = iconUrl.substring(0, 4) === 'http' ? iconUrl :
+        URL.resolve(url, iconUrl);
+
     //find object inside link list item with specified url
     var object = $('#history_list > li > a[href="' + url + '"]').find('object:first-child');
     //set icon
