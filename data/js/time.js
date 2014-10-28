@@ -87,5 +87,5 @@ var Time = {
 };
 
 //listen for messages
-self.port.on(HIDE_TIME_MSG, Time.hideTime);
-self.port.on(TIME_MSG, Time.initTime);
+self.port.on(HIDE_TIME_MSG, Utils.receiveMessage(Time.hideTime));
+self.port.on(TIME_MSG, Utils.receiveMessage(Time.initTime));

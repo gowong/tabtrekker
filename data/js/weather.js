@@ -191,7 +191,7 @@ var Weather = {
 };
 
 //listen for messages
-self.port.on(HIDE_WEATHER_MSG, Weather.hideWeather);
-self.port.on(WEATHER_MSG, Weather.displayWeather);
-self.port.on(WEATHER_GEOLOCATION_REQUEST_MSG, Weather.getGeolocation);
-self.port.on(WEATHER_SHOW_LOADING_MSG, Weather.showLoadingSpinner);
+self.port.on(HIDE_WEATHER_MSG, Utils.receiveMessage(Weather.hideWeather));
+self.port.on(WEATHER_MSG, Utils.receiveMessage(Weather.displayWeather));
+self.port.on(WEATHER_GEOLOCATION_REQUEST_MSG, Utils.receiveMessage(Weather.getGeolocation));
+self.port.on(WEATHER_SHOW_LOADING_MSG, Utils.receiveMessage(Weather.showLoadingSpinner));

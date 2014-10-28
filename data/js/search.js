@@ -163,6 +163,6 @@ var Search = {
 };
 
 //listen for messages
-self.port.on(HIDE_SEARCH_MSG, Search.hideSearch);
-self.port.on(SEARCH_MSG, Search.initSearch);
-self.port.on(SEARCH_SUGGESTIONS_RESULT_MSG, Search.addSearchSuggestions);
+self.port.on(HIDE_SEARCH_MSG, Utils.receiveMessage(Search.hideSearch));
+self.port.on(SEARCH_MSG, Utils.receiveMessage(Search.initSearch));
+self.port.on(SEARCH_SUGGESTIONS_RESULT_MSG, Utils.receiveMessage(Search.addSearchSuggestions));

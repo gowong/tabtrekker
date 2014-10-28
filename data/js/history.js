@@ -92,6 +92,6 @@ var HistoryModule = {
 };
 
 //listen for messages
-self.port.on(HISTORY_MSG, HistoryModule.initHistory);
-self.port.on(HISTORY_UPDATE_ICON_MSG, HistoryModule.updateIcon);
+self.port.on(HISTORY_MSG, Utils.receiveMessage(HistoryModule.initHistory));
+self.port.on(HISTORY_UPDATE_ICON_MSG, Utils.receiveMessage(HistoryModule.updateIcon));
 
