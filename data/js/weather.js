@@ -13,7 +13,7 @@ const SHOW_WEATHER_PREF = 'show_weather';
 /**
  * Weather module.
  */
-var Weather = {
+var NewTabWeather = {
 
     /**
      * Displays weather information on the page.
@@ -25,7 +25,7 @@ var Weather = {
         //location
         $('#weather_location').html(data.location.toUpperCase());
         //conditions
-        var icon = Weather.getConditionsIcon(data.conditions);
+        var icon = NewTabWeather.getConditionsIcon(data.conditions);
         $('#weather_temperature').attr('data-icon', icon);
         //temperature
         var temperature = parseInt(data.temperature) || data.temperature;
@@ -33,8 +33,8 @@ var Weather = {
         //temperature units
         $('#weather_temperature_units').html(data.temperatureUnits);
         //hide loading spinner when weather has been updated
-        Weather.hideLoadingSpinner();
-        Weather.setWeatherVisbility(data[SHOW_WEATHER_PREF]);
+        NewTabWeather.hideLoadingSpinner();
+        NewTabWeather.setWeatherVisbility(data[SHOW_WEATHER_PREF]);
     },
 
     /**
@@ -178,7 +178,7 @@ var Weather = {
                 $('#weather_container').css('display', 'block');
                 break;
             case 'never':
-                Weather.hideWeather();
+                NewTabWeather.hideWeather();
                 break;
         }
     },
@@ -188,12 +188,12 @@ var Weather = {
      */
     hideWeather: function() {
         $('#weather_container').css('display', 'none');
-        Weather.hideLoadingSpinner();
+        NewTabWeather.hideLoadingSpinner();
     }
 };
 
 //listen for messages
-self.port.on(HIDE_WEATHER_MSG, Utils.receiveMessage(Weather.hideWeather));
-self.port.on(WEATHER_MSG, Utils.receiveMessage(Weather.displayWeather));
-self.port.on(WEATHER_GEOLOCATION_REQUEST_MSG, Utils.receiveMessage(Weather.getGeolocation));
-self.port.on(WEATHER_SHOW_LOADING_MSG, Utils.receiveMessage(Weather.showLoadingSpinner));
+self.port.on(HIDE_WEATHER_MSG, NewTabUtils.receiveMessage(NewTabWeather.hideWeather));
+self.port.on(WEATHER_MSG, NewTabUtils.receiveMessage(NewTabWeather.displayWeather));
+self.port.on(WEATHER_GEOLOCATION_REQUEST_MSG, NewTabUtils.receiveMessage(NewTabWeather.getGeolocation));
+self.port.on(WEATHER_SHOW_LOADING_MSG, NewTabUtils.receiveMessage(NewTabWeather.showLoadingSpinner));

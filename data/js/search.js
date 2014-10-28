@@ -14,7 +14,7 @@ const SEARCH_SUGGESTIONS_INTERVAL = 300;
 /**
  * Search module.
  */
-var Search = {
+var NewTabSearch = {
 
     googleSearchSuggestions: null,
 
@@ -30,11 +30,11 @@ var Search = {
         $('#search_input').attr('name', data.input.name);
         $('#search_input').attr('placeholder', data.input.placeholder);
 
-        Search.initTypeahead();
-        Search.setSearchVisibility(data[SHOW_SEARCH_PREF]);
-        Search.setInputHoverHandler();
-        Search.setInputFocusHandler();
-        Search.setInputChangeHandler();
+        NewTabSearch.initTypeahead();
+        NewTabSearch.setSearchVisibility(data[SHOW_SEARCH_PREF]);
+        NewTabSearch.setInputHoverHandler();
+        NewTabSearch.setInputFocusHandler();
+        NewTabSearch.setInputChangeHandler();
     },
 
     /**
@@ -42,12 +42,12 @@ var Search = {
      */
     initTypeahead: function() {
         //bloodhound suggestion engine
-        Search.googleSearchSuggestions = new Bloodhound({
+        NewTabSearch.googleSearchSuggestions = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             local: []
         });
-        Search.googleSearchSuggestions.initialize();
+        NewTabSearch.googleSearchSuggestions.initialize();
 
         //initialize typeahead input
         var options = {
@@ -57,7 +57,7 @@ var Search = {
         };
         $('#search_input').typeahead(options, {
             displayKey: 'value',
-            source: Search.googleSearchSuggestions.ttAdapter()
+            source: NewTabSearch.googleSearchSuggestions.ttAdapter()
         });
     },
 
@@ -66,7 +66,7 @@ var Search = {
      */
     addSearchSuggestions: function(suggestions) {
         //clear index
-        Search.googleSearchSuggestions.clear();
+        NewTabSearch.googleSearchSuggestions.clear();
         if(!suggestions || !suggestions.length) {
             return;
         }
@@ -77,7 +77,7 @@ var Search = {
                 value: suggestion
             };
         });
-        Search.googleSearchSuggestions.add(suggestions);
+        NewTabSearch.googleSearchSuggestions.add(suggestions);
 
         //force dropdown to open
         var val = $('#search_input').typeahead('val');
@@ -98,7 +98,7 @@ var Search = {
                 $('#search_container').css('display', 'block');
                 break;
             case 'never':
-                Search.hideSearch();
+                NewTabSearch.hideSearch();
                 break;
         }
     },
@@ -148,7 +148,7 @@ var Search = {
 
             //set timer
             var wait = setTimeout(function() {
-                Search.requestSearchSuggestions(input);
+                NewTabSearch.requestSearchSuggestions(input);
             }, SEARCH_SUGGESTIONS_INTERVAL);
 
             //attach timer to input element
@@ -165,6 +165,6 @@ var Search = {
 };
 
 //listen for messages
-self.port.on(HIDE_SEARCH_MSG, Utils.receiveMessage(Search.hideSearch));
-self.port.on(SEARCH_MSG, Utils.receiveMessage(Search.initSearch));
-self.port.on(SEARCH_SUGGESTIONS_RESULT_MSG, Utils.receiveMessage(Search.addSearchSuggestions));
+self.port.on(HIDE_SEARCH_MSG, NewTabUtils.receiveMessage(NewTabSearch.hideSearch));
+self.port.on(SEARCH_MSG, NewTabUtils.receiveMessage(NewTabSearch.initSearch));
+self.port.on(SEARCH_SUGGESTIONS_RESULT_MSG, NewTabUtils.receiveMessage(NewTabSearch.addSearchSuggestions));

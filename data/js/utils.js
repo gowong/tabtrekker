@@ -3,7 +3,7 @@
 /**
  * Utils module.
  */
-var Utils = {
+var NewTabUtils = {
 
     /**
      * Receive messages from addon.

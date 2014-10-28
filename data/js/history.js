@@ -8,7 +8,7 @@ const HISTORY_UPDATE_ICON_MSG = 'history_update_icon';
 /**
  * History module.
  */
-var HistoryModule = {
+var NewTabHistory = {
 
     /**
      * Initializes history results.
@@ -16,7 +16,7 @@ var HistoryModule = {
     initHistory: function(results) {
         //append each result to history list
         for(var i = 0; i < results.length; i++) {
-            HistoryModule.appendHistoryResult(results[i]);
+            NewTabHistory.appendHistoryResult(results[i]);
         }
     },
 
@@ -51,7 +51,7 @@ var HistoryModule = {
         if(!url || !icon) {
             return;
         }
-        var iconUrl = HistoryModule.getIconUrl(url, icon);
+        var iconUrl = NewTabHistory.getIconUrl(url, icon);
         if(!iconUrl) {
             return;
         }
@@ -63,7 +63,7 @@ var HistoryModule = {
         $(object).attr('data', iconUrl);
         
         //microsoft tile image styling
-        if(HistoryModule.useMsTileImage(icon) && data.icon.hasOwnProperty('msTileColor') 
+        if(NewTabHistory.useMsTileImage(icon) && data.icon.hasOwnProperty('msTileColor') 
             && data.icon.msTileColor) {
             $(object).css('background-color', data.icon.msTileColor);
             $(object).addClass('ms_tile_color');
@@ -94,6 +94,6 @@ var HistoryModule = {
 };
 
 //listen for messages
-self.port.on(HISTORY_MSG, Utils.receiveMessage(HistoryModule.initHistory));
-self.port.on(HISTORY_UPDATE_ICON_MSG, Utils.receiveMessage(HistoryModule.updateIcon));
+self.port.on(HISTORY_MSG, NewTabUtils.receiveMessage(NewTabHistory.initHistory));
+self.port.on(HISTORY_UPDATE_ICON_MSG, NewTabUtils.receiveMessage(NewTabHistory.updateIcon));
 

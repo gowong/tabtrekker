@@ -13,7 +13,7 @@ const DISPLAY_TIME_INTERVAL = 1000;
 /**
  * Time module.
  */
-var Time = {
+var NewTabTime = {
 
     displayTimeInterval: null,
 
@@ -28,10 +28,10 @@ var Time = {
         //set locale
         moment.locale(navigator.language);
         //set visibility
-        Time.setTimeVisibility(data[SHOW_TIME_PREF]);
+        NewTabTime.setTimeVisibility(data[SHOW_TIME_PREF]);
         //reset interval and display time
-        clearInterval(Time.displayTimeInterval);
-        Time.displayTimeInterval = setInterval(Time.displayTime(data[_24HOUR_PREF]),
+        clearInterval(NewTabTime.displayTimeInterval);
+        NewTabTime.displayTimeInterval = setInterval(NewTabTime.displayTime(data[_24HOUR_PREF]),
             DISPLAY_TIME_INTERVAL);
     },
 
@@ -58,7 +58,7 @@ var Time = {
                 $('#time').html(formattedTime);
             }
         }
-        return function() { Time.displayTime(force24hour) };
+        return function() { NewTabTime.displayTime(force24hour) };
     },
 
     /**
@@ -74,7 +74,7 @@ var Time = {
                 $('#time_container').css('display', 'block');
                 break;
             case 'never':
-                Time.hideTime();
+                NewTabTime.hideTime();
                 break;
         }
     },
@@ -84,10 +84,10 @@ var Time = {
      */
     hideTime: function() {
         $('#time_container').css('display', 'none');
-        clearInterval(Time.displayTimeInterval);
+        clearInterval(NewTabTime.displayTimeInterval);
     }
 };
 
 //listen for messages
-self.port.on(HIDE_TIME_MSG, Utils.receiveMessage(Time.hideTime));
-self.port.on(TIME_MSG, Utils.receiveMessage(Time.initTime));
+self.port.on(HIDE_TIME_MSG, NewTabUtils.receiveMessage(NewTabTime.hideTime));
+self.port.on(TIME_MSG, NewTabUtils.receiveMessage(NewTabTime.initTime));
