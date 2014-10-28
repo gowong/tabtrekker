@@ -1,3 +1,5 @@
+'use strict';
+
 /* Constants */
 //messages
 const HIDE_SEARCH_MSG = 'hide_search';

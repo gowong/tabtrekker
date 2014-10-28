@@ -1,3 +1,5 @@
+'use strict';
+
 /* Constants */
 //messages
 const HISTORY_MSG = 'history';

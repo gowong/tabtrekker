@@ -1,3 +1,5 @@
+'use strict';
+
 /* Constants */
 //messages
 const HIDE_WEATHER_MSG = 'hide_weather';

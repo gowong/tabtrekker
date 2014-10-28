@@ -1,3 +1,5 @@
+'use strict';
+
 /* Constants */
 //messages
 const HIDE_TIME_MSG = 'hide_time';

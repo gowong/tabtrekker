@@ -1,3 +1,5 @@
+'use strict';
+
 /* Constants */
 const SETTINGS_MSG = 'settings';
 
