@@ -54,11 +54,11 @@ var Weather = {
                     longitude: position.coords.longitude
                 });
             }, function(err) {
-                console.warn('ERROR(' + err.code + '): ' + err.message);
+                logger.warn('ERROR(' + err.code + '): ' + err.message);
                 self.port.emit(WEATHER_GEOLOCATION_RESULT_MSG, null);
             }, options);
         } else {
-            console.warn('Geolocation not supported.');
+            logger.warn('Geolocation not supported.');
         }
     },
 
