@@ -10,7 +10,7 @@ const WEATHER_SHOW_LOADING_MSG = 'weather_show_loading';
 //preferences
 const SHOW_WEATHER_PREF = 'show_weather';
 //others
-const WEATHER_RESULTS_LINK = 'https://www.google.com/search?q=weather';
+const WEATHER_RESULTS_URL = 'https://www.google.com/search?q=weather';
 
 /**
  * Weather module.
@@ -72,8 +72,8 @@ var NewTabWeather = {
      * Sets weather results link.
      */
     setWeatherResultsLink: function(location) {
-        var link = location ? WEATHER_RESULTS_LINK + ' ' + location
-            : WEATHER_RESULTS_LINK;
+        var link = location ? WEATHER_RESULTS_URL + ' ' + location
+            : WEATHER_RESULTS_URL;
         $('#weather_results').attr('href', link);
     },
 
