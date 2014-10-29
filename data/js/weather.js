@@ -9,6 +9,8 @@ const WEATHER_GEOLOCATION_RESULT_MSG = 'weather_geolocation_result';
 const WEATHER_SHOW_LOADING_MSG = 'weather_show_loading';
 //preferences
 const SHOW_WEATHER_PREF = 'show_weather';
+//others
+const WEATHER_RESULTS_LINK = 'https://www.google.com/search?q=weather';
 
 /**
  * Weather module.
@@ -22,16 +24,18 @@ var NewTabWeather = {
         if(!data) {
             return;
         }
-        //location
-        $('#weather_location').html(data.location.toUpperCase());
-        //conditions
-        var icon = NewTabWeather.getConditionsIcon(data.conditions);
-        $('#weather_temperature').attr('data-icon', icon);
+        //set weather results link
+        NewTabWeather.setWeatherResultsLink(data.location);
         //temperature
         var temperature = parseInt(data.temperature) || data.temperature;
         $('#weather_temperature').html(temperature);
         //temperature units
         $('#weather_temperature_units').html(data.temperatureUnits);
+        //conditions
+        var icon = NewTabWeather.getConditionsIcon(data.conditions);
+        $('#weather_temperature').attr('data-icon', icon);
+        //location
+        $('#weather_location').html(data.location.toUpperCase());
         //hide loading spinner when weather has been updated
         NewTabWeather.hideLoadingSpinner();
         NewTabWeather.setWeatherVisbility(data[SHOW_WEATHER_PREF]);
@@ -62,6 +66,15 @@ var NewTabWeather = {
         } else {
             logger.warn('Geolocation not supported.');
         }
+    },
+
+    /**
+     * Sets weather results link.
+     */
+    setWeatherResultsLink: function(location) {
+        var link = location ? WEATHER_RESULTS_LINK + ' ' + location
+            : WEATHER_RESULTS_LINK;
+        $('#weather_results').attr('href', link);
     },
 
     /**
