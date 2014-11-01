@@ -79,7 +79,7 @@ var NewTabHistory = {
         if(iconUrl) {
             //resolve relative links (URL.js has a bug where it incorrectly
             //resolves URLs when both are absolute URLs)
-            iconUrl = iconUrl.substring(0, 4) === 'http' ? iconUrl :
+            iconUrl = iconUrl.substring(0, 4) == 'http' ? iconUrl :
                 URL.resolve(baseUrl, iconUrl);
         }
         return iconUrl;

@@ -26,7 +26,7 @@ var NewTabWeather = {
         }
         //set weather results link
         NewTabWeather.setWeatherResultsLink(data.location);
-        //temperature
+        //temperature (show as int)
         var temperature = parseInt(data.temperature) || data.temperature;
         $('#weather_temperature').html(temperature);
         //temperature units
