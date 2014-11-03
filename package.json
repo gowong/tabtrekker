@@ -12,11 +12,17 @@
     },
     "preferences": [
         {
-            "name": "enabled",
-            "title": "Enable ADDON-NAME",
-            "description": "Refresh new tab pages for settings to take effect.",
+            "name": "newtab_enabled",
+            "title": "Use as new tab page",
+            "description": "Refresh pages for settings to take effect.",
             "type": "bool",
             "value": true
+        },
+        {
+            "name": "homepage_enabled",
+            "title": "Use as home page",
+            "type": "bool",
+            "value": false
         },
         {
             "name": "show_time",
