@@ -91,7 +91,7 @@ input:focus::-moz-placeholder {
 #history_list:after {
     position: absolute;
     top: -6px;
-    left: 202px;
+    left: 153px;
     border-right: 6px solid transparent;
     border-bottom: 6px solid rgba(255, 255, 255, 0.9);
     border-left: 6px solid transparent;
