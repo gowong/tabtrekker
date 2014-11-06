@@ -1,7 +1,7 @@
 'use strict';
 
 /* Constants */
-const SETTINGS_MSG = 'settings';
+const SETTINGS_MSG = 'menu_settings';
 
 //called on document ready
 $(function() {
