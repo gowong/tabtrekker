@@ -17,7 +17,9 @@
 
 body { 
     font-family: 'Helvetica Neue', Arial, sans-serif;
-    background: url('../images/test.jpg') no-repeat center center fixed; 
+    background-attachment: fixed;
+    background-position: center center;
+    background-repeat: no-repeat;
     background-size: cover;
     font-size: 16px;
     font-weight: 300;
