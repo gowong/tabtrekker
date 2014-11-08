@@ -2,11 +2,13 @@
 
 /* Constants */
 const SETTINGS_MSG = 'menu_settings';
+const NEXTIMAGE_MSG = 'menu_next_image';
 
 //called on document ready
 $(function() {
     //register click handlers
     $('#settings').click(NewTabMenu.clickHandler(SETTINGS_MSG));
+    $('#next_image').click(NewTabMenu.clickHandler(NEXTIMAGE_MSG));
 });
 
 /**
