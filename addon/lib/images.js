@@ -39,7 +39,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 50 * 1000; //10 seconds
      */
     initImages: function(worker) {
         newtab = require('main.js').NewTabMain;
-        logger.log('Initializing images.');
+        logger.info('Initializing images.');
 
         //immediately display an image
         NewTabImages.displayImage(worker);
@@ -103,7 +103,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 50 * 1000; //10 seconds
      * Chooses and returns a new image to be displayed.
      */
     getNewImage: function() {
-        logger.log('Choosing new image.');
+        logger.info('Choosing new image.');
         var imageSet = ss.storage[IMAGES_IMAGE_SET_SS];
         if(!imageSet || !imageSet.images) {
             return null;
@@ -149,7 +149,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 50 * 1000; //10 seconds
      * the image sources.
      */
     getImages: function(worker) {
-        logger.log('Requesting images.');
+        logger.info('Requesting images.');
         //set last updated time to in the future so no other updates will
         //happen during this update
         ss.storage[IMAGES_LASTUPDATED_SS] = Date.now() + IMAGES_UPDATE_WAIT_MILLIS;

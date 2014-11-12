@@ -21,7 +21,7 @@ var NewTabMenu = {
      * Attaches listeners to listen for button click events.
      */
     attachListeners: function(worker) {
-        logger.log('Attaching menu listeners.');
+        logger.info('Attaching menu listeners.');
         worker.port.on(SETTINGS_MSG, NewTabMenu.openSettings);
         worker.port.on(NEXTIMAGE_MSG, function() {
             images.displayNextImage(worker)

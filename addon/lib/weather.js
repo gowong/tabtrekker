@@ -58,7 +58,7 @@ var NewTabWeather = {
             return;
         }
 
-        logger.log('Initializing weather.');
+        logger.info('Initializing weather.');
 
         var data = {
             conditionsIcon: ss.storage[WEATHER_CONDITIONS_ICON_SS],
@@ -71,7 +71,7 @@ var NewTabWeather = {
         //immediately send cached weather result to content scripts
         if(data.conditionsIcon && data.location && data.temperature
             && data.temperatureUnits) {
-            logger.log('Sending cached weather result.');
+            logger.info('Sending cached weather result.');
             NewTabWeather.displayWeather(data);
         }
 
@@ -114,7 +114,7 @@ var NewTabWeather = {
      * Clears cached weather result.
      */
     clearCachedWeatherResult: function() {
-        logger.log('Clearing cached weather result.');
+        logger.info('Clearing cached weather result.');
         ss.storage[WEATHER_LASTUPDATED_SS] = null;
     },
 
@@ -135,7 +135,7 @@ var NewTabWeather = {
             //user-defined location
             var userLocation = simplePrefs.prefs[LOCATION_PREF];
             if(userLocation) {
-                logger.log('Retrieved user-defined location.');
+                logger.info('Retrieved user-defined location.');
                 resolve({
                     address: {
                         city: userLocation
@@ -164,7 +164,7 @@ var NewTabWeather = {
                     worker: worker
                 };
 
-                logger.log('Requesting address from geocoder.');
+                logger.info('Requesting address from geocoder.');
 
                 //request city name using reverse geocoding service from GeoNames
                 const requestUrl = GEONAMES_URL
@@ -224,7 +224,7 @@ var NewTabWeather = {
             var temperatureUnits = simplePrefs.prefs[TEMPERATURE_UNITS_PREF];
             requestUrl += '&units=' + (temperatureUnits == 'C' ? 'metric' : 'imperial');
 
-            logger.log('Requesting weather.');
+            logger.info('Requesting weather.');
 
             //make weather request
             Request({

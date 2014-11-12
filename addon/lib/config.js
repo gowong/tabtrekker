@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Configurations module.
  */

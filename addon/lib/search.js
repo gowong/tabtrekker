@@ -40,7 +40,7 @@ var NewTabSearch = {
             return;
         }
 
-        logger.log('Initializing search.');
+        logger.info('Initializing search.');
 
         var options = {
             form: {

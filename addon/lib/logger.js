@@ -1,14 +1,20 @@
 'use strict';
 
-const LOGGING = false;
-
 /**
  * Logger module.
  */
 var NewTabLogger = {
 
+    logLevel: false,
+
+    infoLevel: true,
+    
+    warnLevel: true,
+    
+    errorLevel: true,
+
     log: function(msg, args) {
-        if(LOGGING) {
+        if(logLevel) {
             if(args) {
                 console.log(msg, args);
             } else {
@@ -18,7 +24,7 @@ var NewTabLogger = {
     },
 
     info: function(msg, args) {
-        if(LOGGING) {
+        if(infoLevel) {
             if(args) {
                 console.info(msg, args);
             } else {
@@ -28,7 +34,7 @@ var NewTabLogger = {
     },
 
     warn: function(msg, args) {
-        if(LOGGING) {
+        if(warnLevel) {
             if(args) {
                 console.warn(msg, args);
             } else {
@@ -38,7 +44,7 @@ var NewTabLogger = {
     },
     
     error: function(msg, args) {
-        if(LOGGING) {
+        if(errorLevel) {
             if(args) {
                 console.error(msg, args);
             } else {
