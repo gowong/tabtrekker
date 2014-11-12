@@ -55,7 +55,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 50 * 1000; //10 seconds
     /**
      * Choose an image and notifies content scripts to display it.
      */
-     displayImage: function(worker) {
+    displayImage: function(worker) {
         var image = NewTabImages.getSavedImage();
         image.fallback = NewTabImages.getFallbackImage();
         if(image) {
@@ -67,9 +67,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 50 * 1000; //10 seconds
       * Chooses and displays an image that is different from the current image.
       */
     displayNextImage: function(worker) {
-        //force a new image to be chosen, but don't delete the current chosen
-        //image id as it is needed to cycle the next image
-        ss.storage[IMAGES_LASTCHOSEN_SS] = null;
+        clearChosenImage();
         NewTabImages.displayImage(worker);
     },
 
@@ -77,7 +75,6 @@ const IMAGES_UPDATE_WAIT_MILLIS = 50 * 1000; //10 seconds
      * Clears chosen image.
      */
     clearChosenImage: function() {
-        ss.storage[IMAGES_CHOSEN_ID_SS] = null;
         ss.storage[IMAGES_LASTCHOSEN_SS] = null;
     },
 
@@ -89,37 +86,34 @@ const IMAGES_UPDATE_WAIT_MILLIS = 50 * 1000; //10 seconds
         var lastChosen = ss.storage[IMAGES_LASTCHOSEN_SS];
         var chosenId = ss.storage[IMAGES_CHOSEN_ID_SS];
         if(!lastChosen || !chosenId) {
-            chosenId = NewTabImages.getNewImageId();
+            return NewTabImages.getNewImage();
         } else {
             //check when the last image was chosen
             var now = Date.now();
             var elapsed = now - lastChosen;
             //choose new image
             if(elapsed >= IMAGES_CHOOSE_INTERVAL_MILLIS) {
-                chosenId = NewTabImages.getNewImageId();
+                return NewTabImages.getNewImage();
             }
         }
-        return ss.storage[IMAGES_METADATA_SS][chosenId];
+        return ss.storage[IMAGES_IMAGE_SET_SS][chosenId];
     },
 
     /**
-     * Chooses a new image to be displayed and returns its id.
+     * Chooses and returns a new image to be displayed.
      */
-    getNewImageId: function() {
+    getNewImage: function() {
         logger.log('Choosing new image.');
-        var images = ss.storage[IMAGES_METADATA_SS];
-        if(!images) {
-            NewTabImages.clearChosenImage();
+        var imageSet = ss.storage[IMAGES_IMAGE_SET_SS];
+        if(!imageSet || !imageSet.images) {
             return null;
         }
+        var images = imageSet.images;
         var chosenId = ss.storage[IMAGES_CHOSEN_ID_SS];
-        //choose next image or choose a random image if this is the first
-        //time choosing
-        chosenId = chosenId ? (parseInt(chosenId, 10) + 1) % images.length
-            : Math.floor(Math.random() * images.length);
+        chosenId = chosenId ? (parseInt(chosenId, 10) + 1) % images.length : 0;
         ss.storage[IMAGES_CHOSEN_ID_SS] = chosenId.toString();
         ss.storage[IMAGES_LASTCHOSEN_SS] = Date.now();
-        return chosenId;
+        return ss.storage[IMAGES_IMAGE_SET_SS][chosenId];
     },
 
     /**
@@ -128,8 +122,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 50 * 1000; //10 seconds
      */
     getFallbackImage: function() {
         var fallbackId = ss.storage[IMAGES_FALLBACK_ID_SS];
-        fallbackId = fallbackId ? (parseInt(fallbackId, 10) + 1) % IMAGES_FALLBACKS.length
-            : Math.floor(Math.random() * IMAGES_FALLBACKS.length);
+        fallbackId = fallbackId ? (parseInt(fallbackId, 10) + 1) % IMAGES_FALLBACKS.length : 0;
         ss.storage[IMAGES_FALLBACK_ID_SS] = fallbackId.toString();
         return IMAGES_FALLBACKS[fallbackId];
     },
