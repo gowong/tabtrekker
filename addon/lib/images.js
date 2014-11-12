@@ -17,7 +17,7 @@ const IMAGES_CHOSEN_ID_SS = 'images_chosen_id';
 const IMAGES_FALLBACK_ID_SS = 'images_fallback_id';
 const IMAGES_LASTCHOSEN_SS = 'images_lastchosen';
 const IMAGES_LASTUPDATED_SS = 'images_lastupdated';
-const IMAGES_METADATA_SS = 'images_metadata';
+const IMAGES_IMAGE_SET_SS = 'images_image_set';
 //others
 const IMAGES_CHOOSE_INTERVAL_MILLIS = 60 * 1000; //1 minute
 const IMAGES_FALLBACKS = ['images/0.jpg', 'images/1.jpg', 'images/2.jpg', 
@@ -157,9 +157,9 @@ const IMAGES_UPDATE_WAIT_MILLIS = 50 * 1000; //10 seconds
         NewTabImages.clearChosenImage();
         //request images
         return chromecast.getImages(IMAGES_NUM_PER_UPDATE).
-            then(function(images) {
+            then(function(imageSet) {
                 //save images
-                ss.storage[IMAGES_METADATA_SS] = images;
+                ss.storage[IMAGES_IMAGE_SET_SS] = imageSet;
                 ss.storage[IMAGES_LASTUPDATED_SS] = Date.now();
                 return worker;
             });
