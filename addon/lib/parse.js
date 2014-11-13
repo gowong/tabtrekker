@@ -32,7 +32,7 @@ var NewTabParse = {
         return NewTabParse.request(PARSE_GET_NEXT_IMAGE_SET_URL, data).
             then(function(imageSet) {
                 if(!imageSet || !imageSet.images || imageSet.images.length == 0) {
-                    throw 'Parse response contained no images.';
+                    throw new Error('Parse response contained no images.');
                 }
                 //store image set id
                 ss.storage[PARSE_IMAGE_SET_ID_SS] = imageSet.id;

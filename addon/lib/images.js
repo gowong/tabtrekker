@@ -46,8 +46,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
         //request new images
         if(NewTabImages.shouldUpdate()) {
             NewTabImages.getImages(worker).
-                then(NewTabImages.displayImage).
-                then(null, logger.error);
+                then(NewTabImages.displayImage);
         }
     },
 

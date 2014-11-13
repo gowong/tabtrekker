@@ -11,8 +11,7 @@ var ImageSets = [
         images: [
             {
                 infoUrl: 'https://interfacelift.com/wallpaper/details/3750/realm_of_light.html',
-                imageUrl: 'http://newtabdev.parseapp.com/1b3E67J.jpg',
-                imageFormat: 'jpg'
+                imageUrl: 'http://newtabdev.parseapp.com/1b3E67J.jpg'
             }
         ]
     }
