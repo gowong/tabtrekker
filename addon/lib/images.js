@@ -54,7 +54,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
      * Choose an image and notifies content scripts to display it.
      */
     displayImage: function(worker) {
-        var image = NewTabImages.getSavedImage();
+        var image = NewTabImages.getImage();
         if(image) {
             image.fallback = NewTabImages.getFallbackImage();
             utils.emit(newtab.workers, worker, IMAGES_DISPLAY_MSG, image);
@@ -81,19 +81,19 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
     /**
      * Returns one of the saved images to display. 
      */
-    getSavedImage: function() {
+    getImage: function() {
         //no image displayed
         var lastChosen = ss.storage[IMAGES_LASTCHOSEN_SS];
         var chosenId = ss.storage[IMAGES_CHOSEN_ID_SS];
         if(!lastChosen || !chosenId) {
-            return NewTabImages.getNewImage();
+            return NewTabImages.chooseNewImage();
         } else {
             //check when the last image was chosen
             var now = Date.now();
             var elapsed = now - lastChosen;
             //choose new image
             if(elapsed >= IMAGES_CHOOSE_INTERVAL_MILLIS) {
-                return NewTabImages.getNewImage();
+                return NewTabImages.chooseNewImage();
             }
         }
         return ss.storage[IMAGES_IMAGE_SET_SS].images[chosenId];
@@ -102,7 +102,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
     /**
      * Chooses and returns a new image to be displayed.
      */
-    getNewImage: function() {
+    chooseNewImage: function() {
         logger.info('Choosing new image.');
         var imageSet = ss.storage[IMAGES_IMAGE_SET_SS];
         if(!imageSet || !imageSet.images) {
