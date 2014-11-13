@@ -4,8 +4,8 @@
 const ss = require('sdk/simple-storage');
 
 /* Modules */
-const chromecast = require('chromecast.js').NewTabChromecast;
 const logger = require('logger.js').NewTabLogger;
+const parse = require('parse.js').NewTabParse;
 const utils = require('utils.js').NewTabUtils;
 var newtab; //load on initialization to ensure main module is loaded
 
@@ -24,7 +24,6 @@ const IMAGES_FALLBACKS = ['images/0.jpg', 'images/1.jpg', 'images/2.jpg',
                           'images/3.jpg', 'images/4.jpg', 'images/5.jpg', 
                           'images/6.jpg', 'images/7.jpg', 'images/8.jpg', 
                           'images/9.jpg', 'images/10.jpg'];
-const IMAGES_NUM_PER_UPDATE = 15;
 const IMAGES_UPDATE_INTERVAL_MILLIS = 24 * 60 * 60 * 1000; //24 hours
 const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
 
@@ -60,6 +59,8 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
         if(image) {
             image.fallback = NewTabImages.getFallbackImage();
             utils.emit(newtab.workers, worker, IMAGES_DISPLAY_MSG, image);
+        } else {
+            logger.error('Cannot display invalid saved image.');
         }
      },
 
@@ -96,7 +97,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
                 return NewTabImages.getNewImage();
             }
         }
-        return ss.storage[IMAGES_IMAGE_SET_SS][chosenId];
+        return ss.storage[IMAGES_IMAGE_SET_SS].images[chosenId];
     },
 
     /**
@@ -108,12 +109,17 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
         if(!imageSet || !imageSet.images) {
             return null;
         }
+
+        //choose next image 
         var images = imageSet.images;
         var chosenId = ss.storage[IMAGES_CHOSEN_ID_SS];
         chosenId = chosenId ? (parseInt(chosenId, 10) + 1) % images.length : 0;
+
+        //save chosen image
         ss.storage[IMAGES_CHOSEN_ID_SS] = chosenId.toString();
         ss.storage[IMAGES_LASTCHOSEN_SS] = Date.now();
-        return ss.storage[IMAGES_IMAGE_SET_SS][chosenId];
+
+        return images[chosenId];
     },
 
     /**
@@ -155,12 +161,16 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
         //clear current chosen image
         NewTabImages.clearChosenImage();
         //request images
-        return chromecast.getImages(IMAGES_NUM_PER_UPDATE).
+        return parse.getNextImageSet().
             then(function(imageSet) {
                 //save images
                 ss.storage[IMAGES_IMAGE_SET_SS] = imageSet;
                 ss.storage[IMAGES_LASTUPDATED_SS] = Date.now();
                 return worker;
+            }, function(error) {
+                logger.error('Images request failed due to:', error);
+                //force next image update
+                ss.storage[IMAGES_LASTUPDATED_SS] = null;
             });
     },
 

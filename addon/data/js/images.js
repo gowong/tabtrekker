@@ -14,7 +14,7 @@ var NewTabImages = {
      */
     displayImage: function(image) {
         var background = $(document.body);
-        var imageUrl = image.url;
+        var imageUrl = image.imageUrl;
         var imageFallback = image.fallback;
         var backgroundImage = 'url(' + imageUrl + '), url(' + imageFallback + ')';
         background.css('background-image', backgroundImage);
