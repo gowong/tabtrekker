@@ -78,9 +78,8 @@ var NewTabWeather = {
         //request weather update if cached result is stale
         if(NewTabWeather.shouldUpdate()) {
 
-            //set last updated time to in the future so no other updates will
-            //happen during this update
-            ss.storage[WEATHER_LASTUPDATED_SS] = Date.now() + WEATHER_UPDATE_WAIT_MILLIS;
+            //prevent other updates from happening during this update
+            NewTabWeather.disableUpdates(WEATHER_UPDATE_WAIT_MILLIS);
 
             //indicate that the weather is being updated
             NewTabWeather.showLoadingSpinner(worker);
@@ -108,6 +107,14 @@ var NewTabWeather = {
         var elapsed = now - lastUpdated;
 
         return (elapsed >= WEATHER_UPDATE_INTERVAL_MILLIS);
+    },
+
+    /**
+     * Disables updates for the specified milliseconds.
+     */
+    disableUpdates: function(millis) {
+       ss.storage[WEATHER_LASTUPDATED_SS] = Date.now() -
+            WEATHER_UPDATE_INTERVAL_MILLIS + millis; 
     },
 
     /**

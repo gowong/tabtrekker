@@ -14,7 +14,7 @@ var NewTabLogger = {
     errorLevel: true,
 
     log: function(msg, args) {
-        if(logLevel) {
+        if(NewTabLogger.logLevel) {
             if(args) {
                 console.log(msg, args);
             } else {
@@ -24,7 +24,7 @@ var NewTabLogger = {
     },
 
     info: function(msg, args) {
-        if(infoLevel) {
+        if(NewTabLogger.infoLevel) {
             if(args) {
                 console.info(msg, args);
             } else {
@@ -34,7 +34,7 @@ var NewTabLogger = {
     },
 
     warn: function(msg, args) {
-        if(warnLevel) {
+        if(NewTabLogger.warnLevel) {
             if(args) {
                 console.warn(msg, args);
             } else {
@@ -44,7 +44,7 @@ var NewTabLogger = {
     },
     
     error: function(msg, args) {
-        if(errorLevel) {
+        if(NewTabLogger.errorLevel) {
             if(args) {
                 console.error(msg, args);
             } else {

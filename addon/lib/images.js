@@ -26,7 +26,7 @@ const IMAGES_FALLBACKS = ['images/0.jpg', 'images/1.jpg', 'images/2.jpg',
                           'images/9.jpg', 'images/10.jpg'];
 const IMAGES_NUM_PER_UPDATE = 15;
 const IMAGES_UPDATE_INTERVAL_MILLIS = 24 * 60 * 60 * 1000; //24 hours
-const IMAGES_UPDATE_WAIT_MILLIS = 50 * 1000; //10 seconds
+const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
 
 /**
  * Images module.
@@ -57,8 +57,8 @@ const IMAGES_UPDATE_WAIT_MILLIS = 50 * 1000; //10 seconds
      */
     displayImage: function(worker) {
         var image = NewTabImages.getSavedImage();
-        image.fallback = NewTabImages.getFallbackImage();
         if(image) {
+            image.fallback = NewTabImages.getFallbackImage();
             utils.emit(newtab.workers, worker, IMAGES_DISPLAY_MSG, image);
         }
      },
@@ -150,9 +150,8 @@ const IMAGES_UPDATE_WAIT_MILLIS = 50 * 1000; //10 seconds
      */
     getImages: function(worker) {
         logger.info('Requesting images.');
-        //set last updated time to in the future so no other updates will
-        //happen during this update
-        ss.storage[IMAGES_LASTUPDATED_SS] = Date.now() + IMAGES_UPDATE_WAIT_MILLIS;
+        //prevent other updates from happening during this update
+        NewTabImages.disableUpdates(IMAGES_UPDATE_WAIT_MILLIS);
         //clear current chosen image
         NewTabImages.clearChosenImage();
         //request images
@@ -163,6 +162,14 @@ const IMAGES_UPDATE_WAIT_MILLIS = 50 * 1000; //10 seconds
                 ss.storage[IMAGES_LASTUPDATED_SS] = Date.now();
                 return worker;
             });
+    },
+
+    /**
+     * Disables updates for the specified milliseconds.
+     */
+    disableUpdates: function(millis) {
+       ss.storage[IMAGES_LASTUPDATED_SS] = Date.now() -
+            IMAGES_UPDATE_INTERVAL_MILLIS + millis; 
     }
  };
 
