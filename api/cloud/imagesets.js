@@ -3,7 +3,7 @@
 /**
  * Collection of images to be cycled through.
  */
-var imageSets = [
+var ImageSets = [
     {
         id: 0,
         name: 'Test',
@@ -18,4 +18,4 @@ var imageSets = [
     }
 ];
 
-exports.imageSets = imageSets;
+exports.ImageSets = ImageSets;
