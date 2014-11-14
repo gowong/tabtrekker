@@ -32,6 +32,7 @@ var NewTabParse = {
         return NewTabParse.request(PARSE_GET_NEXT_IMAGE_SET_URL, data).
             then(function(imageSet) {
                 if(!imageSet || !imageSet.images || imageSet.images.length == 0) {
+                    logger.error('Parse response contained no images.');
                     throw new Error('Parse response contained no images.');
                 }
                 //store image set id
@@ -55,6 +56,7 @@ var NewTabParse = {
                 content: JSON.stringify(dataObj),
                 onComplete: function(response) {
                     if(response.status != 200) {
+                        logger.error('Parse request failed.', response);
                         reject(new Error('Parse request failed.'));
                         return;
                     }

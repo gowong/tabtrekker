@@ -134,7 +134,7 @@ var NewTabSearch = {
             url: url,
             onComplete: function(response) {
                 if(response.status != 200) {
-                    logger.error('Search suggestions request failed.');
+                    logger.error('Search suggestions request failed.', response);
                     return;
                 }
                 var suggestions = response.json;

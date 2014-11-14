@@ -167,7 +167,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
                 ss.storage[IMAGES_LASTUPDATED_SS] = Date.now();
                 return worker;
             }, function(error) {
-                logger.error('Images request failed due to:', error);
+                logger.warn('Forcing next image update because of', error);
                 //force next image update
                 ss.storage[IMAGES_LASTUPDATED_SS] = null;
             });

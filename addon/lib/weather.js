@@ -71,7 +71,7 @@ var NewTabWeather = {
         //immediately send cached weather result to content scripts
         if(data.conditionsIcon && data.location && data.temperature
             && data.temperatureUnits) {
-            logger.info('Sending cached weather result.');
+            logger.info('Displaying cached weather result.');
             NewTabWeather.displayWeather(data);
         }
 
@@ -286,13 +286,13 @@ var NewTabWeather = {
         if(!weather.conditionsIcon || !weather.location || !weather.temperature
             || !weather.temperatureUnits) {
             NewTabWeather.displayEmptyWeather({
-                error: new Error('Cannot send invalid weather result.'),
+                error: new Error('Cannot display invalid weather result.'),
                 worker: weather.worker
             });
             return;
         }
 
-        logger.log('Sending weather result.');
+        logger.log('Displaying weather result.');
 
         weather.temperatureUnits = NewTabWeather.getTemperatureUnitsStr(
             weather.temperatureUnits);
@@ -306,7 +306,7 @@ var NewTabWeather = {
      */
     displayEmptyWeather: function(data) {
 
-        logger.error('Sending empty weather result because "' + data.error.message + '"');
+        logger.error('Displaying empty weather result because "' + data.error.message + '"');
 
         var options = {
             conditionsIcon: NewTabWeather.getConditionsIcon(null),

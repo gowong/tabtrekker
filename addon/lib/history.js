@@ -79,7 +79,7 @@ var NewTabHistory = {
                 url: url,
                 onComplete: function(response) {
                     if(response.status != 200) {
-                        logger.error('Request failed for ' + url);
+                        logger.error('Request failed for ' + url, response);
                         return;
                     }
                     //parse response to find a large icon
