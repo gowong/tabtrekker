@@ -1,9 +1,16 @@
 'use strict';
 
 /* SDK Modules */
+const {Cu} = require('chrome');
+Cu.import('resource://gre/modules/Downloads.jsm');
+Cu.import('resource://gre/modules/osfile.jsm');
+Cu.import('resource://gre/modules/Promise.jsm');
+Cu.import('resource://gre/modules/Task.jsm');
+const array = require('sdk/util/array');
 const ss = require('sdk/simple-storage');
 
 /* Modules */
+const files = require('files.js').NewTabFiles;
 const logger = require('logger.js').NewTabLogger;
 const parse = require('parse.js').NewTabParse;
 const utils = require('utils.js').NewTabUtils;
@@ -20,6 +27,7 @@ const IMAGES_LASTUPDATED_SS = 'images_lastupdated';
 const IMAGES_IMAGE_SET_SS = 'images_image_set';
 //others
 const IMAGES_CHOOSE_INTERVAL_MILLIS = 60 * 1000; //1 minute
+const IMAGES_DOWNLOAD_DIR = 'images';
 const IMAGES_FALLBACKS = ['images/0.jpg', 'images/1.jpg', 'images/2.jpg', 
                           'images/3.jpg', 'images/4.jpg', 'images/5.jpg', 
                           'images/6.jpg', 'images/7.jpg', 'images/8.jpg', 
@@ -31,6 +39,11 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
  * Images module.
  */
  var NewTabImages = {
+
+    /**
+     * List of in progress downloads.
+     */
+    downloadTargets: [],
 
     /**
      * Initializes images by requesting new images (if needed), saving them
@@ -48,6 +61,10 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
             NewTabImages.getImages(worker).
                 then(NewTabImages.displayImage);
         }
+
+        //download images if needed
+        NewTabImages.downloadImages().
+            then(NewTabImages.removeDownloadedImages);
     },
 
     /**
@@ -96,7 +113,8 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
                 return NewTabImages.chooseNewImage();
             }
         }
-        return ss.storage[IMAGES_IMAGE_SET_SS].images[chosenId];
+        return ss.storage[IMAGES_IMAGE_SET_SS] ? 
+            ss.storage[IMAGES_IMAGE_SET_SS].images[chosenId] : null;
     },
 
     /**
@@ -179,6 +197,150 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
     disableUpdates: function(millis) {
        ss.storage[IMAGES_LASTUPDATED_SS] = Date.now() -
             IMAGES_UPDATE_INTERVAL_MILLIS + millis; 
+    },
+
+    /**
+     * Downloads any of the images in the saved image set that haven't already
+     * been downloaded. Returns a promise that is fulfilled when all images
+     * have been downloaded.
+     */
+    downloadImages: function() {
+        return Task.spawn(function*() {
+            let imageSet = ss.storage[IMAGES_IMAGE_SET_SS];
+            if(!imageSet || !imageSet.images) {
+                logger.warn('No images to download.');
+                throw new Error('No images to download.');
+            }
+            logger.log('Downloading images.');
+
+            let images = imageSet.images;
+            let downloadPromises = [];
+
+            for(var i = 0; i < images.length; i++) {
+                let index = i; //use current iteration in inner functions
+                let image = images[i];
+
+                //create download directory if needed
+                let target = yield NewTabImages.getOrCreateDownloadPath(
+                    imageSet, image, index);
+                let source = image.imageUrl;
+
+                //only download images that haven't already been downloaded
+                let shouldDownload = yield NewTabImages.shouldDownloadImage(
+                    image, target);
+                if(!shouldDownload) {
+                    continue;
+                }
+
+                logger.info('Downloading ' + source + ' to ' + target);
+
+                //start download
+                let download = Downloads.fetch(source, target).
+                    then(function() {
+                        logger.info('Download complete', target);
+                        //remove completed download
+                        array.remove(NewTabImages.downloadTargets, target);
+                        //save downloaded image file uri
+                        NewTabImages.saveImageFileUri(index, target);
+                    });
+
+                //keep track of downloads
+                downloadPromises.push(download);
+                NewTabImages.downloadTargets.push(target);
+            }
+
+            //wait for all downloads to complete
+            yield Promise.all(downloadPromises);
+            logger.log('All downloads completed');
+
+            return imageSet;
+
+        }).then(null, function(error) {
+            logger.error('Error downloading image', error);
+            throw error;
+        });
+    },
+
+    /**
+     * Returns a promise that is fulfilled with whether or not the image should
+     * be downloaded.
+     */
+    shouldDownloadImage: function(image, downloadTarget) {
+        return Task.spawn(function*() {
+            //iterate through in progress downloads
+            for(var i = 0; i < NewTabImages.downloadTargets.length; i++) {
+                let inProgressDownloadTarget = NewTabImages.downloadTargets[i];
+                //image download is already in progress
+                if(downloadTarget == inProgressDownloadTarget) {
+                    return false;
+                }
+            }
+            //don't download if image file exists
+            return !(yield files.fileUriExists(image.fileUri));
+
+        }).then(null, function(error) {
+            logger.error('Error checking if downloaded image exists', error);
+            throw error;
+        });
+    },
+
+    /**
+     * Returns a promise that is fulfilled with the path to download the image to.
+     */
+    getOrCreateDownloadPath: function(imageSet, image, imageTitle) {
+        return Task.spawn(function*() {
+            let url = image.imageUrl;
+            let imageFormat = url.substring(url.lastIndexOf('.'));
+            let imageSetFolder = imageSet.id;
+            let imageSetPath = OS.Path.join(IMAGES_DOWNLOAD_DIR, imageSetFolder);
+
+            //create image set directory if needed
+            let path = yield files.getOrCreatePathInProfile(imageSetPath);
+
+            //append image file to path
+            return OS.Path.join(path, imageTitle + imageFormat);
+
+        }).then(null, function(error) {
+            logger.error('Error getting or creating download path', error);
+            throw error;
+        });
+    },
+
+    /**
+     * Converts the path to a file URI and saves it for the specified image.
+     */
+    saveImageFileUri: function(id, path) {
+        var fileUri = OS.Path.toFileURI(path);
+        ss.storage[IMAGES_IMAGE_SET_SS].images[id].fileUri = fileUri;
+    },
+
+    /**
+     * Removes all downloaded images not belonging to the specified image set.
+     */
+    removeDownloadedImages: function(imageSet) {
+        logger.log('Removing downloaded images.');
+
+        //remove images not belonging to this image set
+        var filter = function(entry) {
+            return entry.name != imageSet.id;
+        };
+
+        //remove all files in the images path that pass the filter
+        return Task.spawn(function*() {
+            let imagesPath = yield NewTabImages.getOrCreateImagesPath();
+            return yield files.removeInPath(imagesPath, filter);
+        }).then(null, function(error) {
+            logger.error('Error removing downloaded images', error);
+            throw error;
+        });
+     },
+
+    /**
+     * Returns a promise that is fulfilled with the path to the images directory.
+     * Creates the path if it doesn't already exist.
+     */
+    getOrCreateImagesPath: function() {
+        return files.getOrCreatePathInProfile(IMAGES_DOWNLOAD_DIR);
     }
  };
 
