@@ -3,6 +3,7 @@
 /* SDK Modules */
 const {Cu} = require('chrome');
 Cu.import('resource://gre/modules/Promise.jsm');
+Cu.import('resource://gre/modules/Task.jsm');
 const Request = require('sdk/request').Request;
 const ss = require('sdk/simple-storage');
 
@@ -24,21 +25,22 @@ var NewTabParse = {
      * Returns a promise that is fulfilled with the retrieved images.
      */
     getNextImageSet: function() {
-        logger.info('Requesting next image set from Parse.');
-        var data = {
-            id: ss.storage[PARSE_IMAGE_SET_ID_SS]
-        };
-        //request image set
-        return NewTabParse.request(PARSE_GET_NEXT_IMAGE_SET_URL, data).
-            then(function(imageSet) {
-                if(!imageSet || !imageSet.images || imageSet.images.length == 0) {
-                    logger.error('Parse response contained no images.');
-                    throw new Error('Parse response contained no images.');
-                }
-                //store image set id
-                ss.storage[PARSE_IMAGE_SET_ID_SS] = imageSet.id;
-                return imageSet;
-            });
+        return Task.spawn(function*() {
+            logger.info('Requesting next image set from Parse.');
+            let data = {
+                id: ss.storage[PARSE_IMAGE_SET_ID_SS]
+            };
+            //request image set
+            let imageSet = yield NewTabParse.request(
+                PARSE_GET_NEXT_IMAGE_SET_URL, data);
+            if(!imageSet || !imageSet.images || imageSet.images.length == 0) {
+                logger.error('Parse response contained no images.');
+                throw new Error('Parse response contained no images.');
+            }
+            //store image set id
+            ss.storage[PARSE_IMAGE_SET_ID_SS] = imageSet.id;
+            return imageSet;
+        });
     },
 
     /**
