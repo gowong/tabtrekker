@@ -38,7 +38,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
      */
     initImages: function(worker) {
         newtab = require('main.js').NewTabMain;
-        logger.info('Initializing images.');
+        logger.log('Initializing images.');
 
         //immediately display an image
         NewTabImages.displayImage(worker);

@@ -58,7 +58,7 @@ var NewTabWeather = {
             return;
         }
 
-        logger.info('Initializing weather.');
+        logger.log('Initializing weather.');
 
         var data = {
             conditionsIcon: ss.storage[WEATHER_CONDITIONS_ICON_SS],
@@ -71,7 +71,7 @@ var NewTabWeather = {
         //immediately send cached weather result to content scripts
         if(data.conditionsIcon && data.location && data.temperature
             && data.temperatureUnits) {
-            logger.info('Displaying cached weather result.');
+            logger.log('Displaying cached weather result.');
             NewTabWeather.displayWeather(data);
         }
 
@@ -121,7 +121,7 @@ var NewTabWeather = {
      * Clears cached weather result.
      */
     clearCachedWeatherResult: function() {
-        logger.info('Clearing cached weather result.');
+        logger.log('Clearing cached weather result.');
         ss.storage[WEATHER_LASTUPDATED_SS] = null;
     },
 

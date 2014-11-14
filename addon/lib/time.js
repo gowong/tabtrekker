@@ -34,7 +34,7 @@ var NewTabTime = {
             return;
         }
 
-        logger.info('Initializing time.');
+        logger.log('Initializing time.');
 
         var options = {}
         options[_24HOUR_PREF] = simplePrefs.prefs[_24HOUR_PREF];

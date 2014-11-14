@@ -27,7 +27,7 @@ var NewTabHistory = {
     initHistory: function(worker) {
         newtab = require('main.js').NewTabMain;
         
-        logger.info('Initializing history.');
+        logger.log('Initializing history.');
 
         var mostVisited = NewTabHistory.getMostVisited(MAX_MOST_VISITED);
         utils.emit(newtab.workers, worker, HISTORY_MSG, mostVisited);
