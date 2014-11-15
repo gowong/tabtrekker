@@ -84,7 +84,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
       * Chooses and displays an image that is different from the current image.
       */
     displayNextImage: function(worker) {
-        clearChosenImage();
+        NewTabImages.clearChosenImage();
         NewTabImages.displayImage(worker);
     },
 
