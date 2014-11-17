@@ -52,19 +52,19 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
     initImages: function(worker) {
         newtab = require('main.js').NewTabMain;
         logger.log('Initializing images.');
+        return Task.spawn(function*() {
+            //request new images
+            if(NewTabImages.shouldUpdate()) {
+                yield NewTabImages.getImages(worker)
+            }
 
-        //immediately display an image
-        NewTabImages.displayImage(worker);
+            //display saved image
+            NewTabImages.displayImage(worker);
 
-        //request new images
-        if(NewTabImages.shouldUpdate()) {
-            NewTabImages.getImages(worker).
-                then(NewTabImages.displayImage);
-        }
-
-        //download images if needed
-        NewTabImages.downloadImages().
-            then(NewTabImages.removeDownloadedImages);
+            //download images if needed
+            NewTabImages.downloadImages().
+                then(NewTabImages.removeDownloadedImages);
+        });
     },
 
     /**
