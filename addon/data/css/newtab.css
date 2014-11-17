@@ -198,6 +198,21 @@ input:focus::-moz-placeholder {
 #search_button.focus {
     color: rgba(75, 75, 75, 0.75) ;
 }
+#bottom_left_container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    margin-bottom: 2em;
+    margin-left: 10vh;
+    padding-left: 15px;
+}
+#image_set_info, #image_download {
+    font-size: 0.875em;
+    text-decoration: none;
+}
+#image_download {
+    padding-left: 0.35em;
+}
 #bottom_right_container {
     position: fixed;
     bottom: 0;

@@ -13,11 +13,20 @@ var NewTabImages = {
      * Displays the image.
      */
     displayImage: function(image) {
+        //set image
         var background = $(document.body);
         var imageSrc = image.fileUri || image.imageUrl;
         var imageFallback = image.fallback;
         var backgroundImage = 'url(' + imageSrc + '), url(' + imageFallback + ')';
         background.css('background-image', backgroundImage);
+
+        //set image info
+        var imageSetName = image.imageSetName;
+        var imageSetLink = image.imageSetInfoUrl;
+        var imageDownloadLink = image.infoUrl;
+        $('#image_set_info').text(imageSetName);
+        $('#image_set_info').attr('href', imageSetLink);
+        $('#image_download').attr('href', imageDownloadLink);
     }
 };
 

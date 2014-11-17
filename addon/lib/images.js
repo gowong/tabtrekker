@@ -99,22 +99,36 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
      * Returns one of the saved images to display. 
      */
     getImage: function() {
+        var imageSet = ss.storage[IMAGES_IMAGE_SET_SS];
+        if(!imageSet) {
+            return null;
+        }
+        var image;
+
         //no image displayed
         var lastChosen = ss.storage[IMAGES_LASTCHOSEN_SS];
         var chosenId = ss.storage[IMAGES_CHOSEN_ID_SS];
         if(!lastChosen || !chosenId) {
-            return NewTabImages.chooseNewImage();
+            image = NewTabImages.chooseNewImage();
         } else {
             //check when the last image was chosen
             var now = Date.now();
             var elapsed = now - lastChosen;
             //choose new image
             if(elapsed >= IMAGES_CHOOSE_INTERVAL_MILLIS) {
-                return NewTabImages.chooseNewImage();
+                image = NewTabImages.chooseNewImage();
+            } 
+            //get current image
+            else {
+                image = ss.storage[IMAGES_IMAGE_SET_SS].images[chosenId];
             }
         }
-        return ss.storage[IMAGES_IMAGE_SET_SS] ? 
-            ss.storage[IMAGES_IMAGE_SET_SS].images[chosenId] : null;
+        //add image set info
+        if(image) {
+            image.imageSetName = imageSet.name;
+            image.imageSetInfoUrl = imageSet.infoUrl;
+        }
+        return image;
     },
 
     /**
