@@ -39,6 +39,9 @@ input:focus::-moz-placeholder {
 }
 
 /* Classes */
+.clickable {
+    cursor: pointer;
+}
 .hover_item {
     opacity: 0;
     transition: opacity .3s ease;
