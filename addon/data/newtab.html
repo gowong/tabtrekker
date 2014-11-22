@@ -10,6 +10,30 @@
 </head>
 
 <body>
+
+    <!-- About modal -->
+    <div id="about_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="about_modal_title" aria-hidden="true">
+        <div class="modal-dialog">
+            <div id="about_modal_content" class="modal-content">
+                <div id="about_modal_body" class="modal-body">
+                    <img id="about_modal_icon" src="images/icon-64.png"></img><br>
+                    <span id="about_modal_title" data-l10n-id="newtab_title"></span>
+                    <br>
+                    <span id="about_modal_slogan" data-l10n-id="about_slogan"></span>
+                    <br><br>
+                    <!-- TODO donate link -->
+                    <a href="" class="btn btn-success" data-l10n-id="donate" role="button"></a>
+                    <br><br>
+                    <span data-l10n-id="about_author"></span>
+                    <a href="http://gordonwong.com" data-l10n-id="about_author_name"></a>
+                    <br>
+                    <span data-l10n-id="about_weather"></span>
+                </div>
+                <a id="about_modal_close" class="clickable" data-dismiss="modal" data-l10n-id="close"></a>
+            </div>
+        </div>
+    </div>
+
     <!-- Top menu -->
     <div id="top_menu_container">
         <ul id="top_menu">
@@ -30,7 +54,7 @@
             </li>
             <!-- About -->
             <li>
-                <a id="about" class="clickable white_text glyphicon glyphicon-info-sign"></a>
+                <a id="about" class="clickable white_text glyphicon glyphicon-info-sign" data-toggle="modal" data-target="#about_modal"></a>
             </li>
         </ul>
     </div>
