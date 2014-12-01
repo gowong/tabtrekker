@@ -67,7 +67,7 @@ var NewTabSearch = {
     addSearchSuggestions: function(suggestions) {
         //clear index
         NewTabSearch.googleSearchSuggestions.clear();
-        if(!suggestions || !suggestions.length) {
+        if(!suggestions || suggestions.length == 0) {
             return;
         }
 

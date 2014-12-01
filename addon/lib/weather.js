@@ -98,7 +98,7 @@ var NewTabWeather = {
     shouldUpdate: function() {
         //no weather result exists
         var lastUpdated = ss.storage[WEATHER_LASTUPDATED_SS];
-        if(!lastUpdated) {
+        if(lastUpdated == null) {
             return true;
         }
 
@@ -333,7 +333,7 @@ var NewTabWeather = {
      * conditions.
      */
     getConditionsIcon: function(conditions) {
-        if(!conditions || !conditions.length) {
+        if(!conditions || conditions.length == 0) {
             //N/A
             return ')';
         }
@@ -346,7 +346,7 @@ var NewTabWeather = {
             }
         }
         //could not find an icon
-        if(!icon) {
+        if(icon == null) {
             //N/A
             return ')';
         }

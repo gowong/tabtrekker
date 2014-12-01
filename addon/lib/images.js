@@ -105,10 +105,10 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
         }
         var image;
 
-        //no image displayed
+        //no image chosen
         var lastChosen = ss.storage[IMAGES_LASTCHOSEN_SS];
         var chosenId = ss.storage[IMAGES_CHOSEN_ID_SS];
-        if(!lastChosen || !chosenId) {
+        if(lastChosen == null || chosenId == null) {
             image = NewTabImages.chooseNewImage();
         } else {
             //check when the last image was chosen
@@ -144,10 +144,10 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
         //choose next image 
         var images = imageSet.images;
         var chosenId = ss.storage[IMAGES_CHOSEN_ID_SS];
-        chosenId = chosenId ? (parseInt(chosenId, 10) + 1) % images.length : 0;
+        chosenId = chosenId == null ? 0 : ((chosenId + 1) % images.length);
 
         //save chosen image
-        ss.storage[IMAGES_CHOSEN_ID_SS] = chosenId.toString();
+        ss.storage[IMAGES_CHOSEN_ID_SS] = chosenId;
         ss.storage[IMAGES_LASTCHOSEN_SS] = Date.now();
 
         return images[chosenId];
@@ -159,8 +159,8 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
      */
     getFallbackImage: function() {
         var fallbackId = ss.storage[IMAGES_FALLBACK_ID_SS];
-        fallbackId = fallbackId ? (parseInt(fallbackId, 10) + 1) % IMAGES_FALLBACKS.length : 0;
-        ss.storage[IMAGES_FALLBACK_ID_SS] = fallbackId.toString();
+        fallbackId = fallbackId == null ? 0 : ((fallbackId + 1) % IMAGES_FALLBACKS.length);
+        ss.storage[IMAGES_FALLBACK_ID_SS] = fallbackId;
         return IMAGES_FALLBACKS[fallbackId];
     },
 
@@ -170,7 +170,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
     shouldUpdate: function() {
         //no images exist
         var lastUpdated = ss.storage[IMAGES_LASTUPDATED_SS];
-        if(!lastUpdated) {
+        if(lastUpdated == null) {
             return true;
         }
 
