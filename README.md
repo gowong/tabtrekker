@@ -1,4 +1,3 @@
-newtab
-======
+#newtab
 
 Firefox new tab extension
