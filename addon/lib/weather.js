@@ -157,7 +157,7 @@ var NewTabWeather = {
             worker.port.on(WEATHER_GEOLOCATION_RESULT_MSG, function(coords) {
 
                 //geolocation failed
-                if(!coords || !coords.latitude || !coords.longitude) {
+                if(coords == null || coords.latitude == null || coords.longitude == null) {
                     reject({
                         error: new Error('Geolocation failed.'),
                         worker: worker
@@ -264,8 +264,9 @@ var NewTabWeather = {
      * Caches weather result in simple storage.
      */
     cacheWeatherResult: function(weather) {
-        if(!weather.conditionsIcon || !weather.location || !weather.temperature
-            || !weather.temperatureUnits) {
+        //allow temperature values of 0 by only checking for null or undefined
+        if(!weather.conditionsIcon || !weather.location
+            || weather.temperature == null || !weather.temperatureUnits) {
             logger.warn('Cannot cache invalid weather result.')
             return;
         }
@@ -283,8 +284,9 @@ var NewTabWeather = {
       * Displays weather by sending weather result to content scripts.
       */
     displayWeather: function(weather) {
-        if(!weather.conditionsIcon || !weather.location || !weather.temperature
-            || !weather.temperatureUnits) {
+        //allow temperature values of 0 by only checking for null or undefined
+        if(!weather.conditionsIcon || !weather.location
+            || weather.temperature == null || !weather.temperatureUnits) {
             NewTabWeather.displayEmptyWeather({
                 error: new Error('Cannot display invalid weather result.'),
                 worker: weather.worker
