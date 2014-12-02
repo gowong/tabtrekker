@@ -4,48 +4,52 @@
         infoUrl: 'http://en.wikipedia.org/wiki/New_York',
         images: [
             {
-                infoUrl: 'https://www.flickr.com/photos/akasped/9110105324',
+                infoUrl: 'https://www.flickr.com/photos/justininsd/8576587662',
                 imageUrl: 'http://newtab.parseapp.com/images/new_york/0.jpg'
             },
             {
-                infoUrl: 'https://www.flickr.com/photos/neilsingapore/15626130627',
+                infoUrl: 'https://www.flickr.com/photos/denial_land/3883242306',
                 imageUrl: 'http://newtab.parseapp.com/images/new_york/1.jpg'
             },
             {
-                infoUrl: 'https://www.flickr.com/photos/neilsingapore/15459026159',
+                infoUrl: 'https://www.flickr.com/photos/ataferner/15235098958',
                 imageUrl: 'http://newtab.parseapp.com/images/new_york/2.jpg'
             },
             {
-                infoUrl: 'https://www.flickr.com/photos/neilsingapore/15669654615',
+                infoUrl: 'https://www.flickr.com/photos/justininsd/12983900083',
                 imageUrl: 'http://newtab.parseapp.com/images/new_york/3.jpg'
             },
             {
-                infoUrl: 'https://www.flickr.com/photos/neilsingapore/14082420020',
+                infoUrl: 'https://www.flickr.com/photos/aftab/3708752824',
                 imageUrl: 'http://newtab.parseapp.com/images/new_york/4.jpg'
             },
             {
-                infoUrl: 'https://www.flickr.com/photos/cowb0y2000/6243008944',
+                infoUrl: 'https://www.flickr.com/photos/derekskey/8448083078',
                 imageUrl: 'http://newtab.parseapp.com/images/new_york/5.jpg'
             },
             {
-                infoUrl: 'https://www.flickr.com/photos/linkahwai/4959336227',
+                infoUrl: 'https://www.flickr.com/photos/justininsd/14887127329',
                 imageUrl: 'http://newtab.parseapp.com/images/new_york/6.jpg'
             },
             {
-                infoUrl: 'https://www.flickr.com/photos/ientu/2919662642',
+                infoUrl: 'https://www.flickr.com/photos/christian-bobadilla/11141327996',
                 imageUrl: 'http://newtab.parseapp.com/images/new_york/7.jpg'
             },
             {
-                infoUrl: 'https://www.flickr.com/photos/infinitea/14851298272',
+                infoUrl: 'https://www.flickr.com/photos/isherwoodchris/3096255994',
                 imageUrl: 'http://newtab.parseapp.com/images/new_york/8.jpg'
             },
             {
-                infoUrl: 'https://www.flickr.com/photos/neilsingapore/15409506510',
+                infoUrl: 'https://www.flickr.com/photos/stuckincustoms/497814516',
                 imageUrl: 'http://newtab.parseapp.com/images/new_york/9.jpg'
             },
             {
-                infoUrl: 'https://www.flickr.com/photos/linkahwai/5106906555',
+                infoUrl: 'https://www.flickr.com/photos/justininsd/8075502569',
                 imageUrl: 'http://newtab.parseapp.com/images/new_york/10.jpg'
+            },
+            {
+                infoUrl: 'https://www.flickr.com/photos/stevenpisano/14973353348',
+                imageUrl: 'http://newtab.parseapp.com/images/new_york/11.jpg'
             }
         ]
     }
