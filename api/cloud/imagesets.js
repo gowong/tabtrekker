@@ -2,16 +2,17 @@
 
 /**
  * Collection of images to be cycled through.
+ * Image sizes: at least 2000px wide, less than 7 MB
  */
 var ImageSets = [
     {
         id: 0,
-        name: 'San Francisco, USA',
-        infoUrl: 'http://www.gordonwong.com',
+        name: '',
+        infoUrl: 'http://',
         images: [
             {
-                infoUrl: 'https://interfacelift.com/wallpaper/details/3750/realm_of_light.html',
-                imageUrl: 'http://newtabdev.parseapp.com/1b3E67J.jpg'
+                infoUrl: 'http://',
+                imageUrl: 'http://newtab.parseapp.com/images/0/'
             }
         ]
     },
