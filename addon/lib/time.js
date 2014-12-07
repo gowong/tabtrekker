@@ -4,9 +4,9 @@
 const simplePrefs = require('sdk/simple-prefs');
 
 /* Modules */
-const logger = require('logger.js').NewTabLogger;
-const utils = require('utils.js').NewTabUtils;
-var newtab; //load on initialization to ensure main module is loaded
+const logger = require('logger.js').TabTrekkerLogger;
+const utils = require('utils.js').TabTrekkerUtils;
+var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */
 //messages
@@ -19,18 +19,18 @@ const SHOW_TIME_PREF = 'show_time';
 /**
  * Time module.
  */
-var NewTabTime = {
+var TabTrekkerTime = {
 
     /**
      * Initializes time by sending time options to the content scripts.
      */
     initTime: function(worker) {
-        newtab = require('main.js').NewTabMain;
+        tabtrekker = require('main.js').TabTrekkerMain;
 
         //don't initialize time when it is hidden
         var timeVisibility = simplePrefs.prefs[SHOW_TIME_PREF];
         if(timeVisibility == 'never') {
-            utils.emit(newtab.workers, worker, HIDE_TIME_MSG);
+            utils.emit(tabtrekker.workers, worker, HIDE_TIME_MSG);
             return;
         }
 
@@ -39,8 +39,8 @@ var NewTabTime = {
         var options = {}
         options[_24HOUR_PREF] = simplePrefs.prefs[_24HOUR_PREF];
         options[SHOW_TIME_PREF] = simplePrefs.prefs[SHOW_TIME_PREF];
-        utils.emit(newtab.workers, worker, TIME_MSG, options);
+        utils.emit(tabtrekker.workers, worker, TIME_MSG, options);
     }
 };
 
-exports.NewTabTime = NewTabTime;
+exports.TabTrekkerTime = TabTrekkerTime;

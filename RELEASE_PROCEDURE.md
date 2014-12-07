@@ -1,9 +1,9 @@
 #Release procedure
 
 ##Addon
-1. Set `NewTabConfig.dev` to `false`.
-2. Turn off `NewTabLogger` logging.
+1. Update version in `package.json`.
+2. Set `TabTrekkerConfig.dev` to `false`.
+3. Turn off `TabTrekkerLogger` logging.
 
 ##API
-1. Navigate to api directory.
-2. In command line, run `parse deploy NewTabProd`.
+1. In `tabtrekker/api`, run `parse deploy TabTrekkerProd`.

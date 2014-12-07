@@ -3,7 +3,7 @@
 /**
  * Utils module.
  */
-var NewTabUtils = {
+var TabTrekkerUtils = {
 
     /**
      * Receive messages from addon.

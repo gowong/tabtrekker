@@ -8,8 +8,8 @@ const Request = require('sdk/request').Request;
 const ss = require('sdk/simple-storage');
 
 /* Modules */
-const config = require('config.js').NewTabConfig;
-const logger = require('logger.js').NewTabLogger;
+const config = require('config.js').TabTrekkerConfig;
+const logger = require('logger.js').TabTrekkerLogger;
 
 /* Constants */
 //simple storage
@@ -19,7 +19,7 @@ const PARSE_GET_NEXT_IMAGE_SET_URL ='https://api.parse.com/1/functions/getNextIm
 /**
  * Parse backend module.
  */
-var NewTabParse = {
+var TabTrekkerParse = {
 
     /**
      * Returns a promise that is fulfilled with the retrieved images.
@@ -31,7 +31,7 @@ var NewTabParse = {
                 id: ss.storage[PARSE_IMAGE_SET_ID_SS]
             };
             //request image set
-            let imageSet = yield NewTabParse.request(
+            let imageSet = yield TabTrekkerParse.request(
                 PARSE_GET_NEXT_IMAGE_SET_URL, data);
             if(!imageSet || !imageSet.images || imageSet.images.length == 0) {
                 logger.error('Parse response contained no images.');
@@ -69,4 +69,4 @@ var NewTabParse = {
     }
 };
 
-exports.NewTabParse = NewTabParse;
+exports.TabTrekkerParse = TabTrekkerParse;

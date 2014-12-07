@@ -4,12 +4,12 @@
 const array = require('sdk/util/array');
 
 /* Modules */
-const logger = require('logger.js').NewTabLogger;
+const logger = require('logger.js').TabTrekkerLogger;
 
 /**
  * Utils module.
  */
-var NewTabUtils = {
+var TabTrekkerUtils = {
 
     /**
      * Add worker to collection of workers if it doesn't already contain 
@@ -42,11 +42,11 @@ var NewTabUtils = {
      * contains the worker.
      */
     emit: function(workers, worker, msg, payload) {
-        if(NewTabUtils.hasWorker(workers, worker)) {
+        if(TabTrekkerUtils.hasWorker(workers, worker)) {
             logger.log('Emit ' + msg, payload);
             worker.port.emit(msg, payload);
         }
     }
 };
 
-exports.NewTabUtils = NewTabUtils;
+exports.TabTrekkerUtils = TabTrekkerUtils;

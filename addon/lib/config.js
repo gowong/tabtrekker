@@ -3,7 +3,7 @@
 /**
  * Configurations module.
  */
-var NewTabConfig = {
+var TabTrekkerConfig = {
 
     dev: true,
 
@@ -18,14 +18,14 @@ var NewTabConfig = {
     },
 
     getParseAppId: function() {
-        return NewTabConfig.dev ? NewTabConfig.parseDev.appId
-            : NewTabConfig.parseProd.appId;
+        return TabTrekkerConfig.dev ? TabTrekkerConfig.parseDev.appId
+            : TabTrekkerConfig.parseProd.appId;
     },
 
     getParseRestApiKey: function() {
-        return NewTabConfig.dev ? NewTabConfig.parseDev.restApiKey
-            : NewTabConfig.parseProd.restApiKey;
+        return TabTrekkerConfig.dev ? TabTrekkerConfig.parseDev.restApiKey
+            : TabTrekkerConfig.parseProd.restApiKey;
     }
 };
 
-exports.NewTabConfig = NewTabConfig;
+exports.TabTrekkerConfig = TabTrekkerConfig;

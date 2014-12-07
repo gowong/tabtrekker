@@ -5,8 +5,8 @@ const self = require('sdk/self');
 const tabs = require('sdk/tabs');
 
 /* Modules */
-const logger = require('logger.js').NewTabLogger;
-const images = require('images.js').NewTabImages;
+const logger = require('logger.js').TabTrekkerLogger;
+const images = require('images.js').TabTrekkerImages;
 
 /* Constants */
 const SETTINGS_MSG = 'menu_settings';
@@ -15,21 +15,21 @@ const NEXTIMAGE_MSG = 'menu_next_image';
 /**
  * Menu module.
  */
-var NewTabMenu = {
+var TabTrekkerMenu = {
 
     /**
      * Attaches listeners to listen for button click events.
      */
     attachListeners: function(worker) {
         logger.log('Attaching menu listeners.');
-        worker.port.on(SETTINGS_MSG, NewTabMenu.openSettings);
+        worker.port.on(SETTINGS_MSG, TabTrekkerMenu.openSettings);
         worker.port.on(NEXTIMAGE_MSG, function() {
             images.displayNextImage(worker)
         });
     },
     
     /**
-     * Opens addon settings page in new tab
+     * Opens addon settings page in new tab.
      */
     openSettings: function() {
         tabs.open({
@@ -47,4 +47,4 @@ var NewTabMenu = {
     }
 };
 
-exports.NewTabMenu = NewTabMenu;
+exports.TabTrekkerMenu = TabTrekkerMenu;

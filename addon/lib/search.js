@@ -6,9 +6,9 @@ const simplePrefs = require('sdk/simple-prefs');
 const Request = require('sdk/request').Request;
 
 /* Modules */
-const logger = require('logger.js').NewTabLogger;
-const utils = require('utils.js').NewTabUtils;
-var newtab; //load on initialization to ensure main module is loaded
+const logger = require('logger.js').TabTrekkerLogger;
+const utils = require('utils.js').TabTrekkerUtils;
+var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */
 //messages
@@ -25,18 +25,18 @@ const SEARCH_SUGGESTIONS_URL = 'http://suggestqueries.google.com/complete/search
 /**
  * Search module.
  */
-var NewTabSearch = {
+var TabTrekkerSearch = {
 
     /**
      * Initializes search by sending search options to the content scripts.
      */
     initSearch: function(worker) {
-        newtab = require('main.js').NewTabMain;
+        tabtrekker = require('main.js').TabTrekkerMain;
         
         //don't initialize search when it is hidden
         var searchVisibility = simplePrefs.prefs[SHOW_SEARCH_PREF];
         if(searchVisibility == 'never') {
-            utils.emit(newtab.workers, worker, HIDE_SEARCH_MSG);
+            utils.emit(tabtrekker.workers, worker, HIDE_SEARCH_MSG);
             return;
         }
 
@@ -44,19 +44,19 @@ var NewTabSearch = {
 
         var options = {
             form: {
-                action: NewTabSearch.getFormAction(),
-                method: NewTabSearch.getFormMethod()
+                action: TabTrekkerSearch.getFormAction(),
+                method: TabTrekkerSearch.getFormMethod()
             }, input: {
-                name: NewTabSearch.getInputName(),
-                placeholder: NewTabSearch.getInputPlaceholder()
+                name: TabTrekkerSearch.getInputName(),
+                placeholder: TabTrekkerSearch.getInputPlaceholder()
             }
         };
         options[SHOW_SEARCH_PREF] = simplePrefs.prefs[SHOW_SEARCH_PREF];
-        utils.emit(newtab.workers, worker, SEARCH_MSG, options);
+        utils.emit(tabtrekker.workers, worker, SEARCH_MSG, options);
 
         //listen for search suggestion requests
         worker.port.on(SEARCH_SUGGESTIONS_REQUEST_MSG, function(input) {
-            NewTabSearch.sendSearchSuggestions(worker, input);
+            TabTrekkerSearch.sendSearchSuggestions(worker, input);
         });
     },
 
@@ -123,7 +123,7 @@ var NewTabSearch = {
      */
     sendSearchSuggestions: function(worker, input) {
         if(!input || !input.trim()) {
-            utils.emit(newtab.workers, worker, SEARCH_SUGGESTIONS_RESULT_MSG, null);
+            utils.emit(tabtrekker.workers, worker, SEARCH_SUGGESTIONS_RESULT_MSG, null);
             return;
         }
 
@@ -139,11 +139,11 @@ var NewTabSearch = {
                 }
                 var suggestions = response.json;
                 //send suggestions to content scripts
-                utils.emit(newtab.workers, worker, 
+                utils.emit(tabtrekker.workers, worker, 
                     SEARCH_SUGGESTIONS_RESULT_MSG, suggestions[1]);
             }
         }).get();
     }
 };
 
-exports.NewTabSearch = NewTabSearch;
+exports.TabTrekkerSearch = TabTrekkerSearch;

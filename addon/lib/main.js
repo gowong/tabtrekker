@@ -7,14 +7,14 @@ const simplePrefs = require('sdk/simple-prefs');
 const self = require('sdk/self');
 
 /* Modules */
-const history = require('history.js').NewTabHistory;
-const images = require('images.js').NewTabImages;
-const logger = require('logger.js').NewTabLogger;
-const menu = require('menu.js').NewTabMenu;
-const search = require('search.js').NewTabSearch;
-const time = require('time.js').NewTabTime;
-const utils = require('utils.js').NewTabUtils;
-const weather = require('weather.js').NewTabWeather;
+const history = require('history.js').TabTrekkerHistory;
+const images = require('images.js').TabTrekkerImages;
+const logger = require('logger.js').TabTrekkerLogger;
+const menu = require('menu.js').TabTrekkerMenu;
+const search = require('search.js').TabTrekkerSearch;
+const time = require('time.js').TabTrekkerTime;
+const utils = require('utils.js').TabTrekkerUtils;
+const weather = require('weather.js').TabTrekkerWeather;
 
 /* Constants */
 //preferences
@@ -23,15 +23,15 @@ const NEWTAB_ENABLED_PREF = 'newtab_enabled';
 const GLOBAL_HOME_PREF = 'browser.startup.homepage';
 const GLOBAL_NEWTAB_PREF = 'browser.newtab.url';
 //others
-const HTML_PAGE = 'newtab.html';
+const HTML_PAGE = 'tabtrekker.html';
 
 /**
  * Main module.
  */
-var NewTabMain = {
+var TabTrekkerMain = {
 
     /**
-     * Workers associated with new tab pages. 
+     * Workers associated with TabTrekker pages. 
      */
     workers: [],
 
@@ -44,7 +44,7 @@ var NewTabMain = {
             logger.log('Overriding new tab page preference.');
             globalPrefs.set(GLOBAL_NEWTAB_PREF, self.data.url(HTML_PAGE));
         } else {
-            NewTabMain.resetNewTabPage();
+            TabTrekkerMain.resetNewTabPage();
         }
     },
 
@@ -57,7 +57,7 @@ var NewTabMain = {
             logger.log('Overriding home page preference.');
             globalPrefs.set(GLOBAL_HOME_PREF, self.data.url(HTML_PAGE));
         } else {
-            NewTabMain.resetHomePage();
+            TabTrekkerMain.resetHomePage();
         }
     },
 
@@ -80,19 +80,19 @@ var NewTabMain = {
 
 //on addon load
 exports.main = function(options, callbacks) {
-    NewTabMain.setNewTabPage();
-    NewTabMain.setHomePage();
+    TabTrekkerMain.setNewTabPage();
+    TabTrekkerMain.setHomePage();
 };
 
 //on addon unload
 exports.onUnload = function(reason) {
-    NewTabMain.resetNewTabPage();
-    NewTabMain.resetHomePage();
+    TabTrekkerMain.resetNewTabPage();
+    TabTrekkerMain.resetHomePage();
 };
 
 //listen to preference changes
-simplePrefs.on(NEWTAB_ENABLED_PREF, NewTabMain.setNewTabPage);
-simplePrefs.on(HOME_ENABLED_PREF, NewTabMain.setHomePage);
+simplePrefs.on(NEWTAB_ENABLED_PREF, TabTrekkerMain.setNewTabPage);
+simplePrefs.on(HOME_ENABLED_PREF, TabTrekkerMain.setHomePage);
 
 //load content scripts
 pageMod.PageMod({
@@ -111,14 +111,14 @@ pageMod.PageMod({
                         self.data.url('js/weather.js')],
     onAttach: function(worker) {
         //immediately add worker
-        utils.addWorker(NewTabMain.workers, worker);
+        utils.addWorker(TabTrekkerMain.workers, worker);
         
         //add worker on page show
-        worker.on('pageshow', function() { utils.addWorker(NewTabMain.workers, this); });
+        worker.on('pageshow', function() { utils.addWorker(TabTrekkerMain.workers, this); });
         
         //remove workers when page is removed or hidden
-        worker.on('pagehide', function() { utils.removeWorker(NewTabMain.workers, this); });
-        worker.on('detach', function() { utils.removeWorker(NewTabMain.workers, this); });
+        worker.on('pagehide', function() { utils.removeWorker(TabTrekkerMain.workers, this); });
+        worker.on('detach', function() { utils.removeWorker(TabTrekkerMain.workers, this); });
         
         //initialize modules
         history.initHistory(worker);
@@ -130,4 +130,4 @@ pageMod.PageMod({
     }
 });
 
-exports.NewTabMain = NewTabMain;
+exports.TabTrekkerMain = TabTrekkerMain;

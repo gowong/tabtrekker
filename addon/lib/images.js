@@ -10,11 +10,11 @@ const array = require('sdk/util/array');
 const ss = require('sdk/simple-storage');
 
 /* Modules */
-const files = require('files.js').NewTabFiles;
-const logger = require('logger.js').NewTabLogger;
-const parse = require('parse.js').NewTabParse;
-const utils = require('utils.js').NewTabUtils;
-var newtab; //load on initialization to ensure main module is loaded
+const files = require('files.js').TabTrekkerFiles;
+const logger = require('logger.js').TabTrekkerLogger;
+const parse = require('parse.js').TabTrekkerParse;
+const utils = require('utils.js').TabTrekkerUtils;
+var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */
 //messages
@@ -38,7 +38,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
 /**
  * Images module.
  */
- var NewTabImages = {
+ var TabTrekkerImages = {
 
     /**
      * List of in progress downloads.
@@ -50,20 +50,20 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
      * to disk, and sending a random image to the content scripts.
      */
     initImages: function(worker) {
-        newtab = require('main.js').NewTabMain;
+        tabtrekker = require('main.js').TabTrekkerMain;
         logger.log('Initializing images.');
         return Task.spawn(function*() {
             //request new images
-            if(NewTabImages.shouldUpdate()) {
-                yield NewTabImages.getImages(worker)
+            if(TabTrekkerImages.shouldUpdate()) {
+                yield TabTrekkerImages.getImages(worker)
             }
 
             //display saved image
-            NewTabImages.displayImage(worker);
+            TabTrekkerImages.displayImage(worker);
 
             //download images if needed
-            NewTabImages.downloadImages().
-                then(NewTabImages.removeDownloadedImages);
+            TabTrekkerImages.downloadImages().
+                then(TabTrekkerImages.removeDownloadedImages);
         });
     },
 
@@ -71,10 +71,10 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
      * Choose an image and notifies content scripts to display it.
      */
     displayImage: function(worker) {
-        var image = NewTabImages.getImage();
+        var image = TabTrekkerImages.getImage();
         if(image) {
-            image.fallback = NewTabImages.getFallbackImage();
-            utils.emit(newtab.workers, worker, IMAGES_DISPLAY_MSG, image);
+            image.fallback = TabTrekkerImages.getFallbackImage();
+            utils.emit(tabtrekker.workers, worker, IMAGES_DISPLAY_MSG, image);
         } else {
             logger.error('Cannot display invalid saved image.');
         }
@@ -84,8 +84,8 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
       * Chooses and displays an image that is different from the current image.
       */
     displayNextImage: function(worker) {
-        NewTabImages.clearChosenImage();
-        NewTabImages.displayImage(worker);
+        TabTrekkerImages.clearChosenImage();
+        TabTrekkerImages.displayImage(worker);
     },
 
     /**
@@ -109,14 +109,14 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
         var lastChosen = ss.storage[IMAGES_LASTCHOSEN_SS];
         var chosenId = ss.storage[IMAGES_CHOSEN_ID_SS];
         if(lastChosen == null || chosenId == null) {
-            image = NewTabImages.chooseNewImage();
+            image = TabTrekkerImages.chooseNewImage();
         } else {
             //check when the last image was chosen
             var now = Date.now();
             var elapsed = now - lastChosen;
             //choose new image
             if(elapsed >= IMAGES_CHOOSE_INTERVAL_MILLIS) {
-                image = NewTabImages.chooseNewImage();
+                image = TabTrekkerImages.chooseNewImage();
             } 
             //get current image
             else {
@@ -188,9 +188,9 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
     getImages: function(worker) {
         logger.info('Requesting images.');
         //prevent other updates from happening during this update
-        NewTabImages.disableUpdates(IMAGES_UPDATE_WAIT_MILLIS);
+        TabTrekkerImages.disableUpdates(IMAGES_UPDATE_WAIT_MILLIS);
         //clear current chosen image
-        NewTabImages.clearChosenImage();
+        TabTrekkerImages.clearChosenImage();
         //request images
         return parse.getNextImageSet().
             then(function(imageSet) {
@@ -235,12 +235,12 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
                 let image = images[i];
 
                 //create download directory if needed
-                let target = yield NewTabImages.getOrCreateDownloadPath(
+                let target = yield TabTrekkerImages.getOrCreateDownloadPath(
                     imageSet, image, index);
                 let source = image.imageUrl;
 
                 //only download images that haven't already been downloaded
-                let shouldDownload = yield NewTabImages.shouldDownloadImage(
+                let shouldDownload = yield TabTrekkerImages.shouldDownloadImage(
                     image, target);
                 if(!shouldDownload) {
                     continue;
@@ -253,14 +253,14 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
                     then(function() {
                         logger.info('Download complete', target);
                         //remove completed download
-                        array.remove(NewTabImages.downloadTargets, target);
+                        array.remove(TabTrekkerImages.downloadTargets, target);
                         //save downloaded image file uri
-                        NewTabImages.saveImageFileUri(index, target);
+                        TabTrekkerImages.saveImageFileUri(index, target);
                     });
 
                 //keep track of downloads
                 downloadPromises.push(download);
-                NewTabImages.downloadTargets.push(target);
+                TabTrekkerImages.downloadTargets.push(target);
             }
 
             //wait for all downloads to complete
@@ -282,8 +282,8 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
     shouldDownloadImage: function(image, downloadTarget) {
         return Task.spawn(function*() {
             //iterate through in progress downloads
-            for(var i = 0; i < NewTabImages.downloadTargets.length; i++) {
-                let inProgressDownloadTarget = NewTabImages.downloadTargets[i];
+            for(var i = 0; i < TabTrekkerImages.downloadTargets.length; i++) {
+                let inProgressDownloadTarget = TabTrekkerImages.downloadTargets[i];
                 //image download is already in progress
                 if(downloadTarget == inProgressDownloadTarget) {
                     return false;
@@ -341,7 +341,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
 
         //remove all files in the images path that pass the filter
         return Task.spawn(function*() {
-            let imagesPath = yield NewTabImages.getOrCreateImagesPath();
+            let imagesPath = yield TabTrekkerImages.getOrCreateImagesPath();
             return yield files.removeInPath(imagesPath, filter);
         }).then(null, function(error) {
             logger.error('Error removing downloaded images', error);
@@ -358,4 +358,4 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
     }
  };
 
-exports.NewTabImages = NewTabImages;
+exports.TabTrekkerImages = TabTrekkerImages;

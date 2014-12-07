@@ -1,3 +1,3 @@
-#newtab
+#TabTrekker
 
 Firefox new tab extension

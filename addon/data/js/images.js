@@ -7,7 +7,7 @@ const IMAGES_DISPLAY_MSG = 'images_display';
 /**
  * Images module.
  */
-var NewTabImages = {
+var TabTrekkerImages = {
 
     /**
      * Displays the image.
@@ -24,14 +24,14 @@ var NewTabImages = {
             $('#image_set_info').attr('href', image.imageSetInfoUrl);
             $('#image_download').attr('href', image.infoUrl);
         } else {
-            NewTabImages.displayFallbackImage(image);
+            TabTrekkerImages.displayFallbackImage(image);
         }
 
         //detect errors when loading image, jquery docs say errors when loading
         //local images (file://image.png) won't be detected, but it seems to be
         //working in firefox
         $('<img>').error(function() {
-            NewTabImages.displayFallbackImage(image);
+            TabTrekkerImages.displayFallbackImage(image);
             $(this).remove();
         }).attr('src', imageSrc).each(function() {
             //fail-safe for cached images which sometimes don't trigger load events
@@ -55,4 +55,4 @@ var NewTabImages = {
 };
 
 //listen for messages
-self.port.on(IMAGES_DISPLAY_MSG, NewTabUtils.receiveMessage(NewTabImages.displayImage));
+self.port.on(IMAGES_DISPLAY_MSG, TabTrekkerUtils.receiveMessage(TabTrekkerImages.displayImage));

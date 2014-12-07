@@ -12,7 +12,7 @@ var ImageSets = [
         images: [
             {
                 infoUrl: 'http://',
-                imageUrl: 'http://newtab.parseapp.com/images/0/'
+                imageUrl: 'http://tabtrekker.parseapp.com/images/0/'
             }
         ]
     },

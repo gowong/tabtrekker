@@ -7,15 +7,15 @@ Cu.import('resource://gre/modules/Promise.jsm');
 Cu.import('resource://gre/modules/Task.jsm');
 
 /* Modules */
-const logger = require('logger.js').NewTabLogger;
+const logger = require('logger.js').TabTrekkerLogger;
 
 /* Constants */
-const FILES_PROFILE_NEWTAB_DIR = 'newtab';
+const FILES_PROFILE_TABTREKKER_DIR = 'tabtrekker';
 
 /**
  * Files modules.
  */
-var NewTabFiles = {
+var TabTrekkerFiles = {
 
     /**
      * Returns a promise that is fulfilled with the specified path.
@@ -38,8 +38,8 @@ var NewTabFiles = {
      * user's profile directory. Creates the path if it doesn't already exist.
      */
     getOrCreatePathInProfile: function(path) {
-        path = OS.Path.join(NewTabFiles.getProfilePath(), path);
-        return NewTabFiles.getOrCreatePath(path, OS.Constants.Path.profileDir);
+        path = OS.Path.join(TabTrekkerFiles.getProfilePath(), path);
+        return TabTrekkerFiles.getOrCreatePath(path, OS.Constants.Path.profileDir);
     },
 
     /**
@@ -48,7 +48,7 @@ var NewTabFiles = {
      */
     getProfilePath: function() {
         return OS.Path.join(OS.Constants.Path.profileDir,
-            FILES_PROFILE_NEWTAB_DIR);
+            FILES_PROFILE_TABTREKKER_DIR);
     },
 
     /**
@@ -109,4 +109,4 @@ var NewTabFiles = {
     }
 };
 
-exports.NewTabFiles = NewTabFiles;
+exports.TabTrekkerFiles = TabTrekkerFiles;

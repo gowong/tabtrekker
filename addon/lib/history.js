@@ -5,9 +5,9 @@ const {Cc, Ci} = require('chrome');
 const Request = require('sdk/request').Request;
 
 /* Modules */
-const logger = require('logger.js').NewTabLogger;
-const utils = require('utils.js').NewTabUtils;
-var newtab; //load on initialization to ensure main module is loaded
+const logger = require('logger.js').TabTrekkerLogger;
+const utils = require('utils.js').TabTrekkerUtils;
+var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */
 //messages
@@ -19,19 +19,19 @@ const MAX_MOST_VISITED = 9;
 /**
  * History module.
  */
-var NewTabHistory = {
+var TabTrekkerHistory = {
 
     /**
      * Initializes history by sending history results to the content scripts.
      */
     initHistory: function(worker) {
-        newtab = require('main.js').NewTabMain;
+        tabtrekker = require('main.js').TabTrekkerMain;
         
         logger.log('Initializing history.');
 
-        var mostVisited = NewTabHistory.getMostVisited(MAX_MOST_VISITED);
-        utils.emit(newtab.workers, worker, HISTORY_MSG, mostVisited);
-        NewTabHistory.setLargeIcons(worker, mostVisited);
+        var mostVisited = TabTrekkerHistory.getMostVisited(MAX_MOST_VISITED);
+        utils.emit(tabtrekker.workers, worker, HISTORY_MSG, mostVisited);
+        TabTrekkerHistory.setLargeIcons(worker, mostVisited);
     },
 
     /**
@@ -83,9 +83,9 @@ var NewTabHistory = {
                         return;
                     }
                     //parse response to find a large icon
-                    var icon = NewTabHistory.getLargeIcon(response);
+                    var icon = TabTrekkerHistory.getLargeIcon(response);
                     //notify content scripts to update icon
-                    utils.emit(newtab.workers, worker, HISTORY_UPDATE_ICON_MSG, {
+                    utils.emit(tabtrekker.workers, worker, HISTORY_UPDATE_ICON_MSG, {
                         url: url,
                         icon: icon
                     }); 
@@ -176,4 +176,4 @@ var NewTabHistory = {
     }
 };
 
-exports.NewTabHistory = NewTabHistory;
+exports.TabTrekkerHistory = TabTrekkerHistory;

@@ -15,7 +15,7 @@ const WEATHER_RESULTS_URL = 'https://www.google.com/search?q=weather';
 /**
  * Weather module.
  */
-var NewTabWeather = {
+var TabTrekkerWeather = {
 
     /**
      * Displays weather information on the page.
@@ -25,7 +25,7 @@ var NewTabWeather = {
             return;
         }
         //set weather results link
-        NewTabWeather.setWeatherResultsLink(data.location);
+        TabTrekkerWeather.setWeatherResultsLink(data.location);
         //temperature (show as int)
         var temperature = parseInt(data.temperature) || data.temperature;
         $('#weather_temperature').html(temperature);
@@ -36,8 +36,8 @@ var NewTabWeather = {
         //location
         $('#weather_location').html(data.location.toUpperCase());
         //hide loading spinner when weather has been updated
-        NewTabWeather.hideLoadingSpinner();
-        NewTabWeather.setWeatherVisbility(data[SHOW_WEATHER_PREF]);
+        TabTrekkerWeather.hideLoadingSpinner();
+        TabTrekkerWeather.setWeatherVisbility(data[SHOW_WEATHER_PREF]);
     },
 
     /**
@@ -107,7 +107,7 @@ var NewTabWeather = {
                 $('#weather_container').css('display', 'block');
                 break;
             case 'never':
-                NewTabWeather.hideWeather();
+                TabTrekkerWeather.hideWeather();
                 break;
         }
     },
@@ -117,12 +117,12 @@ var NewTabWeather = {
      */
     hideWeather: function() {
         $('#weather_container').css('display', 'none');
-        NewTabWeather.hideLoadingSpinner();
+        TabTrekkerWeather.hideLoadingSpinner();
     }
 };
 
 //listen for messages
-self.port.on(HIDE_WEATHER_MSG, NewTabUtils.receiveMessage(NewTabWeather.hideWeather));
-self.port.on(WEATHER_MSG, NewTabUtils.receiveMessage(NewTabWeather.displayWeather));
-self.port.on(WEATHER_GEOLOCATION_REQUEST_MSG, NewTabUtils.receiveMessage(NewTabWeather.getGeolocation));
-self.port.on(WEATHER_SHOW_LOADING_MSG, NewTabUtils.receiveMessage(NewTabWeather.showLoadingSpinner));
+self.port.on(HIDE_WEATHER_MSG, TabTrekkerUtils.receiveMessage(TabTrekkerWeather.hideWeather));
+self.port.on(WEATHER_MSG, TabTrekkerUtils.receiveMessage(TabTrekkerWeather.displayWeather));
+self.port.on(WEATHER_GEOLOCATION_REQUEST_MSG, TabTrekkerUtils.receiveMessage(TabTrekkerWeather.getGeolocation));
+self.port.on(WEATHER_SHOW_LOADING_MSG, TabTrekkerUtils.receiveMessage(TabTrekkerWeather.showLoadingSpinner));

@@ -14,7 +14,7 @@ const SEARCH_SUGGESTIONS_INTERVAL = 300;
 /**
  * Search module.
  */
-var NewTabSearch = {
+var TabTrekkerSearch = {
 
     googleSearchSuggestions: null,
 
@@ -30,11 +30,11 @@ var NewTabSearch = {
         $('#search_input').attr('name', data.input.name);
         $('#search_input').attr('placeholder', data.input.placeholder);
 
-        NewTabSearch.initTypeahead();
-        NewTabSearch.setSearchVisibility(data[SHOW_SEARCH_PREF]);
-        NewTabSearch.setInputHoverHandler();
-        NewTabSearch.setInputFocusHandler();
-        NewTabSearch.setInputChangeHandler();
+        TabTrekkerSearch.initTypeahead();
+        TabTrekkerSearch.setSearchVisibility(data[SHOW_SEARCH_PREF]);
+        TabTrekkerSearch.setInputHoverHandler();
+        TabTrekkerSearch.setInputFocusHandler();
+        TabTrekkerSearch.setInputChangeHandler();
     },
 
     /**
@@ -42,12 +42,12 @@ var NewTabSearch = {
      */
     initTypeahead: function() {
         //bloodhound suggestion engine
-        NewTabSearch.googleSearchSuggestions = new Bloodhound({
+        TabTrekkerSearch.googleSearchSuggestions = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             local: []
         });
-        NewTabSearch.googleSearchSuggestions.initialize();
+        TabTrekkerSearch.googleSearchSuggestions.initialize();
 
         //initialize typeahead input
         var options = {
@@ -57,7 +57,7 @@ var NewTabSearch = {
         };
         $('#search_input').typeahead(options, {
             displayKey: 'value',
-            source: NewTabSearch.googleSearchSuggestions.ttAdapter()
+            source: TabTrekkerSearch.googleSearchSuggestions.ttAdapter()
         });
     },
 
@@ -66,7 +66,7 @@ var NewTabSearch = {
      */
     addSearchSuggestions: function(suggestions) {
         //clear index
-        NewTabSearch.googleSearchSuggestions.clear();
+        TabTrekkerSearch.googleSearchSuggestions.clear();
         if(!suggestions || suggestions.length == 0) {
             return;
         }
@@ -77,7 +77,7 @@ var NewTabSearch = {
                 value: suggestion
             };
         });
-        NewTabSearch.googleSearchSuggestions.add(suggestions);
+        TabTrekkerSearch.googleSearchSuggestions.add(suggestions);
 
         //force dropdown to open
         var val = $('#search_input').typeahead('val');
@@ -98,7 +98,7 @@ var NewTabSearch = {
                 $('#search_container').css('display', 'block');
                 break;
             case 'never':
-                NewTabSearch.hideSearch();
+                TabTrekkerSearch.hideSearch();
                 break;
         }
     },
@@ -148,7 +148,7 @@ var NewTabSearch = {
 
             //set timer
             var wait = setTimeout(function() {
-                NewTabSearch.requestSearchSuggestions(input);
+                TabTrekkerSearch.requestSearchSuggestions(input);
             }, SEARCH_SUGGESTIONS_INTERVAL);
 
             //attach timer to input element
@@ -165,6 +165,6 @@ var NewTabSearch = {
 };
 
 //listen for messages
-self.port.on(HIDE_SEARCH_MSG, NewTabUtils.receiveMessage(NewTabSearch.hideSearch));
-self.port.on(SEARCH_MSG, NewTabUtils.receiveMessage(NewTabSearch.initSearch));
-self.port.on(SEARCH_SUGGESTIONS_RESULT_MSG, NewTabUtils.receiveMessage(NewTabSearch.addSearchSuggestions));
+self.port.on(HIDE_SEARCH_MSG, TabTrekkerUtils.receiveMessage(TabTrekkerSearch.hideSearch));
+self.port.on(SEARCH_MSG, TabTrekkerUtils.receiveMessage(TabTrekkerSearch.initSearch));
+self.port.on(SEARCH_SUGGESTIONS_RESULT_MSG, TabTrekkerUtils.receiveMessage(TabTrekkerSearch.addSearchSuggestions));

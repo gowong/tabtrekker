@@ -1,12 +1,12 @@
 {
-    "name": "newtab",
+    "name": "tabtrekker",
     "id": "jid1-AahxeYITR16k5Q",
     "license": "MPL 2.0",
     "version": "0.1",
-    "title": "New Tab",
+    "title": "TabTrekker",
     "description": "",
     "author": "Gordon Wong",
-    "homepage": "www.gordonwong.com",
+    "homepage": "www.gordonwong.com/tabtrekker",
     "permissions": {
         "private-browsing": true
     },

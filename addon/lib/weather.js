@@ -9,9 +9,9 @@ const simplePrefs = require('sdk/simple-prefs');
 const ss = require('sdk/simple-storage');
 
 /* Modules */
-const logger = require('logger.js').NewTabLogger;
-const utils = require('utils.js').NewTabUtils;
-var newtab; //load on initialization to ensure main module is loaded
+const logger = require('logger.js').TabTrekkerLogger;
+const utils = require('utils.js').TabTrekkerUtils;
+var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */
 //messages
@@ -42,19 +42,19 @@ const WEATHER_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
 /**
  * Weather module.
  */
-var NewTabWeather = {
+var TabTrekkerWeather = {
 
     /**
      * Initializes weather by either retrieving a cached weather result or retrieving
      * the latest weather result and sending the result to the content scripts.
      */
     initWeather: function(worker) {
-        newtab = require('main.js').NewTabMain;
+        tabtrekker = require('main.js').TabTrekkerMain;
 
         //don't initialize weather if it is hidden
         var weatherVisibility = simplePrefs.prefs[SHOW_WEATHER_PREF];
         if(weatherVisibility == 'never') {
-            utils.emit(newtab.workers, worker, HIDE_WEATHER_MSG);
+            utils.emit(tabtrekker.workers, worker, HIDE_WEATHER_MSG);
             return;
         }
 
@@ -72,23 +72,23 @@ var NewTabWeather = {
         if(data.conditionsIcon && data.location && data.temperature
             && data.temperatureUnits) {
             logger.log('Displaying cached weather result.');
-            NewTabWeather.displayWeather(data);
+            TabTrekkerWeather.displayWeather(data);
         }
 
         //request weather update if cached result is stale
-        if(NewTabWeather.shouldUpdate()) {
+        if(TabTrekkerWeather.shouldUpdate()) {
 
             //prevent other updates from happening during this update
-            NewTabWeather.disableUpdates(WEATHER_UPDATE_WAIT_MILLIS);
+            TabTrekkerWeather.disableUpdates(WEATHER_UPDATE_WAIT_MILLIS);
 
             //indicate that the weather is being updated
-            NewTabWeather.showLoadingSpinner(worker);
+            TabTrekkerWeather.showLoadingSpinner(worker);
 
             //get user's location, update weather, and display weather
-            NewTabWeather.getLocation(worker).
-                then(NewTabWeather.getWeather).
-                then(NewTabWeather.displayWeather).
-                then(null, NewTabWeather.displayEmptyWeather);
+            TabTrekkerWeather.getLocation(worker).
+                then(TabTrekkerWeather.getWeather).
+                then(TabTrekkerWeather.displayWeather).
+                then(null, TabTrekkerWeather.displayEmptyWeather);
         }
     },
 
@@ -130,7 +130,7 @@ var NewTabWeather = {
      * is being updated.
      */
     showLoadingSpinner: function(worker) {
-        utils.emit(newtab.workers, worker, WEATHER_SHOW_LOADING_MSG);
+        utils.emit(tabtrekker.workers, worker, WEATHER_SHOW_LOADING_MSG);
     },
 
     /**
@@ -153,7 +153,7 @@ var NewTabWeather = {
             }
             
             //request geolocation from content scripts
-            utils.emit(newtab.workers, worker, WEATHER_GEOLOCATION_REQUEST_MSG);
+            utils.emit(tabtrekker.workers, worker, WEATHER_GEOLOCATION_REQUEST_MSG);
             worker.port.on(WEATHER_GEOLOCATION_RESULT_MSG, function(coords) {
 
                 //geolocation failed
@@ -246,14 +246,14 @@ var NewTabWeather = {
                     }
                     var json = response.json;
                     var weather = {
-                        conditionsIcon: NewTabWeather.getConditionsIcon(json.weather),
+                        conditionsIcon: TabTrekkerWeather.getConditionsIcon(json.weather),
                         location: json.name,
                         temperature: json.main ? json.main.temp : null,
                         temperatureUnits: temperatureUnits,
                         worker: position.worker
                     };
                     //cache result and resolve promise
-                    NewTabWeather.cacheWeatherResult(weather);
+                    TabTrekkerWeather.cacheWeatherResult(weather);
                     resolve(weather);
                 }
             }).get();
@@ -287,7 +287,7 @@ var NewTabWeather = {
         //allow temperature values of 0 by only checking for null or undefined
         if(!weather.conditionsIcon || !weather.location
             || weather.temperature == null || !weather.temperatureUnits) {
-            NewTabWeather.displayEmptyWeather({
+            TabTrekkerWeather.displayEmptyWeather({
                 error: new Error('Cannot display invalid weather result.'),
                 worker: weather.worker
             });
@@ -296,10 +296,10 @@ var NewTabWeather = {
 
         logger.log('Displaying weather result.');
 
-        weather.temperatureUnits = NewTabWeather.getTemperatureUnitsStr(
+        weather.temperatureUnits = TabTrekkerWeather.getTemperatureUnitsStr(
             weather.temperatureUnits);
         weather[SHOW_WEATHER_PREF] = simplePrefs.prefs[SHOW_WEATHER_PREF];
-        utils.emit(newtab.workers, weather.worker, WEATHER_MSG, weather);
+        utils.emit(tabtrekker.workers, weather.worker, WEATHER_MSG, weather);
     },
 
     /**
@@ -311,13 +311,13 @@ var NewTabWeather = {
         logger.error('Displaying empty weather result because "' + data.error.message + '"');
 
         var options = {
-            conditionsIcon: NewTabWeather.getConditionsIcon(null),
+            conditionsIcon: TabTrekkerWeather.getConditionsIcon(null),
             location: simplePrefs.prefs[LOCATION_PREF] || '',
             temperature: '--',
             temperatureUnits: null
         };
         options[SHOW_WEATHER_PREF] = simplePrefs.prefs[SHOW_WEATHER_PREF];
-        utils.emit(newtab.workers, data.worker, WEATHER_MSG, options);
+        utils.emit(tabtrekker.workers, data.worker, WEATHER_MSG, options);
     },
 
     /**
@@ -414,7 +414,7 @@ var NewTabWeather = {
 };
 
 //listen to preference changes
-simplePrefs.on(LOCATION_PREF, NewTabWeather.clearCachedWeatherResult);
-simplePrefs.on(TEMPERATURE_UNITS_PREF, NewTabWeather.clearCachedWeatherResult);
+simplePrefs.on(LOCATION_PREF, TabTrekkerWeather.clearCachedWeatherResult);
+simplePrefs.on(TEMPERATURE_UNITS_PREF, TabTrekkerWeather.clearCachedWeatherResult);
 
-exports.NewTabWeather = NewTabWeather;
+exports.TabTrekkerWeather = TabTrekkerWeather;
