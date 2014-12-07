@@ -1,3 +1,3 @@
 #TabTrekker
 
-Firefox new tab extension
+Explore the world one tab at a time with this Firefox addon.
