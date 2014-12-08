@@ -179,7 +179,8 @@ var TabTrekkerWeather = {
                 requestUrl += '&q=' + position.address.city + region;
             }
             //use coordinates
-            else if(position.coords && position.coords.latitude && position.coords.longitude) {
+            else if(position.coords && position.coords.latitude != null
+                && position.coords.longitude != null) {
                 requestUrl += '&lat=' + position.coords.latitude + '&lon=' + position.coords.longitude;
             } 
             //no location provided
