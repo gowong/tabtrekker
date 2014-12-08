@@ -35,7 +35,7 @@ const OPENWEATHERMAP_APPID = '19c860e2c76bbe9e5f747af2250f751c';
 const OPENWEATHERMAP_URL = 'http://api.openweathermap.org/data/2.5/weather?APPID=';
 const OPENWEATHERMAP_REQUEST_URL = OPENWEATHERMAP_URL + OPENWEATHERMAP_APPID;
 const WEATHER_UPDATE_INTERVAL_MILLIS = 10 * 60 * 1000; //10 minutes
-const WEATHER_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
+const WEATHER_UPDATE_WAIT_MILLIS = 20 * 1000; //20 seconds
 
 /**
  * Weather module.

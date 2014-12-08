@@ -33,7 +33,7 @@ const IMAGES_FALLBACKS = ['images/0.jpg', 'images/1.jpg', 'images/2.jpg',
                           'images/6.jpg', 'images/7.jpg', 'images/8.jpg', 
                           'images/9.jpg', 'images/10.jpg'];
 const IMAGES_UPDATE_INTERVAL_MILLIS = 24 * 60 * 60 * 1000; //24 hours
-const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
+const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
 
 /**
  * Images module.
