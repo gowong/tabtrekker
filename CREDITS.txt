@@ -1,7 +1,5 @@
 Inspired by the Dream Afar New Tab extension for Google Chrome (https://chrome.google.com/webstore/detail/dream-afar-new-tab/)
 
-GeoNames - geocoding (http://www.geonames.org/)
-
 Meteocons - weather icons (http://www.alessioatzeni.com/meteocons/)
 
 OpenWeatherMap - weather info (http://openweathermap.org/)

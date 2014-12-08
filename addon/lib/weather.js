@@ -31,8 +31,6 @@ const WEATHER_LOCATION_NAME_SS = 'weather_location_name';
 const WEATHER_TEMPERATURE_SS = 'weather_temperature';
 const WEATHER_TEMPERATURE_UNITS_SS = 'weather_temperature_units';
 //others
-const GEONAMES_URL = 'http://api.geonames.org/neighbourhoodJSON?lat=';
-const GEONAMES_USERNAME = 'kyosho';
 const OPENWEATHERMAP_APPID = '19c860e2c76bbe9e5f747af2250f751c';
 const OPENWEATHERMAP_URL = 'http://api.openweathermap.org/data/2.5/weather?APPID=';
 const OPENWEATHERMAP_REQUEST_URL = OPENWEATHERMAP_URL + OPENWEATHERMAP_APPID;
@@ -142,7 +140,7 @@ var TabTrekkerWeather = {
             //user-defined location
             var userLocation = simplePrefs.prefs[LOCATION_PREF];
             if(userLocation) {
-                logger.info('Retrieved user-defined location.');
+                logger.log('Retrieved user-defined location.');
                 resolve({
                     address: {
                         city: userLocation
@@ -157,7 +155,8 @@ var TabTrekkerWeather = {
             worker.port.on(WEATHER_GEOLOCATION_RESULT_MSG, function(coords) {
 
                 //geolocation failed
-                if(coords == null || coords.latitude == null || coords.longitude == null) {
+                if(coords == null || coords.latitude == null
+                    || coords.longitude == null) {
                     reject({
                         error: new Error('Geolocation failed.'),
                         worker: worker
@@ -165,39 +164,11 @@ var TabTrekkerWeather = {
                     return;
                 }
 
-                //copy coordinates
-                var position = {
+                logger.log('Retrieved geolocation.');
+                resolve({
                     coords: coords,
                     worker: worker
-                };
-
-                logger.info('Requesting address from geocoder.');
-
-                //request city name using reverse geocoding service from GeoNames
-                const requestUrl = GEONAMES_URL
-                    + coords.latitude + '&lng=' + coords.longitude 
-                    + '&username=' + GEONAMES_USERNAME;
-                Request({
-                    url: requestUrl,
-                    onComplete: function(response) {
-                        if(response.status == 200) {
-                            var neighbourhood = response.json.neighbourhood;
-                            //copy city and country
-                            if(neighbourhood && neighbourhood.city 
-                                && neighbourhood.countryCode) {
-                                position.address = {
-                                    city: neighbourhood.city,
-                                    region: neighbourhood.countryCode
-                                };
-                            } else {
-                                logger.warn('Geocoder request failed.');
-                            }
-                        } else {
-                            logger.warn('Geocoder request failed.');
-                        }
-                        resolve(position);
-                    }
-                }).get();
+                });
             });
         });
     },
