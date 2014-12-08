@@ -34,7 +34,7 @@ var TabTrekkerParse = {
             let imageSet = yield TabTrekkerParse.request(
                 PARSE_GET_NEXT_IMAGE_SET_URL, data);
             if(!imageSet || !imageSet.images || imageSet.images.length === 0) {
-                logger.error('Parse response contained no images.');
+                logger.error('Parse response contained no images.', imageSet);
                 throw new Error('Parse response contained no images.');
             }
             //store image set id
@@ -48,6 +48,7 @@ var TabTrekkerParse = {
      */
     request: function(url, dataObj) {
         return new Promise(function(resolve, reject) {
+            logger.info('Request to Parse ' + url, dataObj);
             Request({
                 url: url,
                 headers: {

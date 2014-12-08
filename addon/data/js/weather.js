@@ -27,7 +27,7 @@ var TabTrekkerWeather = {
         //set weather results link
         TabTrekkerWeather.setWeatherResultsLink(data.location);
         //temperature (show as int)
-        var temperature = parseInt(data.temperature) || data.temperature;
+        var temperature = parseInt(data.temperature, 10) || data.temperature;
         $('#weather_temperature').html(temperature);
         //temperature units
         $('#weather_temperature_units').html(data.temperatureUnits);

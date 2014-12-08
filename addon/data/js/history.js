@@ -28,11 +28,12 @@ var TabTrekkerHistory = {
         var title = result.title || url;
         //small favicon url
         var iconUrl = result.iconUri ? 
-            result.iconUri.substring('moz-anno:favicon:'.length) : '';
-        //either the small favicon (if there is one) or a generic link icon
-        var objectFallback = iconUrl ? $('<span>').css('background-image', 'url(' + iconUrl + ')'): 
+            result.iconUri.substring('moz-anno:favicon:'.length) : null;
+        //show either the small favicon (if there is one) or a generic page icon
+        var objectFallback = iconUrl ? 
+            $('<span>').css('background-image', 'url(' + iconUrl + ')') :
             $('<span>').attr('class', 'glyphicon glyphicon-file');
-
+        //append the result
         $('#history_list').append(
             $('<li>').append(
                 $('<a>').attr('href', url).append(
@@ -79,7 +80,7 @@ var TabTrekkerHistory = {
         if(iconUrl) {
             //resolve relative links (URL.js has a bug where it incorrectly
             //resolves URLs when both are absolute URLs)
-            iconUrl = iconUrl.substring(0, 4) == 'http' ? iconUrl :
+            iconUrl = iconUrl.substring(0, 4) === 'http' ? iconUrl :
                 URL.resolve(baseUrl, iconUrl);
         }
         return iconUrl;

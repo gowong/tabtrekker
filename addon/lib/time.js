@@ -29,7 +29,7 @@ var TabTrekkerTime = {
 
         //don't initialize time when it is hidden
         var timeVisibility = simplePrefs.prefs[SHOW_TIME_PREF];
-        if(timeVisibility == 'never') {
+        if(timeVisibility === 'never') {
             utils.emit(tabtrekker.workers, worker, HIDE_TIME_MSG);
             return;
         }

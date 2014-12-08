@@ -137,7 +137,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
     chooseNewImage: function() {
         logger.info('Choosing new image.');
         var imageSet = ss.storage[IMAGES_IMAGE_SET_SS];
-        if(!imageSet || !imageSet.images) {
+        if(!imageSet || !imageSet.images || imageSet.images.length === 0) {
             return null;
         }
 
@@ -168,7 +168,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
      * Returns whether new images should be requested.
      */
     shouldUpdate: function() {
-        //no images exist
+        //images have never been updated
         var lastUpdated = ss.storage[IMAGES_LASTUPDATED_SS];
         if(lastUpdated == null) {
             return true;
@@ -221,14 +221,14 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
     downloadImages: function() {
         return Task.spawn(function*() {
             let imageSet = ss.storage[IMAGES_IMAGE_SET_SS];
-            if(!imageSet || !imageSet.images) {
+            if(!imageSet || !imageSet.images || imageSet.images.length === 0) {
                 logger.warn('No images to download.');
                 throw new Error('No images to download.');
             }
-            logger.log('Downloading images.');
-
             let images = imageSet.images;
             let downloadPromises = [];
+
+            logger.log('Downloading images.');
 
             for(var i = 0; i < images.length; i++) {
                 let index = i; //use current iteration in inner functions
@@ -285,7 +285,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 10 * 1000; //10 seconds
             for(var i = 0; i < TabTrekkerImages.downloadTargets.length; i++) {
                 let inProgressDownloadTarget = TabTrekkerImages.downloadTargets[i];
                 //image download is already in progress
-                if(downloadTarget == inProgressDownloadTarget) {
+                if(downloadTarget === inProgressDownloadTarget) {
                     return false;
                 }
             }

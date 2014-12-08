@@ -51,7 +51,7 @@ var TabTrekkerWeather = {
 
         //don't initialize weather if it is hidden
         var weatherVisibility = simplePrefs.prefs[SHOW_WEATHER_PREF];
-        if(weatherVisibility == 'never') {
+        if(weatherVisibility === 'never') {
             utils.emit(tabtrekker.workers, worker, HIDE_WEATHER_MSG);
             return;
         }
@@ -195,7 +195,9 @@ var TabTrekkerWeather = {
             requestUrl += '&units=' + (temperatureUnits == 'C' ? 'metric' : 'imperial');
             //user's selected language
             var language = utils.getUserLanguage();
-            requestUrl += '&lang=' + language;
+            if(language) {
+                requestUrl += '&lang=' + language;
+            }
 
             logger.info('Requesting weather.', requestUrl);
 
@@ -420,7 +422,7 @@ var TabTrekkerWeather = {
      * Returns temperature units string that can be displayed on the page.
      */
     getTemperatureUnitsStr: function(temperatureUnitsPref) {
-        return temperatureUnitsPref == 'C' ? _('temperature_units_options.°C') : 
+        return temperatureUnitsPref === 'C' ? _('temperature_units_options.°C') : 
             _('temperature_units_options.°F');
     }
 };

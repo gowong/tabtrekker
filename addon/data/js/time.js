@@ -49,10 +49,10 @@ var TabTrekkerTime = {
             var formattedTime = now.format('LT');
             //english 12-hour format
             var ampmIndex = Math.max(formattedTime.indexOf('AM'), formattedTime.indexOf('PM'));
-            if(ampmIndex > -1) {
+            if(ampmIndex !== -1) {
                 $('#time').html(formattedTime.substring(0, ampmIndex));
                 $('#time_ampm').html(formattedTime.substring(ampmIndex, formattedTime.length));
-            } 
+            }
             //other locales or formats
             else {
                 $('#time').html(formattedTime);

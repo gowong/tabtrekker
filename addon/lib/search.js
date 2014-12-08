@@ -35,7 +35,7 @@ var TabTrekkerSearch = {
         
         //don't initialize search when it is hidden
         var searchVisibility = simplePrefs.prefs[SHOW_SEARCH_PREF];
-        if(searchVisibility == 'never') {
+        if(searchVisibility === 'never') {
             utils.emit(tabtrekker.workers, worker, HIDE_SEARCH_MSG);
             return;
         }
