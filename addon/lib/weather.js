@@ -31,6 +31,8 @@ const WEATHER_LOCATION_NAME_SS = 'weather_location_name';
 const WEATHER_TEMPERATURE_SS = 'weather_temperature';
 const WEATHER_TEMPERATURE_UNITS_SS = 'weather_temperature_units';
 //others
+const GEONAMES_URL = 'http://api.geonames.org/neighbourhoodJSON?lat=';
+const GEONAMES_USERNAME = 'kyosho';
 const OPENWEATHERMAP_APPID = '19c860e2c76bbe9e5f747af2250f751c';
 const OPENWEATHERMAP_URL = 'http://api.openweathermap.org/data/2.5/weather?APPID=';
 const OPENWEATHERMAP_REQUEST_URL = OPENWEATHERMAP_URL + OPENWEATHERMAP_APPID;
@@ -156,11 +158,39 @@ var TabTrekkerWeather = {
                     return;
                 }
 
-                logger.log('Retrieved geolocation.', coords);
-                resolve({
+                //copy coordinates
+                var position = {
                     coords: coords,
                     worker: worker
-                });
+                };
+
+                logger.info('Requesting address from geocoder.');
+
+                //request city name using reverse geocoding service from GeoNames
+                const requestUrl = GEONAMES_URL
+                    + coords.latitude + '&lng=' + coords.longitude 
+                    + '&username=' + GEONAMES_USERNAME;
+                Request({
+                    url: requestUrl,
+                    onComplete: function(response) {
+                        if(response.status == 200) {
+                            var neighbourhood = response.json.neighbourhood;
+                            //copy city and country
+                            if(neighbourhood && neighbourhood.city 
+                                && neighbourhood.countryCode) {
+                                position.address = {
+                                    city: neighbourhood.city,
+                                    region: neighbourhood.countryCode
+                                };
+                            } else {
+                                logger.warn('Geocoder request failed.');
+                            }
+                        } else {
+                            logger.warn('Geocoder request failed.');
+                        }
+                        resolve(position);
+                    }
+                }).get();
             });
         });
     },
