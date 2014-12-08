@@ -58,19 +58,11 @@ var TabTrekkerWeather = {
 
         logger.log('Initializing weather.');
 
-        var data = {
-            conditions: ss.storage[WEATHER_CONDITIONS_SS],
-            location: ss.storage[WEATHER_LOCATION_NAME_SS],
-            temperature: ss.storage[WEATHER_TEMPERATURE_SS],
-            temperatureUnits: ss.storage[WEATHER_TEMPERATURE_UNITS_SS],
-            worker: worker
-        };
-        
-        //immediately send cached weather result to content scripts
-        if(data.conditions && data.conditions.description && data.conditions.icon && data.location && data.temperature
-            && data.temperatureUnits) {
+        //immediately display cached weather result
+        var weather = TabTrekkerWeather.getCachedWeatherResult(worker);
+        if(TabTrekkerWeather.isValidWeatherResult(weather)) {
             logger.log('Displaying cached weather result.');
-            TabTrekkerWeather.displayWeather(data);
+            TabTrekkerWeather.displayWeather(weather);
         }
 
         //request weather update if cached result is stale
@@ -164,7 +156,7 @@ var TabTrekkerWeather = {
                     return;
                 }
 
-                logger.log('Retrieved geolocation.');
+                logger.log('Retrieved geolocation.', coords);
                 resolve({
                     coords: coords,
                     worker: worker
@@ -215,14 +207,8 @@ var TabTrekkerWeather = {
                         });
                         return;
                     }
-                    var json = response.json;
-                    var weather = {
-                        conditions: TabTrekkerWeather.getConditions(json.weather),
-                        location: json.name,
-                        temperature: json.main ? json.main.temp : null,
-                        temperatureUnits: temperatureUnits,
-                        worker: position.worker
-                    };
+                    var weather = TabTrekkerWeather.getWeatherResult(
+                        response.json, temperatureUnits, position.worker);
                     //cache result and resolve promise
                     TabTrekkerWeather.cacheWeatherResult(weather);
                     resolve(weather);
@@ -235,9 +221,7 @@ var TabTrekkerWeather = {
      * Caches weather result in simple storage.
      */
     cacheWeatherResult: function(weather) {
-        //allow temperature values of 0 by only checking for null or undefined
-        if(!weather.conditions || !weather.conditions.icon || !weather.conditions.description || !weather.location
-            || weather.temperature == null || !weather.temperatureUnits) {
+        if(!TabTrekkerWeather.isValidWeatherResult(weather)) {
             logger.warn('Cannot cache invalid weather result.')
             return;
         }
@@ -255,9 +239,7 @@ var TabTrekkerWeather = {
       * Displays weather by sending weather result to content scripts.
       */
     displayWeather: function(weather) {
-        //allow temperature values of 0 by only checking for null or undefined
-        if(!weather.conditions || !weather.conditions.icon || !weather.conditions.description || !weather.location
-            || weather.temperature == null || !weather.temperatureUnits) {
+        if(!TabTrekkerWeather.isValidWeatherResult(weather)) {
             TabTrekkerWeather.displayEmptyWeather({
                 error: new Error('Cannot display invalid weather result.'),
                 worker: weather.worker
@@ -266,10 +248,6 @@ var TabTrekkerWeather = {
         }
 
         logger.log('Displaying weather result.');
-
-        weather.temperatureUnits = TabTrekkerWeather.getTemperatureUnitsStr(
-            weather.temperatureUnits);
-        weather[SHOW_WEATHER_PREF] = simplePrefs.prefs[SHOW_WEATHER_PREF];
         utils.emit(tabtrekker.workers, weather.worker, WEATHER_MSG, weather);
     },
 
@@ -278,25 +256,67 @@ var TabTrekkerWeather = {
      * scripts, indicating an invalid weather update request was made.
      */
     displayEmptyWeather: function(data) {
-
         logger.error('Displaying empty weather result because "' + data.error.message + '"');
+        var weather = TabTrekkerWeather.getEmptyWeatherResult();
+        utils.emit(tabtrekker.workers, data.worker, WEATHER_MSG, weather);
+    },
 
-        var options = {
+    /**
+     * Returns whether the weather result is valid.
+     */
+    isValidWeatherResult: function(weather) {
+        //allow temperature values of 0 by only checking for null or undefined
+        return weather.conditions
+            && weather.conditions.description && weather.conditions.icon
+            && weather.location
+            && weather.temperature != null
+            && weather.temperatureUnits;
+    },
+
+    /**
+     * Returns the formatted weather result.
+     */
+    getWeatherResult: function(response, temperatureUnits, worker) {
+        var weather = {
+            conditions: TabTrekkerWeather.getConditions(response.weather),
+            location: response.name,
+            temperature: response.main ? response.main.temp : null,
+            temperatureUnits: TabTrekkerWeather.getTemperatureUnitsStr(
+                temperatureUnits),
+            worker: worker
+        };
+        weather[SHOW_WEATHER_PREF] = simplePrefs.prefs[SHOW_WEATHER_PREF];
+        return weather;
+    },
+
+    /**
+     * Returns an empty weather result, indicating a valid weather result
+     * could not be retrieved.
+     */
+    getEmptyWeatherResult: function() {
+        var weather = {
             conditions: TabTrekkerWeather.getConditions(null),
             location: simplePrefs.prefs[LOCATION_PREF] || '',
             temperature: '--',
             temperatureUnits: null
         };
-        options[SHOW_WEATHER_PREF] = simplePrefs.prefs[SHOW_WEATHER_PREF];
-        utils.emit(tabtrekker.workers, data.worker, WEATHER_MSG, options);
+        weather[SHOW_WEATHER_PREF] = simplePrefs.prefs[SHOW_WEATHER_PREF];
+        return weather;
     },
 
     /**
-     * Returns temperature units string that can be displayed on the page.
+     * Returns the cached weather result.
      */
-    getTemperatureUnitsStr: function(temperatureUnitsPref) {
-        return temperatureUnitsPref == 'C' ? _('temperature_units_options.°C') : 
-            _('temperature_units_options.°F');
+    getCachedWeatherResult: function(worker) {
+        var weather = {
+            conditions: ss.storage[WEATHER_CONDITIONS_SS],
+            location: ss.storage[WEATHER_LOCATION_NAME_SS],
+            temperature: ss.storage[WEATHER_TEMPERATURE_SS],
+            temperatureUnits: ss.storage[WEATHER_TEMPERATURE_UNITS_SS],
+            worker: worker
+        };
+        weather[SHOW_WEATHER_PREF] = simplePrefs.prefs[SHOW_WEATHER_PREF];
+        return weather;
     },
 
     /**
@@ -304,14 +324,16 @@ var TabTrekkerWeather = {
      * description.
      */
     getConditions: function(conditions) {
-        //find first valid weather condition
         var iconCode;
         var description;
-        for(var i = 0; i < conditions.length; i++) {
-            if(conditions[i] && conditions[i].icon && conditions[i].description) {
-                iconCode = conditions[i].icon;
-                description = conditions[i].description;
-                break;
+        if(conditions) {
+            //find first valid weather condition
+            for(var i = 0; i < conditions.length; i++) {
+                if(conditions[i] && conditions[i].icon && conditions[i].description) {
+                    iconCode = conditions[i].icon;
+                    description = conditions[i].description;
+                    break;
+                }
             }
         }
         return {
@@ -389,6 +411,14 @@ var TabTrekkerWeather = {
             default:
                 return ')';
         }
+    },
+
+    /**
+     * Returns temperature units string that can be displayed on the page.
+     */
+    getTemperatureUnitsStr: function(temperatureUnitsPref) {
+        return temperatureUnitsPref == 'C' ? _('temperature_units_options.°C') : 
+            _('temperature_units_options.°F');
     }
 };
 

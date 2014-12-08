@@ -67,7 +67,7 @@ var TabTrekkerSearch = {
     addSearchSuggestions: function(suggestions) {
         //clear index
         TabTrekkerSearch.googleSearchSuggestions.clear();
-        if(!suggestions || suggestions.length == 0) {
+        if(!suggestions || suggestions.length === 0) {
             return;
         }
 

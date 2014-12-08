@@ -33,7 +33,7 @@ var TabTrekkerParse = {
             //request image set
             let imageSet = yield TabTrekkerParse.request(
                 PARSE_GET_NEXT_IMAGE_SET_URL, data);
-            if(!imageSet || !imageSet.images || imageSet.images.length == 0) {
+            if(!imageSet || !imageSet.images || imageSet.images.length === 0) {
                 logger.error('Parse response contained no images.');
                 throw new Error('Parse response contained no images.');
             }
