@@ -193,8 +193,11 @@ var TabTrekkerWeather = {
             //temperature units
             var temperatureUnits = simplePrefs.prefs[TEMPERATURE_UNITS_PREF];
             requestUrl += '&units=' + (temperatureUnits == 'C' ? 'metric' : 'imperial');
+            //user's selected language
+            var language = utils.getUserLanguage();
+            requestUrl += '&lang=' + language;
 
-            logger.info('Requesting weather.');
+            logger.info('Requesting weather.', requestUrl);
 
             //make weather request
             Request({

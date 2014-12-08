@@ -1,6 +1,8 @@
 'use strict';
 
 /* SDK Modules */
+const {Cc, Ci} = require('chrome');
+
 const array = require('sdk/util/array');
 
 /* Modules */
@@ -46,6 +48,19 @@ var TabTrekkerUtils = {
             logger.log('Emit ' + msg, payload);
             worker.port.emit(msg, payload);
         }
+    },
+
+    /**
+     * Returns the user's selected language.
+     */
+    getUserLanguage: function() {
+        var locale = Cc['@mozilla.org/chrome/chrome-registry;1']
+            .getService(Ci.nsIXULChromeRegistry)
+            .getSelectedLocale('global');
+        var end = locale.indexOf('-');
+        end = end == -1 ? locale.length : end;
+        var language = locale.substring(0, end);
+        return language;
     }
 };
 
