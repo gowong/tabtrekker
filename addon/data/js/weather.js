@@ -31,8 +31,10 @@ var TabTrekkerWeather = {
         $('#weather_temperature').html(temperature);
         //temperature units
         $('#weather_temperature_units').html(data.temperatureUnits);
+        //conditions description
+        $('#weather_temperature').attr('title', data.conditions.description);
         //conditions icon
-        $('#weather_temperature').attr('data-icon', data.conditionsIcon);
+        $('#weather_temperature').attr('data-icon', data.conditions.icon);
         //location
         $('#weather_location').html(data.location.toUpperCase());
         //hide loading spinner when weather has been updated

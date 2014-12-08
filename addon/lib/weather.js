@@ -25,7 +25,7 @@ const LOCATION_PREF = 'location';
 const TEMPERATURE_UNITS_PREF = 'temperature_units';
 const SHOW_WEATHER_PREF = 'show_weather';
 //simple storage
-const WEATHER_CONDITIONS_ICON_SS = 'weather_conditions_icon';
+const WEATHER_CONDITIONS_SS = 'weather_conditions';
 const WEATHER_LASTUPDATED_SS = 'weather_lastupdated';
 const WEATHER_LOCATION_NAME_SS = 'weather_location_name';
 const WEATHER_TEMPERATURE_SS = 'weather_temperature';
@@ -59,7 +59,7 @@ var TabTrekkerWeather = {
         logger.log('Initializing weather.');
 
         var data = {
-            conditionsIcon: ss.storage[WEATHER_CONDITIONS_ICON_SS],
+            conditions: ss.storage[WEATHER_CONDITIONS_SS],
             location: ss.storage[WEATHER_LOCATION_NAME_SS],
             temperature: ss.storage[WEATHER_TEMPERATURE_SS],
             temperatureUnits: ss.storage[WEATHER_TEMPERATURE_UNITS_SS],
@@ -67,7 +67,7 @@ var TabTrekkerWeather = {
         };
         
         //immediately send cached weather result to content scripts
-        if(data.conditionsIcon && data.location && data.temperature
+        if(data.conditions && data.conditions.description && data.conditions.icon && data.location && data.temperature
             && data.temperatureUnits) {
             logger.log('Displaying cached weather result.');
             TabTrekkerWeather.displayWeather(data);
@@ -217,7 +217,7 @@ var TabTrekkerWeather = {
                     }
                     var json = response.json;
                     var weather = {
-                        conditionsIcon: TabTrekkerWeather.getConditionsIcon(json.weather),
+                        conditions: TabTrekkerWeather.getConditions(json.weather),
                         location: json.name,
                         temperature: json.main ? json.main.temp : null,
                         temperatureUnits: temperatureUnits,
@@ -236,7 +236,7 @@ var TabTrekkerWeather = {
      */
     cacheWeatherResult: function(weather) {
         //allow temperature values of 0 by only checking for null or undefined
-        if(!weather.conditionsIcon || !weather.location
+        if(!weather.conditions || !weather.conditions.icon || !weather.conditions.description || !weather.location
             || weather.temperature == null || !weather.temperatureUnits) {
             logger.warn('Cannot cache invalid weather result.')
             return;
@@ -244,7 +244,7 @@ var TabTrekkerWeather = {
 
         logger.log('Caching weather result.');
 
-        ss.storage[WEATHER_CONDITIONS_ICON_SS] = weather.conditionsIcon;
+        ss.storage[WEATHER_CONDITIONS_SS] = weather.conditions;
         ss.storage[WEATHER_LASTUPDATED_SS] = Date.now();
         ss.storage[WEATHER_LOCATION_NAME_SS] = weather.location;
         ss.storage[WEATHER_TEMPERATURE_SS] = weather.temperature;
@@ -256,7 +256,7 @@ var TabTrekkerWeather = {
       */
     displayWeather: function(weather) {
         //allow temperature values of 0 by only checking for null or undefined
-        if(!weather.conditionsIcon || !weather.location
+        if(!weather.conditions || !weather.conditions.icon || !weather.conditions.description || !weather.location
             || weather.temperature == null || !weather.temperatureUnits) {
             TabTrekkerWeather.displayEmptyWeather({
                 error: new Error('Cannot display invalid weather result.'),
@@ -282,7 +282,7 @@ var TabTrekkerWeather = {
         logger.error('Displaying empty weather result because "' + data.error.message + '"');
 
         var options = {
-            conditionsIcon: TabTrekkerWeather.getConditionsIcon(null),
+            conditions: TabTrekkerWeather.getConditions(null),
             location: simplePrefs.prefs[LOCATION_PREF] || '',
             temperature: '--',
             temperatureUnits: null
@@ -300,29 +300,33 @@ var TabTrekkerWeather = {
     },
 
     /**
-     * Returns the character in the icon font that represents the weather
-     * conditions.
+     * Returns the weather conditions, containing the conditions icon and
+     * description.
      */
-    getConditionsIcon: function(conditions) {
-        if(!conditions || conditions.length == 0) {
-            //N/A
-            return ')';
-        }
-        //iterate through weather conditions until the first icon is found
-        var icon;
+    getConditions: function(conditions) {
+        //find first valid weather condition
+        var iconCode;
+        var description;
         for(var i = 0; i < conditions.length; i++) {
-            if(conditions[i] && conditions[i].icon) {
-                icon = conditions[i].icon;
+            if(conditions[i] && conditions[i].icon && conditions[i].description) {
+                iconCode = conditions[i].icon;
+                description = conditions[i].description;
                 break;
             }
         }
-        //could not find an icon
-        if(icon == null) {
-            //N/A
-            return ')';
-        }
+        return {
+            description: description || '',
+            icon: TabTrekkerWeather.getConditionsIcon(iconCode)
+        };
+    },
+
+    /**
+     * Returns the character in the icon font that represents the weather
+     * conditions.
+     */
+    getConditionsIcon: function(iconCode) {
         //map icon name to character in icon font
-        switch(icon) {
+        switch(iconCode) {
             // Day
             //Clear sky
             case '01d':
@@ -380,6 +384,10 @@ var TabTrekkerWeather = {
             //Mist
             case '50n':
                 return 'M';
+
+            //N/A
+            default:
+                return ')';
         }
     }
 };
