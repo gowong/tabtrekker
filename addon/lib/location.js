@@ -6,6 +6,7 @@ Cu.import('resource://gre/modules/Promise.jsm');
 Cu.import('resource://gre/modules/Task.jsm');
 const Request = require('sdk/request').Request;
 const simplePrefs = require('sdk/simple-prefs');
+const ss = require('sdk/simple-storage');
 
 /* Modules */
 const logger = require('logger.js').TabTrekkerLogger;
@@ -18,7 +19,14 @@ const LOCATION_GEOLOCATION_REQUEST_MSG = 'location_geolocation_request';
 const LOCATION_GEOLOCATION_RESULT_MSG = 'location_geolocation_result';
 //preferences
 const LOCATION_PREF = 'location';
+//simple storage
+const LOCATION_GEOLOCATION_LAT_SS = 'location_geolocation_latitude';
+const LOCATION_GEOLOCATION_LNG_SS = 'location_geolocation_longitude';
+const LOCATION_GEOCODED_NAME_SS = 'location_geocoded_name';
 //others
+//geolocation coordinates at the same location usually differ by about 0.00001
+const LOCATION_MIN_LAT_DIFF = 0.001;
+const LOCATION_MIN_LNG_DIFF = 0.001;
 const GEONAMES_URL = 'http://api.geonames.org/neighbourhoodJSON?lat=';
 const GEONAMES_USERNAME = 'kyosho';
 
@@ -89,6 +97,35 @@ var TabTrekkerLocation = {
     },
 
     /**
+     * Returns whether the geolocation has changed enough to warrant making
+     * a geocoding request.
+     */
+    shouldGeocode: function(coords) {
+        var lat = coords.latitude;
+        var lng = coords.longitude;
+        var cachedLat = ss.storage[LOCATION_GEOLOCATION_LAT_SS];
+        var cachedLng = ss.storage[LOCATION_GEOLOCATION_LNG_SS];
+        var name = ss.storage[LOCATION_GEOCODED_NAME_SS];
+
+
+        //no cached geolocation or location name
+        //or large difference between current and cached geolocations
+        var shouldGeocode = cachedLat == null
+                         || cachedLng == null 
+                         || !name
+                         || Math.abs(cachedLat - lat) >= LOCATION_MIN_LAT_DIFF
+                         || Math.abs(cachedLng - lng) >= LOCATION_MIN_LNG_DIFF;
+
+        //cache current geolocation if it's different than the cached geolocation
+        if(shouldGeocode) {
+            ss.storage[LOCATION_GEOLOCATION_LAT_SS] = lat;
+            ss.storage[LOCATION_GEOLOCATION_LNG_SS] = lng;
+        }
+
+        return shouldGeocode;
+    },
+
+    /**
      * Returns a promise that is fulfilled with the response to the
      * geocoding request of the coordinates.
      */
@@ -100,6 +137,12 @@ var TabTrekkerLocation = {
                 return;
             }
             var coords = position.coords;
+
+            //only make geocoding request if geolocation has changed
+            if(!TabTrekkerLocation.shouldGeocode(coords)) {
+                resolve(TabTrekkerLocation.getCachedGeocodedPosition(position));
+                return;
+            }
             
             logger.info('Making geocoding request with coordinates:', coords);
 
@@ -113,6 +156,7 @@ var TabTrekkerLocation = {
                     if(response.status == 200) {
                         position = TabTrekkerLocation.getGeocodedCity(
                             response, position);
+                        TabTrekkerLocation.cacheGeocodedName(position);
                     } else {
                         logger.warn('Geocoder request failed. Returning original position object.');
                     }
@@ -138,6 +182,25 @@ var TabTrekkerLocation = {
             logger.warn('Geocoder request did not contain city and country.');
         }
         return position;
+    },
+
+    /**
+     * Returns the position after adding the cached geocoded name.
+     */
+    getCachedGeocodedPosition: function(position) {
+        var name = ss.storage[LOCATION_GEOCODED_NAME_SS];
+        position.address = {
+            city: name
+        };
+        return position;
+    },
+
+    /**
+     * Caches geocoded location name.
+     */
+    cacheGeocodedName: function(position) {
+        var name = position.address.city;
+        ss.storage[LOCATION_GEOCODED_NAME_SS] = name;
     }
 };
 
