@@ -55,7 +55,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
         return Task.spawn(function*() {
             //request new images
             if(TabTrekkerImages.shouldUpdate()) {
-                yield TabTrekkerImages.getImages(worker)
+                yield TabTrekkerImages.getImages(worker);
             }
 
             //display saved image
@@ -199,7 +199,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
                 ss.storage[IMAGES_LASTUPDATED_SS] = Date.now();
                 return worker;
             }, function(error) {
-                logger.warn('Forcing next image update because of', error);
+                logger.warn('Forcing next image update because of', error.message);
                 //force next image update
                 ss.storage[IMAGES_LASTUPDATED_SS] = null;
             });

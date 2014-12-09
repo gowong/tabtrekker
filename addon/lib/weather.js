@@ -9,6 +9,7 @@ const simplePrefs = require('sdk/simple-prefs');
 const ss = require('sdk/simple-storage');
 
 /* Modules */
+const location = require('location.js').TabTrekkerLocation;
 const logger = require('logger.js').TabTrekkerLogger;
 const utils = require('utils.js').TabTrekkerUtils;
 var tabtrekker; //load on initialization to ensure main module is loaded
@@ -17,8 +18,6 @@ var tabtrekker; //load on initialization to ensure main module is loaded
 //messages
 const HIDE_WEATHER_MSG = 'hide_weather';
 const WEATHER_MSG = 'weather';
-const WEATHER_GEOLOCATION_REQUEST_MSG = 'weather_geolocation_request';
-const WEATHER_GEOLOCATION_RESULT_MSG = 'weather_geolocation_result';
 const WEATHER_SHOW_LOADING_MSG = 'weather_show_loading';
 //preferences
 const LOCATION_PREF = 'location';
@@ -31,8 +30,6 @@ const WEATHER_LOCATION_NAME_SS = 'weather_location_name';
 const WEATHER_TEMPERATURE_SS = 'weather_temperature';
 const WEATHER_TEMPERATURE_UNITS_SS = 'weather_temperature_units';
 //others
-const GEONAMES_URL = 'http://api.geonames.org/neighbourhoodJSON?lat=';
-const GEONAMES_USERNAME = 'kyosho';
 const OPENWEATHERMAP_APPID = '19c860e2c76bbe9e5f747af2250f751c';
 const OPENWEATHERMAP_URL = 'http://api.openweathermap.org/data/2.5/weather?APPID=';
 const OPENWEATHERMAP_REQUEST_URL = OPENWEATHERMAP_URL + OPENWEATHERMAP_APPID;
@@ -141,67 +138,9 @@ var TabTrekkerWeather = {
      * or the user-defined location.
      */
     getLocation: function(worker) {
-        return new Promise(function(resolve, reject) {
-            //user-defined location
-            var userLocation = simplePrefs.prefs[LOCATION_PREF];
-            if(userLocation) {
-                logger.log('Retrieved user-defined location.');
-                resolve({
-                    address: {
-                        city: userLocation
-                    },
-                    worker: worker
-                });
-                return;
-            }
-            
-            //request geolocation from content scripts
-            utils.emit(tabtrekker.workers, worker, WEATHER_GEOLOCATION_REQUEST_MSG);
-            worker.port.on(WEATHER_GEOLOCATION_RESULT_MSG, function(coords) {
-
-                //geolocation failed
-                if(coords == null || coords.latitude == null
-                    || coords.longitude == null) {
-                    reject(new TabTrekkerWeather.WeatherException(
-                        new Error('Geolocation failed.'), 
-                        worker));
-                    return;
-                }
-
-                //copy coordinates
-                var position = {
-                    coords: coords,
-                    worker: worker
-                };
-
-                logger.info('Requesting address from geocoder.');
-
-                //request city name using reverse geocoding service from GeoNames
-                const requestUrl = GEONAMES_URL
-                    + coords.latitude + '&lng=' + coords.longitude 
-                    + '&username=' + GEONAMES_USERNAME;
-                Request({
-                    url: requestUrl,
-                    onComplete: function(response) {
-                        if(response.status == 200) {
-                            var neighbourhood = response.json.neighbourhood;
-                            //copy city and country
-                            if(neighbourhood && neighbourhood.city 
-                                && neighbourhood.countryCode) {
-                                position.address = {
-                                    city: neighbourhood.city,
-                                    region: neighbourhood.countryCode
-                                };
-                            } else {
-                                logger.warn('Geocoder request failed.');
-                            }
-                        } else {
-                            logger.warn('Geocoder request failed.');
-                        }
-                        resolve(position);
-                    }
-                }).get();
-            });
+        return location.getLocation(tabtrekker.workers, worker).
+            then(null, function(error) {
+                throw new TabTrekkerWeather.WeatherException(error, worker);
         });
     },
 
@@ -262,7 +201,7 @@ var TabTrekkerWeather = {
     },
 
     /**
-     * Caches weather result in simple storage.
+     * Caches weather result.
      */
     cacheWeatherResult: function(weather) {
         if(!TabTrekkerWeather.isValidWeatherResult(weather)) {

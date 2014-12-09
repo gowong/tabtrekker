@@ -105,6 +105,7 @@ pageMod.PageMod({
                         self.data.url('js/utils.js'),
                         self.data.url('js/history.js'),
                         self.data.url('js/images.js'),
+                        self.data.url('js/location.js'),
                         self.data.url('js/menu.js'),
                         self.data.url('js/search.js'),
                         self.data.url('js/time.js'),
