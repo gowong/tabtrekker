@@ -45,6 +45,17 @@ const WEATHER_UPDATE_WAIT_MILLIS = 20 * 1000; //20 seconds
 var TabTrekkerWeather = {
 
     /**
+     * Creates a WeatherException object. 
+     */
+    WeatherException: function(error, worker) {
+        this.error = error;
+        this.worker = worker;
+        this.toString = function() {
+            return this.error.message;
+        }
+    },
+
+    /**
      * Initializes weather by either retrieving a cached weather result or retrieving
      * the latest weather result and sending the result to the content scripts.
      */
@@ -151,10 +162,9 @@ var TabTrekkerWeather = {
                 //geolocation failed
                 if(coords == null || coords.latitude == null
                     || coords.longitude == null) {
-                    reject({
-                        error: new Error('Geolocation failed.'),
-                        worker: worker
-                    });
+                    reject(new TabTrekkerWeather.WeatherException(
+                        new Error('Geolocation failed.'), 
+                        worker));
                     return;
                 }
 
@@ -215,10 +225,9 @@ var TabTrekkerWeather = {
             } 
             //no location provided
             else {
-                reject({
-                    error: new Error('Cannot request weather update without a location.'),
-                    worker: position.worker
-                });
+                reject(new TabTrekkerWeather.WeatherException(
+                    new Error('Cannot request weather update without a location.'), 
+                    position.worker));
                 return;
             }
             //temperature units
@@ -237,10 +246,9 @@ var TabTrekkerWeather = {
                 url: requestUrl,
                 onComplete: function(response) {
                     if(response.status != 200) {
-                        reject({
-                            error: new Error('Weather request failed.'),
-                            worker: position.worker
-                        });
+                        reject(new TabTrekkerWeather.WeatherException(
+                            new Error('Weather request failed.'), 
+                            position.worker));
                         return;
                     }
                     var weather = TabTrekkerWeather.getWeatherResult(
@@ -276,10 +284,10 @@ var TabTrekkerWeather = {
       */
     displayWeather: function(weather) {
         if(!TabTrekkerWeather.isValidWeatherResult(weather)) {
-            TabTrekkerWeather.displayEmptyWeather({
-                error: new Error('Cannot display invalid weather result.'),
-                worker: weather.worker
-            });
+            TabTrekkerWeather.displayEmptyWeather(
+                new TabTrekkerWeather.WeatherException(
+                    new Error('Cannot display invalid weather result.'), 
+                    weather.worker));
             return;
         }
 
@@ -291,10 +299,10 @@ var TabTrekkerWeather = {
      * Displays an empty weather result by sending an empty result to content
      * scripts, indicating an invalid weather update request was made.
      */
-    displayEmptyWeather: function(data) {
-        logger.error('Displaying empty weather result because "' + data.error.message + '"');
+    displayEmptyWeather: function(exception) {
+        logger.error('Displaying empty weather result because "' + exception + '"');
         var weather = TabTrekkerWeather.getEmptyWeatherResult();
-        utils.emit(tabtrekker.workers, data.worker, WEATHER_MSG, weather);
+        utils.emit(tabtrekker.workers, exception.worker, WEATHER_MSG, weather);
     },
 
     /**
