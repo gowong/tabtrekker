@@ -270,7 +270,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
             return imageSet;
 
         }).then(null, function(error) {
-            logger.error('Error downloading image', error.messsage);
+            logger.error('Error downloading image', error);
             throw error;
         });
     },

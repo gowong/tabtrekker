@@ -14,8 +14,8 @@ const logger = require('logger.js').TabTrekkerLogger;
 
 /* Constants */
 //simple storage
-const PARSE_VIEWED_IMAGE_SET_IDS_SS = 'parse_viewed_image_set_ids';
 const PARSE_IMAGE_SET_ID_SS = 'parse_image_set_id';
+const PARSE_VIEWED_IMAGE_SET_IDS_SS = 'parse_viewed_image_set_ids';
 //others
 const PARSE_GET_NEXT_IMAGE_SET_URL ='https://api.parse.com/1/functions/getNextImageSet';
 
