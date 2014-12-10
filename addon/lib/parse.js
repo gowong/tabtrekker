@@ -4,6 +4,7 @@
 const {Cu} = require('chrome');
 Cu.import('resource://gre/modules/Promise.jsm');
 Cu.import('resource://gre/modules/Task.jsm');
+const array = require('sdk/util/array');
 const Request = require('sdk/request').Request;
 const ss = require('sdk/simple-storage');
 
@@ -13,7 +14,9 @@ const logger = require('logger.js').TabTrekkerLogger;
 
 /* Constants */
 //simple storage
+const PARSE_VIEWED_IMAGE_SET_IDS_SS = 'parse_viewed_image_set_ids';
 const PARSE_IMAGE_SET_ID_SS = 'parse_image_set_id';
+//others
 const PARSE_GET_NEXT_IMAGE_SET_URL ='https://api.parse.com/1/functions/getNextImageSet';
 
 /**
@@ -28,7 +31,8 @@ var TabTrekkerParse = {
         return Task.spawn(function*() {
             logger.info('Requesting next image set from Parse.');
             let data = {
-                id: ss.storage[PARSE_IMAGE_SET_ID_SS]
+                id: ss.storage[PARSE_IMAGE_SET_ID_SS],
+                viewedIds: TabTrekkerParse.getViewedImageSets()
             };
             //request image set
             let imageSet = yield TabTrekkerParse.request(
@@ -39,6 +43,8 @@ var TabTrekkerParse = {
             }
             //store image set id
             ss.storage[PARSE_IMAGE_SET_ID_SS] = imageSet.id;
+            //add to viewed image sets
+            TabTrekkerParse.addViewedImageSet(imageSet);
             return imageSet;
         });
     },
@@ -67,6 +73,25 @@ var TabTrekkerParse = {
                 }
             }).post();
         });
+    },
+
+    /**
+     * Adds the image set to the collection of viewed image sets.
+     */
+    addViewedImageSet: function(imageSet) {
+        if(!imageSet || imageSet.id == null) {
+            return;
+        }
+        var viewedImageSetIds = ss.storage[PARSE_VIEWED_IMAGE_SET_IDS_SS] || [];
+        array.add(viewedImageSetIds, imageSet.id);
+        ss.storage[PARSE_VIEWED_IMAGE_SET_IDS_SS] = viewedImageSetIds;
+    },
+
+    /**
+     * Returns the viewed image sets.
+     */
+    getViewedImageSets: function() {
+        return ss.storage[PARSE_VIEWED_IMAGE_SET_IDS_SS] || [];
     }
 };
 
