@@ -27,8 +27,9 @@ const LOCATION_GEOCODED_NAME_SS = 'location_geocoded_name';
 //geolocation coordinates at the same location usually differ by about 0.00001
 const LOCATION_MIN_LAT_DIFF = 0.001;
 const LOCATION_MIN_LNG_DIFF = 0.001;
-const GEONAMES_URL = 'http://api.geonames.org/neighbourhoodJSON?lat=';
-const GEONAMES_USERNAME = 'kyosho';
+const GEOCODE_KEY = 'AIzaSyDmP9Qog5YYUb2BASGg32a6uu-GnbDXJgk';
+const GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?key='
+    + GEOCODE_KEY + '&result_type=locality' + '&latlng=';
 
 /**
  * Location module.
@@ -139,9 +140,12 @@ var TabTrekkerLocation = {
             TabTrekkerLocation.clearCachedGeocodedPosition();
 
             //build request URL
-            const requestUrl = GEONAMES_URL
-                + coords.latitude + '&lng=' + coords.longitude 
-                + '&username=' + GEONAMES_USERNAME;
+            var requestUrl = GEOCODE_URL
+                + position.coords.latitude + ',' + position.coords.longitude;
+            var language = utils.getUserLanguage();
+            if(language) {
+                requestUrl += '&language=' + language;
+            }
 
             Request({
                 url: requestUrl,
@@ -167,14 +171,31 @@ var TabTrekkerLocation = {
      * Returns the position containing the position's city.
      */
     getGeocodedPosition: function(response, position) {
-        var neighbourhood = response.json.neighbourhood;
-        //copy city
-        if(neighbourhood && neighbourhood.city) {
-            position.location = neighbourhood.city;
-        } else {
-            logger.warn('Geocoder request did not contain city');
+        var json = response.json;
+        if(json.status !== 'OK') {
+            logger.warn('Gecoding request failed.', json);
             return null;
         }
+
+        //find city
+        var city;
+        var addresses = json.results[0].address_components;
+        for (var i = 0; i < addresses.length; i++) {
+            var address = addresses[i];
+            if(address.types.indexOf('locality') !== -1) {
+                city = address.long_name;
+                break;
+            }
+        }
+
+        //city is required for a geocoded position
+        if(!city) {
+            logger.warn('Geocoding response did not contain city.');
+            return null;
+        }
+
+        //return position with city
+        position.location = city;
         return position;
     },
 
