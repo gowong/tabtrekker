@@ -107,19 +107,11 @@ var TabTrekkerLocation = {
 
         //no cached geolocation or location name
         //or large difference between current and cached geolocations
-        var shouldGeocode = cachedLat == null
-                         || cachedLng == null 
-                         || !name
-                         || Math.abs(cachedLat - lat) >= LOCATION_MIN_LAT_DIFF
-                         || Math.abs(cachedLng - lng) >= LOCATION_MIN_LNG_DIFF;
-
-        //cache current geolocation if it's different than the cached geolocation
-        if(shouldGeocode) {
-            ss.storage[LOCATION_GEOLOCATION_LAT_SS] = lat;
-            ss.storage[LOCATION_GEOLOCATION_LNG_SS] = lng;
-        }
-
-        return shouldGeocode;
+        return cachedLat == null
+             || cachedLng == null 
+             || !name
+             || Math.abs(cachedLat - lat) >= LOCATION_MIN_LAT_DIFF
+             || Math.abs(cachedLng - lng) >= LOCATION_MIN_LNG_DIFF;
     },
 
     /**
@@ -133,16 +125,20 @@ var TabTrekkerLocation = {
                 reject(new Error('Cannot make geocode request without coordinates.'));
                 return;
             }
-            var coords = position.coords;
 
             //only make geocoding request if geolocation has changed
-            if(!TabTrekkerLocation.shouldGeocode(coords)) {
+            if(!TabTrekkerLocation.shouldGeocode(position.coords)) {
                 resolve(TabTrekkerLocation.getCachedGeocodedPosition(position));
                 return;
             }
             
-            logger.info('Making geocoding request with coordinates:', coords);
+            logger.info('Making geocoding request with coordinates:',
+                position.coords);
 
+            //clear cached geocoded position
+            TabTrekkerLocation.clearCachedGeocodedPosition();
+
+            //build request URL
             const requestUrl = GEONAMES_URL
                 + coords.latitude + '&lng=' + coords.longitude 
                 + '&username=' + GEONAMES_USERNAME;
@@ -151,9 +147,13 @@ var TabTrekkerLocation = {
                 url: requestUrl,
                 onComplete: function(response) {
                     if(response.status == 200) {
-                        position = TabTrekkerLocation.getGeocodedPosition(
+                        //parse response and cache result
+                        var newPosition = TabTrekkerLocation.getGeocodedPosition(
                             response, position);
-                        TabTrekkerLocation.cacheGeocodedPosition(position);
+                        if(newPosition) {
+                            TabTrekkerLocation.cacheGeocodedPosition(newPosition);
+                            position = newPosition;
+                        }
                     } else {
                         logger.warn('Geocoder request failed. Returning original position object.');
                     }
@@ -173,6 +173,7 @@ var TabTrekkerLocation = {
             position.location = neighbourhood.city;
         } else {
             logger.warn('Geocoder request did not contain city');
+            return null;
         }
         return position;
     },
@@ -189,7 +190,24 @@ var TabTrekkerLocation = {
      * Caches geocoded position.
      */
     cacheGeocodedPosition: function(position) {
+        if(!position || !position.location || !position.coords
+            || position.coords.latitude == null
+            || position.coords.longitude == null) {
+            logger.warn('Cannot cache invalid geocoded position.');
+            return;
+        }
         ss.storage[LOCATION_GEOCODED_NAME_SS] = position.location;
+        ss.storage[LOCATION_GEOLOCATION_LAT_SS] = position.coords.latitude;
+        ss.storage[LOCATION_GEOLOCATION_LNG_SS] = position.coords.longitude;
+    },
+
+    /**
+     * Clears cached geocoded position.
+     */
+    clearCachedGeocodedPosition: function() {
+        ss.storage[LOCATION_GEOCODED_NAME_SS] = null;
+        ss.storage[LOCATION_GEOLOCATION_LAT_SS] = null;
+        ss.storage[LOCATION_GEOLOCATION_LNG_SS] = null;
     }
 };
 
