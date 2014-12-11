@@ -47,9 +47,7 @@ var TabTrekkerLocation = {
             if(userLocation) {
                 logger.log('Retrieved user-defined location.');
                 return {
-                    address: {
-                        city: userLocation
-                    },
+                    userLocation: userLocation,
                     worker: worker
                 };
             }
@@ -107,7 +105,6 @@ var TabTrekkerLocation = {
         var cachedLng = ss.storage[LOCATION_GEOLOCATION_LNG_SS];
         var name = ss.storage[LOCATION_GEOCODED_NAME_SS];
 
-
         //no cached geolocation or location name
         //or large difference between current and cached geolocations
         var shouldGeocode = cachedLat == null
@@ -154,9 +151,9 @@ var TabTrekkerLocation = {
                 url: requestUrl,
                 onComplete: function(response) {
                     if(response.status == 200) {
-                        position = TabTrekkerLocation.getGeocodedCity(
+                        position = TabTrekkerLocation.getGeocodedPosition(
                             response, position);
-                        TabTrekkerLocation.cacheGeocodedName(position);
+                        TabTrekkerLocation.cacheGeocodedPosition(position);
                     } else {
                         logger.warn('Geocoder request failed. Returning original position object.');
                     }
@@ -167,19 +164,15 @@ var TabTrekkerLocation = {
     },
 
     /**
-     * Returns the position after adding the city and country.
+     * Returns the position containing the position's city.
      */
-    getGeocodedCity: function(response, position) {
+    getGeocodedPosition: function(response, position) {
         var neighbourhood = response.json.neighbourhood;
-        //copy city and country
-        if(neighbourhood && neighbourhood.city 
-            && neighbourhood.countryCode) {
-            position.address = {
-                city: neighbourhood.city,
-                region: neighbourhood.countryCode
-            };
+        //copy city
+        if(neighbourhood && neighbourhood.city) {
+            position.location = neighbourhood.city;
         } else {
-            logger.warn('Geocoder request did not contain city and country.');
+            logger.warn('Geocoder request did not contain city');
         }
         return position;
     },
@@ -188,19 +181,15 @@ var TabTrekkerLocation = {
      * Returns the position after adding the cached geocoded name.
      */
     getCachedGeocodedPosition: function(position) {
-        var name = ss.storage[LOCATION_GEOCODED_NAME_SS];
-        position.address = {
-            city: name
-        };
+        position.location = ss.storage[LOCATION_GEOCODED_NAME_SS];
         return position;
     },
 
     /**
-     * Caches geocoded location name.
+     * Caches geocoded position.
      */
-    cacheGeocodedName: function(position) {
-        var name = position.address.city;
-        ss.storage[LOCATION_GEOCODED_NAME_SS] = name;
+    cacheGeocodedPosition: function(position) {
+        ss.storage[LOCATION_GEOCODED_NAME_SS] = position.location;
     }
 };
 

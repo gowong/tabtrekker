@@ -51,7 +51,7 @@ var TabTrekkerUtils = {
     },
 
     /**
-     * Returns the user's selected language.
+     * Returns the user's selected language (ex. Returns "en" for English).
      */
     getUserLanguage: function() {
         var locale = Cc['@mozilla.org/chrome/chrome-registry;1']

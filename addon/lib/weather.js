@@ -152,10 +152,9 @@ var TabTrekkerWeather = {
             //build request URL
             var requestUrl =  OPENWEATHERMAP_REQUEST_URL;
 
-            //use city name and region
-            if(position.address && position.address.city) {
-                var region = position.address.region ? ',' + position.address.region : '';
-                requestUrl += '&q=' + position.address.city + region;
+            //use user-defined location
+            if(position.userLocation) {
+                requestUrl += '&q=' + position.userLocation;
             }
             //use coordinates
             else if(position.coords && position.coords.latitude != null
@@ -191,7 +190,7 @@ var TabTrekkerWeather = {
                         return;
                     }
                     var weather = TabTrekkerWeather.getWeatherResult(
-                        response.json, temperatureUnits, position.worker);
+                        response.json, temperatureUnits, position, position.worker);
                     //cache result and resolve promise
                     TabTrekkerWeather.cacheWeatherResult(weather);
                     resolve(weather);
@@ -259,10 +258,10 @@ var TabTrekkerWeather = {
     /**
      * Returns the formatted weather result.
      */
-    getWeatherResult: function(response, temperatureUnits, worker) {
+    getWeatherResult: function(response, temperatureUnits, position, worker) {
         var weather = {
             conditions: TabTrekkerWeather.getConditions(response.weather),
-            location: response.name,
+            location: position.location || response.name,
             temperature: response.main ? response.main.temp : null,
             temperatureUnits: TabTrekkerWeather.getTemperatureUnitsStr(
                 temperatureUnits),
