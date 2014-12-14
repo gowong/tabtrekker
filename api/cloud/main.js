@@ -15,10 +15,12 @@ Parse.Cloud.define('getNextImageSet', function(request, response) {
     var nextId = (isNaN(id) || id < 0 || id >= imageSets.length) ? 0
         : (id + 1) % imageSets.length;
 
-    //get random image set if viewed image sets includes all image sets
+    //get random image set if all image sets are viewed
     var viewedIds = request.params.viewedIds || [];
     if(viewedIds.length === imageSets.length) {
-        nextId = Math.floor(Math.random() * imageSets.length);
+        do {
+            nextId = Math.floor(Math.random() * imageSets.length);
+        } while(nextId === id);
     }
     //get next unviewed image set
     else {
