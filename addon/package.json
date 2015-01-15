@@ -6,7 +6,7 @@
     "title": "TabTrekker",
     "description": "Explore the world one tab at a time.",
     "author": "Gordon Wong",
-    "homepage": "www.gordonwong.com/tabtrekker",
+    "homepage": "www.tabtrekker.com",
     "permissions": {
         "private-browsing": true
     },
