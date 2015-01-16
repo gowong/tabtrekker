@@ -170,6 +170,11 @@ input:focus::-moz-placeholder {
 #about_modal_body {
     padding: 25px;
 }
+#about_modal_icon {
+    height: 80px;
+    width: 80px;
+    margin-bottom: 0.5em;
+}
 #about_modal_title {
     font-size: 24px;
     font-weight: 400;
