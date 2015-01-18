@@ -3,18 +3,18 @@
 [https://www.google.com/maps/d/viewer?mid=zfrS83gUGM-c.k_3pQGmBdWTg](https://www.google.com/maps/d/viewer?mid=zfrS83gUGM-c.k_3pQGmBdWTg)
 
 ##Cities
-- Rio de Janeiro, Brazil
-- Paris, France
-- Venice, Italy
-- St. Petersburg, Russia
-- Stockholm, Sweden
-- New York, USA
-- San Francisco, USA
+- Rio de Janeiro, Brazil ***(Done)***
+- Paris, France ***(Done)***
+- Venice, Italy ***(Done)***
+- St. Petersburg, Russia ***(Done)***
+- Stockholm, Sweden ***(Done)***
+- New York, USA ***(Done)***
+- San Francisco, USA ***(Done)***
 
 ##Towns, Villages
 - Cappadocia, Turkey
-- **Coastal**
-    - Hallstatt, Austria
+- *Coastal*
+    - Hallstatt, Austria ***(Done)***
     - Manarola, Italy
 
 ##Fields, Hills, Plains
@@ -26,20 +26,20 @@
 - Giant’s Causeway, Ireland
 - Fiordland National Park, New Zealand
 - Antelope Canyon, USA
-- Grand Canyon & Horseshoe Bend, USA
+- Grand Canyon, USA *(and Horseshoe Bend)* ***(Done)***
 - Yosemite National Park, USA
 
 ##Historical Landmarks
-- Great Wall of China
+- Great Wall of China ***(Done)***
 - Meteora, Greece
 - Bagan, Myanmar
-- **Castles**
-    - Neuschwanstein Castle, Germany
+- *Castles*
+    - Neuschwanstein Castle, Germany ***(Done)***
     - Matsumoto Castle, Japan
     - Edinburgh Castle, Scotland
 
 ##Modern Landmarks
-- Atlantic Ocean Road, Norway
+- Atlantic Ocean Road, Norway ***(Done)***
 
 ##Islands
 - Gásadalur, Faroe Islands
