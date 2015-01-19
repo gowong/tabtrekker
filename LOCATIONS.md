@@ -19,12 +19,12 @@
 
 ##Fields, Hills, Plains
 - Provence, France
-- Tuscany, Italy
+- Tuscany, Italy ***(Done)***
 - Tulip Fields in Netherlands
 
 ##Nature
 - Giant’s Causeway, Ireland
-- Fiordland National Park, New Zealand
+- Fiordland National Park, New Zealand ***(Done)***
 - Antelope Canyon, USA
 - Grand Canyon, USA *(and Horseshoe Bend)* ***(Done)***
 - Yosemite National Park, USA
@@ -43,7 +43,7 @@
 
 ##Islands
 - Gásadalur, Faroe Islands
-- Bora Bora, French Polynesia
+- Bora Bora, French Polynesia ***(Done)***
 - Santorini, Greece
 
 ##Others
