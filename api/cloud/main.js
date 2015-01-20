@@ -33,7 +33,7 @@ Parse.Cloud.define('getNextImageSet', function(request, response) {
     else {
         var counter = 0;
         while(counter !== imageSets.length) {
-            if(viewedIds.indexOf(imageSets[nextId].id) === -1) {
+            if(viewedIds.indexOf(nextId) === -1) {
                 break;
             }
             nextId = (nextId + 1) % imageSets.length;
@@ -43,6 +43,7 @@ Parse.Cloud.define('getNextImageSet', function(request, response) {
 
     //respond with image set
     var imageSet = imageSets[nextId];
+    imageSet.id = nextId;
     imageSet.startingImageId = startingImageId;
     response.success(imageSet);
 });
