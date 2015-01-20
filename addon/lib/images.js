@@ -22,8 +22,8 @@ const IMAGES_DISPLAY_MSG = 'images_display';
 //simple storage
 const IMAGES_CHOSEN_ID_SS = 'images_chosen_id';
 const IMAGES_FALLBACK_ID_SS = 'images_fallback_id';
-const IMAGES_LASTCHOSEN_SS = 'images_lastchosen';
-const IMAGES_LASTUPDATED_SS = 'images_lastupdated';
+const IMAGES_LASTCHOSEN_TIME_SS = 'images_lastchosen';
+const IMAGES_LASTUPDATED_TIME_SS = 'images_lastupdated';
 const IMAGES_IMAGE_SET_SS = 'images_image_set';
 //others
 const IMAGES_CHOOSE_INTERVAL_MILLIS = 60 * 1000; //1 minute
@@ -59,7 +59,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
             }
 
             //display saved image
-            TabTrekkerImages.displayImage(worker);
+            TabTrekkerImages.displayImage(worker, false);
 
             //download images if needed
             TabTrekkerImages.downloadImages().
@@ -70,8 +70,11 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
     /**
      * Choose an image and notifies content scripts to display it.
      */
-    displayImage: function(worker) {
-        var image = TabTrekkerImages.getImage();
+    displayImage: function(worker, chooseNewImage) {
+        if(chooseNewImage || TabTrekkerImages.shouldChooseNewImage()) {
+            TabTrekkerImages.chooseNewImage();
+        }
+        var image = TabTrekkerImages.getChosenImage();
         if(image) {
             image.fallback = TabTrekkerImages.getFallbackImage();
             utils.emit(tabtrekker.workers, worker, IMAGES_DISPLAY_MSG, image);
@@ -84,45 +87,41 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
       * Chooses and displays an image that is different from the current image.
       */
     displayNextImage: function(worker) {
-        TabTrekkerImages.clearChosenImage();
-        TabTrekkerImages.displayImage(worker);
+        TabTrekkerImages.displayImage(worker, true);
     },
 
     /**
-     * Clears chosen image.
-     */
-    clearChosenImage: function() {
-        ss.storage[IMAGES_LASTCHOSEN_SS] = null;
+      * Returns whether a new image should be chosen.
+      */
+    shouldChooseNewImage: function() {
+        var lastChosen = ss.storage[IMAGES_LASTCHOSEN_TIME_SS];
+        var chosenId = ss.storage[IMAGES_CHOSEN_ID_SS];
+        
+        //no image previously chosen
+        if(lastChosen == null || chosenId == null) {
+            return true;
+        }
+
+        //check when the previous image was chosen
+        var now = Date.now();
+        var elapsed = now - lastChosen;
+        
+        return (elapsed >= IMAGES_CHOOSE_INTERVAL_MILLIS);
     },
 
     /**
-     * Returns one of the saved images to display. 
+     * Returns the chosen images to display.
      */
-    getImage: function() {
+    getChosenImage: function() {
         var imageSet = ss.storage[IMAGES_IMAGE_SET_SS];
         if(!imageSet) {
             return null;
         }
-        var image;
 
-        //no image chosen
-        var lastChosen = ss.storage[IMAGES_LASTCHOSEN_SS];
+        //get image
         var chosenId = ss.storage[IMAGES_CHOSEN_ID_SS];
-        if(lastChosen == null || chosenId == null) {
-            image = TabTrekkerImages.chooseNewImage();
-        } else {
-            //check when the last image was chosen
-            var now = Date.now();
-            var elapsed = now - lastChosen;
-            //choose new image
-            if(elapsed >= IMAGES_CHOOSE_INTERVAL_MILLIS) {
-                image = TabTrekkerImages.chooseNewImage();
-            } 
-            //get current image
-            else {
-                image = ss.storage[IMAGES_IMAGE_SET_SS].images[chosenId];
-            }
-        }
+        var image = ss.storage[IMAGES_IMAGE_SET_SS].images[chosenId];
+
         //add image set info
         if(image) {
             image.imageSetName = imageSet.name;
@@ -132,13 +131,13 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
     },
 
     /**
-     * Chooses and returns a new image to be displayed.
+     * Chooses a new image to be displayed.
      */
     chooseNewImage: function() {
         logger.info('Choosing new image.');
         var imageSet = ss.storage[IMAGES_IMAGE_SET_SS];
         if(!imageSet || !imageSet.images || imageSet.images.length === 0) {
-            return null;
+            return;
         }
 
         //choose next image 
@@ -147,10 +146,15 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
         chosenId = chosenId == null ? 0 : ((chosenId + 1) % images.length);
 
         //save chosen image
-        ss.storage[IMAGES_CHOSEN_ID_SS] = chosenId;
-        ss.storage[IMAGES_LASTCHOSEN_SS] = Date.now();
+        TabTrekkerImages.setChosenImage(chosenId);
+    },
 
-        return images[chosenId];
+    /**
+     * Sets the chosen image.
+     */
+    setChosenImage: function(chosenId) {
+        ss.storage[IMAGES_CHOSEN_ID_SS] = chosenId;
+        ss.storage[IMAGES_LASTCHOSEN_TIME_SS] = Date.now();
     },
 
     /**
@@ -169,7 +173,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
      */
     shouldUpdate: function() {
         //images have never been updated
-        var lastUpdated = ss.storage[IMAGES_LASTUPDATED_SS];
+        var lastUpdated = ss.storage[IMAGES_LASTUPDATED_TIME_SS];
         if(lastUpdated == null) {
             return true;
         }
@@ -189,19 +193,18 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
         logger.info('Requesting images.');
         //prevent other updates from happening during this update
         TabTrekkerImages.disableUpdates(IMAGES_UPDATE_WAIT_MILLIS);
-        //clear current chosen image
-        TabTrekkerImages.clearChosenImage();
         //request images
         return parse.getNextImageSet().
             then(function(imageSet) {
                 //save images
                 ss.storage[IMAGES_IMAGE_SET_SS] = imageSet;
-                ss.storage[IMAGES_LASTUPDATED_SS] = Date.now();
+                ss.storage[IMAGES_LASTUPDATED_TIME_SS] = Date.now();
+                TabTrekkerImages.setChosenImage(0);
                 return worker;
             }, function(error) {
                 logger.warn('Forcing next image update because of', error.message);
                 //force next image update
-                ss.storage[IMAGES_LASTUPDATED_SS] = null;
+                ss.storage[IMAGES_LASTUPDATED_TIME_SS] = null;
             });
     },
 
@@ -209,7 +212,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
      * Disables updates for the specified milliseconds.
      */
     disableUpdates: function(millis) {
-       ss.storage[IMAGES_LASTUPDATED_SS] = Date.now() -
+       ss.storage[IMAGES_LASTUPDATED_TIME_SS] = Date.now() -
             IMAGES_UPDATE_INTERVAL_MILLIS + millis; 
     },
 

@@ -25,7 +25,7 @@ const TEMPERATURE_UNITS_PREF = 'temperature_units';
 const SHOW_WEATHER_PREF = 'show_weather';
 //simple storage
 const WEATHER_CONDITIONS_SS = 'weather_conditions';
-const WEATHER_LASTUPDATED_SS = 'weather_lastupdated';
+const WEATHER_LASTUPDATED_TIME_SS = 'weather_lastupdated';
 const WEATHER_LOCATION_NAME_SS = 'weather_location_name';
 const WEATHER_TEMPERATURE_SS = 'weather_temperature';
 const WEATHER_TEMPERATURE_UNITS_SS = 'weather_temperature_units';
@@ -97,7 +97,7 @@ var TabTrekkerWeather = {
      */
     shouldUpdate: function() {
         //no weather result exists
-        var lastUpdated = ss.storage[WEATHER_LASTUPDATED_SS];
+        var lastUpdated = ss.storage[WEATHER_LASTUPDATED_TIME_SS];
         if(lastUpdated == null) {
             return true;
         }
@@ -113,7 +113,7 @@ var TabTrekkerWeather = {
      * Disables updates for the specified milliseconds.
      */
     disableUpdates: function(millis) {
-       ss.storage[WEATHER_LASTUPDATED_SS] = Date.now() -
+       ss.storage[WEATHER_LASTUPDATED_TIME_SS] = Date.now() -
             WEATHER_UPDATE_INTERVAL_MILLIS + millis; 
     },
 
@@ -122,7 +122,7 @@ var TabTrekkerWeather = {
      */
     clearCachedWeatherResult: function() {
         logger.log('Clearing cached weather result.');
-        ss.storage[WEATHER_LASTUPDATED_SS] = null;
+        ss.storage[WEATHER_LASTUPDATED_TIME_SS] = null;
     },
 
     /**
@@ -211,7 +211,7 @@ var TabTrekkerWeather = {
         logger.log('Caching weather result.');
 
         ss.storage[WEATHER_CONDITIONS_SS] = weather.conditions;
-        ss.storage[WEATHER_LASTUPDATED_SS] = Date.now();
+        ss.storage[WEATHER_LASTUPDATED_TIME_SS] = Date.now();
         ss.storage[WEATHER_LOCATION_NAME_SS] = weather.location;
         ss.storage[WEATHER_TEMPERATURE_SS] = weather.temperature;
         ss.storage[WEATHER_TEMPERATURE_UNITS_SS] = weather.temperatureUnits;

@@ -24,14 +24,12 @@ Parse.Cloud.define('getNextImageSet', function(request, response) {
     }
     //get next unviewed image set
     else {
-        var i = nextId;
         var counter = 0;
         while(counter !== imageSets.length) {
-            if(viewedIds.indexOf(imageSets[i].id) === -1) {
-                nextId = i;
+            if(viewedIds.indexOf(imageSets[nextId].id) === -1) {
                 break;
             }
-            i = (i + 1) % imageSets.length;
+            nextId = (nextId + 1) % imageSets.length;
             counter++;
         }
     }
