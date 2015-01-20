@@ -199,7 +199,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
                 //save images
                 ss.storage[IMAGES_IMAGE_SET_SS] = imageSet;
                 ss.storage[IMAGES_LASTUPDATED_TIME_SS] = Date.now();
-                TabTrekkerImages.setChosenImage(0);
+                TabTrekkerImages.setChosenImage(imageSet.startingImageId);
                 return worker;
             }, function(error) {
                 logger.warn('Forcing next image update because of', error.message);
