@@ -74,13 +74,9 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
         if(chooseNewImage || TabTrekkerImages.shouldChooseNewImage()) {
             TabTrekkerImages.chooseNewImage();
         }
-        var image = TabTrekkerImages.getChosenImage();
-        if(image) {
-            image.fallback = TabTrekkerImages.getFallbackImage();
-            utils.emit(tabtrekker.workers, worker, IMAGES_DISPLAY_MSG, image);
-        } else {
-            logger.error('Cannot display invalid saved image.');
-        }
+        var image = TabTrekkerImages.getChosenImage() || {};
+        image.fallback = TabTrekkerImages.getFallbackImage();
+        utils.emit(tabtrekker.workers, worker, IMAGES_DISPLAY_MSG, image);
      },
 
      /**
