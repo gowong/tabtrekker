@@ -119,11 +119,11 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
         var image = ss.storage[IMAGES_IMAGE_SET_SS].images[chosenId];
 
         //add image set info
-        if(image) {
-            image.imageSetName = imageSet.name;
-            image.imageSetInfoUrl = imageSet.infoUrl;
-        }
-        return image;
+        return {
+            image: image,
+            imageSetName: imageSet.name,
+            imageSetInfoUrl: imageSet.infoUrl
+        };
     },
 
     /**
