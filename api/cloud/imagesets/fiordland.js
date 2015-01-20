@@ -5,7 +5,7 @@ exports.ImageSet = {
     infoUrl: 'http://en.wikipedia.org/wiki/Fiordland_National_Park',
     images: [
         {
-            infoUrl: 'https://www.flickr.com/photos/stuckincustoms/8432196108',
+            infoUrl: 'https://www.flickr.com/photos/phantom_cameron/4261923796',
             imageUrl: 'http://tabtrekker.parseapp.com/images/fiordland/0.jpg'
         },
         {
@@ -25,15 +25,15 @@ exports.ImageSet = {
             imageUrl: 'http://tabtrekker.parseapp.com/images/fiordland/4.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/stuckincustoms/5403215589',
+            infoUrl: 'https://www.flickr.com/photos/elmalino/5449066246',
             imageUrl: 'http://tabtrekker.parseapp.com/images/fiordland/5.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/tewahipounamu/12110351594',
+            infoUrl: 'https://www.flickr.com/photos/stuckincustoms/5403215589',
             imageUrl: 'http://tabtrekker.parseapp.com/images/fiordland/6.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/tewahipounamu/12013848833',
+            infoUrl: 'https://www.flickr.com/photos/tewahipounamu/12110351594',
             imageUrl: 'http://tabtrekker.parseapp.com/images/fiordland/7.jpg'
         },
         {
@@ -45,7 +45,7 @@ exports.ImageSet = {
             imageUrl: 'http://tabtrekker.parseapp.com/images/fiordland/9.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/stuckincustoms/7960334518',
+            infoUrl: 'https://www.flickr.com/photos/stuckincustoms/7825822014',
             imageUrl: 'http://tabtrekker.parseapp.com/images/fiordland/10.jpg'
         }
     ]
