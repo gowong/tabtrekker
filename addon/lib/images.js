@@ -218,12 +218,12 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
      * have been downloaded.
      */
     downloadImages: function() {
+        let imageSet = ss.storage[IMAGES_IMAGE_SET_SS];
+        if(!imageSet || !imageSet.images || imageSet.images.length === 0) {
+            logger.info('No images to download.');
+            return;
+        }
         return Task.spawn(function*() {
-            let imageSet = ss.storage[IMAGES_IMAGE_SET_SS];
-            if(!imageSet || !imageSet.images || imageSet.images.length === 0) {
-                logger.warn('No images to download.');
-                throw new Error('No images to download.');
-            }
             let images = imageSet.images;
             let downloadPromises = [];
 
