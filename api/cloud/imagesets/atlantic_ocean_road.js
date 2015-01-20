@@ -1,7 +1,7 @@
     {
         id: 0,
         name: 'Atlantic Ocean Road, Norway',
-        infoUrl: 'http://www.wikiwand.com/en/Atlantic_Ocean_Road',
+        infoUrl: 'http://en.wikipedia.org/wiki/Atlantic_Ocean_Road',
         images: [
             {
                 infoUrl: 'https://www.flickr.com/photos/kjelljoran/7667690396',
