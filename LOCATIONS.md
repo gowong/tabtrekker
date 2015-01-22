@@ -27,15 +27,15 @@
 - Fiordland National Park, New Zealand ***(Done)***
 - Antelope Canyon, USA
 - Grand Canyon, USA *(and Horseshoe Bend)* ***(Done)***
-- Yosemite National Park, USA
+- Yosemite National Park, USA ***(Done)***
 
 ##Historical Landmarks
 - Great Wall of China ***(Done)***
-- Meteora, Greece
+- Meteora, Greece ***(Done)***
 - Bagan, Myanmar
 - *Castles*
     - Neuschwanstein Castle, Germany ***(Done)***
-    - Matsumoto Castle, Japan
+    - Matsumoto Castle, Japan ***(Done)***
     - Edinburgh Castle, Scotland
 
 ##Modern Landmarks
