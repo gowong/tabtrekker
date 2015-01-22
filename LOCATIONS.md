@@ -6,6 +6,7 @@
 - Rio de Janeiro, Brazil ***(Done)***
 - Paris, France ***(Done)***
 - Venice, Italy ***(Done)***
+- Tokyo, Japan
 - St. Petersburg, Russia ***(Done)***
 - Stockholm, Sweden ***(Done)***
 - New York, USA ***(Done)***
