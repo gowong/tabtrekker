@@ -16,7 +16,7 @@
 - Cappadocia, Turkey
 - *Coastal*
     - Hallstatt, Austria ***(Done)***
-    - Manarola, Italy
+    - Manarola, Italy ***(Done)***
 
 ##Fields, Hills, Plains
 - Provence, France
@@ -48,4 +48,4 @@
 - Santorini, Greece
 
 ##Others
-- Auroras
+- Auroras ***(Done)***
