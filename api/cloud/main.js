@@ -19,7 +19,7 @@ Parse.Cloud.define('getNextImageSet', function(request, response) {
 
     var viewedIds = request.params.viewedIds || [];
     //user has seen all image sets
-    if(viewedIds.length === imageSets.length) {
+    if(viewedIds.length >= imageSets.length) {
         //get random image set
         do {
             nextId = Math.floor(Math.random() * imageSets.length);
