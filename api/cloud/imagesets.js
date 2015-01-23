@@ -2,7 +2,7 @@
 
 /**
  * Collection of images to be cycled through.
- * Image sizes: at least 2000px wide, less than 7 MB
+ * Image sizes: at least 1920px wide, less than 5 MB
  */
 exports.ImageSets = [
     //0
