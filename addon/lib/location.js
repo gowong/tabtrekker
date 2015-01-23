@@ -1,7 +1,7 @@
 'use strict';
 
 /* SDK Modules */
-const {Cu} = require('chrome');
+const {Cc, Ci, Cu} = require('chrome');
 Cu.import('resource://gre/modules/Promise.jsm');
 Cu.import('resource://gre/modules/Task.jsm');
 const Request = require('sdk/request').Request;
@@ -14,9 +14,6 @@ const utils = require('utils.js').TabTrekkerUtils;
 var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */
-//messages
-const LOCATION_GEOLOCATION_REQUEST_MSG = 'location_geolocation_request';
-const LOCATION_GEOLOCATION_RESULT_MSG = 'location_geolocation_result';
 //preferences
 const LOCATION_PREF = 'location';
 //simple storage
@@ -40,7 +37,7 @@ var TabTrekkerLocation = {
      * Returns a promise that is fulfilled with either the current geolocation
      * or the user-defined location.
      */
-    getLocation: function(workers, worker) {
+    getLocation: function(worker) {
         return Task.spawn(function*() {
 
             //user-defined location
@@ -54,7 +51,7 @@ var TabTrekkerLocation = {
             }
 
             //get geolocation
-            return yield TabTrekkerLocation.getGeoLocation(workers, worker);
+            return yield TabTrekkerLocation.getGeoLocation(worker);
 
         }).then(null, function(error) {
             logger.error('Error getting location.', error.message);
@@ -65,29 +62,24 @@ var TabTrekkerLocation = {
     /**
      * Returns a promise that is fulfilled with the geolocation.
      */
-    getGeoLocation: function(workers, worker) {
+    getGeoLocation: function(worker) {
         return new Promise(function(resolve, reject) {
-            //request geolocation from content scripts
-            utils.emit(workers, worker, LOCATION_GEOLOCATION_REQUEST_MSG);
-            //geolocation received
-            worker.port.on(LOCATION_GEOLOCATION_RESULT_MSG, function(coords) {
+            //request geolocation
+            var xpcomGeolocation = Cc["@mozilla.org/geolocation;1"]
+                                    .getService(Ci.nsISupports);
+            xpcomGeolocation.getCurrentPosition(function(position) {
                 //geolocation failed
-                if(!coords || coords.latitude == null
-                    || coords.longitude == null) {
+                if(!position || !position.coords
+                    || position.coords.latitude == null
+                    || position.coords.longitude == null) {
                     reject(new Error('Geolocation failed.'));
                     return;
                 }
-
-                //copy coordinates
-                var position = {
-                    coords: coords,
-                    worker: worker
-                };
-
                 //make geocoding request
                 return TabTrekkerLocation.geocodeCoordinates(position).
-                    then(function(position) {
-                        resolve(position);
+                    then(function(geocodedPosition) {
+                        geocodedPosition.worker = worker;
+                        resolve(geocodedPosition);
                     }, function(error) {
                         reject(error);
                     });

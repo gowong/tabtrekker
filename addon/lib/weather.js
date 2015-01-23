@@ -138,7 +138,7 @@ var TabTrekkerWeather = {
      * or the user-defined location.
      */
     getLocation: function(worker) {
-        return location.getLocation(tabtrekker.workers, worker).
+        return location.getLocation(worker).
             then(null, function(error) {
                 throw new TabTrekkerWeather.WeatherException(error, worker);
         });
