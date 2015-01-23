@@ -4,6 +4,7 @@
 const {Cc, Ci, Cu} = require('chrome');
 Cu.import('resource://gre/modules/Promise.jsm');
 Cu.import('resource://gre/modules/Task.jsm');
+const _ = require('sdk/l10n').get;
 const Request = require('sdk/request').Request;
 const simplePrefs = require('sdk/simple-prefs');
 const ss = require('sdk/simple-storage');
@@ -16,6 +17,7 @@ var tabtrekker; //load on initialization to ensure main module is loaded
 /* Constants */
 //preferences
 const LOCATION_PREF = 'location';
+const LOCATION_ALLOW_GEOLOCATION_PREF = 'location_allow_geolocation';
 //simple storage
 const LOCATION_GEOLOCATION_LAT_SS = 'location_geolocation_latitude';
 const LOCATION_GEOLOCATION_LNG_SS = 'location_geolocation_longitude';
@@ -64,26 +66,102 @@ var TabTrekkerLocation = {
      */
     getGeoLocation: function(worker) {
         return new Promise(function(resolve, reject) {
-            //request geolocation
-            var xpcomGeolocation = Cc['@mozilla.org/geolocation;1']
-                                    .getService(Ci.nsISupports);
-            xpcomGeolocation.getCurrentPosition(function(position) {
-                //geolocation failed
-                if(!position || !position.coords
-                    || position.coords.latitude == null
-                    || position.coords.longitude == null) {
-                    reject(new Error('Geolocation failed.'));
-                    return;
-                }
-                //make geocoding request
-                return TabTrekkerLocation.geocodeCoordinates(position).
-                    then(function(geocodedPosition) {
-                        geocodedPosition.worker = worker;
-                        resolve(geocodedPosition);
-                    }, function(error) {
-                        reject(error);
+
+            //get geolocation permission
+            TabTrekkerLocation.getGeolocationPermission()
+                .then(function() {
+
+                    //request geolocation
+                    var xpcomGeolocation = Cc['@mozilla.org/geolocation;1']
+                                            .getService(Ci.nsISupports);
+                    xpcomGeolocation.getCurrentPosition(function(position) {
+                        //geolocation failed
+                        if(!position || !position.coords
+                            || position.coords.latitude == null
+                            || position.coords.longitude == null) {
+                            reject(new Error('Geolocation failed.'));
+                            return;
+                        }
+                        //make geocoding request
+                        return TabTrekkerLocation.geocodeCoordinates(position).
+                            then(function(geocodedPosition) {
+                                geocodedPosition.worker = worker;
+                                resolve(geocodedPosition);
+                            }, function(error) {
+                                reject(error);
+                            });
                     });
-            });
+                }, function(error) {
+                    reject(error);
+                });
+        });
+    },
+
+    /**
+     * Returns a promise that is fulfilled if the user has allowed the
+     * geolocation.
+     */
+    getGeolocationPermission: function() {
+        return new Promise(function(resolve, reject) {
+
+            var allowGeolocation = simplePrefs.prefs[LOCATION_ALLOW_GEOLOCATION_PREF];
+            //always allowed
+            if(allowGeolocation) {
+                finish(true);
+                return;
+            } 
+            //never allowed
+            else if(allowGeolocation != null) {
+                finish(false);
+                return;
+            }
+
+            let done = false;
+            function finish(allowed) {
+                done = true;
+                if (allowed) {
+                    resolve(true);
+                } else {
+                    reject(new Error('User did not allow geolocation.'));
+                }
+            }
+
+            //prompt user for geolocation permission
+            var activeBrowserWindow = require('sdk/window/utils')
+                                        .getMostRecentBrowserWindow();
+            let prompt = activeBrowserWindow.PopupNotifications.show(
+                            activeBrowserWindow.gBrowser.selectedBrowser,
+                            'geolocation',
+                            _('geolocation_prompt_message'),
+                            null,
+                            {
+                                label: _('geolocation_prompt_share'),
+                                accessKey: 'A',
+                                callback: function() {
+                                    logger.info('Geolocation allowed.');
+                                    simplePrefs.prefs[LOCATION_ALLOW_GEOLOCATION_PREF] = true;
+                                    finish(true);
+                                }
+                            },
+                            [{
+                                label: _('geolocation_prompt_nevershare'),
+                                accessKey: 'N',
+                                callback: function() {
+                                    logger.info('Geolocation not allowed.');
+                                    simplePrefs.prefs[LOCATION_ALLOW_GEOLOCATION_PREF] = false;
+                                    finish(false);
+                                }
+                            }],
+                            {
+                                eventCallback: function(event) {
+                                    if (event === 'dismissed') {
+                                        if (!done) {
+                                            reject(new Error('Geolocation permission prompt dismissed.'));
+                                        }
+                                        PopupNotifications.remove(prompt);
+                                    }
+                                }
+                            });
         });
     },
 
