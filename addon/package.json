@@ -36,7 +36,7 @@
                 },
                 {
                     "value": "hover",
-                    "label": "On hover"
+                    "label": "Onhover"
                 },
                 {
                     "value": "never",
@@ -62,7 +62,7 @@
                 },
                 {
                     "value": "hover",
-                    "label": "On hover"
+                    "label": "Onhover"
                 },
                 {
                     "value": "never",
@@ -105,7 +105,7 @@
                 },
                 {
                     "value": "hover",
-                    "label": "On hover"
+                    "label": "Onhover"
                 },
                 {
                     "value": "never",
@@ -129,7 +129,7 @@
                 },
                 {
                     "value": "yahoo",
-                    "label": "Yahoo!"
+                    "label": "Yahoo"
                 }
             ]
         }
