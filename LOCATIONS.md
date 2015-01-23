@@ -6,7 +6,7 @@
 - Rio de Janeiro, Brazil ***(Done)***
 - Paris, France ***(Done)***
 - Venice, Italy ***(Done)***
-- Tokyo, Japan
+- Kyoto, Japan
 - St. Petersburg, Russia ***(Done)***
 - Stockholm, Sweden ***(Done)***
 - New York, USA ***(Done)***
@@ -48,4 +48,4 @@
 - Santorini, Greece
 
 ##Others
-- Aurora borealis/australis
+- Auroras
