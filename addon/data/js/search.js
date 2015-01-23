@@ -140,7 +140,7 @@ var TabTrekkerSearch = {
      * Sets search input change handler.
      */
     setInputChangeHandler: function() {
-        $('#search_input').on("input", function() {
+        $('#search_input').on('input', function() {
             var input = this.value;
 
             //clear existing timer

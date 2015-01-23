@@ -65,7 +65,7 @@ var TabTrekkerLocation = {
     getGeoLocation: function(worker) {
         return new Promise(function(resolve, reject) {
             //request geolocation
-            var xpcomGeolocation = Cc["@mozilla.org/geolocation;1"]
+            var xpcomGeolocation = Cc['@mozilla.org/geolocation;1']
                                     .getService(Ci.nsISupports);
             xpcomGeolocation.getCurrentPosition(function(position) {
                 //geolocation failed
