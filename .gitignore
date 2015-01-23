@@ -1,9 +1,0 @@
-# Firefox addon files
-*.xpi
-
-# Mac OS
-.DS_STORE
-
-# Sublimetext
-*.sublime-project
-*.sublime-workspace
