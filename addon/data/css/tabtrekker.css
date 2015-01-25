@@ -184,6 +184,9 @@ input:focus::-moz-placeholder {
     font-size: 11px;
     font-weight: 400;
 }
+#about_donate_link {
+    margin-right: 5px;
+}
 #about_modal_close {
     background-color: rgba(200, 200, 200, 0.6);
     border-radius: 0 0 3px 3px;
