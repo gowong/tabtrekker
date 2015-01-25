@@ -78,7 +78,7 @@ var TabTrekkerHistory = {
             Request({
                 url: url,
                 onComplete: function(response) {
-                    if(response.status != 200) {
+                    if(!response.text) {
                         logger.error('Request failed for ' + url, response);
                         return;
                     }
