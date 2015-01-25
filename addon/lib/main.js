@@ -97,7 +97,7 @@ simplePrefs.on(HOME_ENABLED_PREF, TabTrekkerMain.setHomePage);
 //load content scripts
 pageMod.PageMod({
     include: self.data.url(HTML_PAGE),
-    contentScriptFile: [self.data.url('js/jquery-2.1.1.min.js'),
+    contentScriptFile: [self.data.url('js/jquery-2.1.3.min.js'),
                         self.data.url('js/bootstrap.min.js'),
                         self.data.url('js/moment-with-locales.min.js'),
                         self.data.url('js/typeahead.bundle.min.js'),
