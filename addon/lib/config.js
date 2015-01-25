@@ -5,7 +5,7 @@
  */
 var TabTrekkerConfig = {
 
-    dev: true,
+    dev: false,
 
     parseDev: {
         appId: 'ljUR1d7dsOLJmWniAszRSCS1jl2PTUpbyyC3WBUZ',

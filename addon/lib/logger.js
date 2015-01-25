@@ -7,11 +7,11 @@ var TabTrekkerLogger = {
 
     logLevel: false,
 
-    infoLevel: true,
+    infoLevel: false,
     
-    warnLevel: true,
+    warnLevel: false,
     
-    errorLevel: true,
+    errorLevel: false,
 
     log: function(msg, args) {
         if(TabTrekkerLogger.logLevel) {
