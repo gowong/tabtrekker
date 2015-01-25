@@ -303,7 +303,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
             let url = image.imageUrl;
             let imageFormat = url.substring(url.lastIndexOf('.'));
             let imageSetFolder = imageSet.id;
-            let imageSetPath = OS.Path.join(IMAGES_DOWNLOAD_DIR, imageSetFolder);
+            let imageSetPath = OS.Path.join(IMAGES_DOWNLOAD_DIR, String(imageSetFolder));
 
             //create image set directory if needed
             let path = yield files.getOrCreatePathInProfile(imageSetPath);
