@@ -1,5 +1,5 @@
 # Firefox addon files
-*.xpi
+/*.xpi
 
 # Mac OS
 .DS_STORE
