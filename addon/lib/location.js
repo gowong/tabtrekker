@@ -104,7 +104,9 @@ var TabTrekkerLocation = {
     getGeolocationPermission: function() {
         return new Promise(function(resolve, reject) {
 
+            let done = false;
             var allowGeolocation = simplePrefs.prefs[LOCATION_ALLOW_GEOLOCATION_PREF];
+
             //always allowed
             if(allowGeolocation) {
                 finish(true);
@@ -116,7 +118,6 @@ var TabTrekkerLocation = {
                 return;
             }
 
-            let done = false;
             function finish(allowed) {
                 done = true;
                 if (allowed) {
