@@ -1,6 +1,9 @@
 # Firefox addon files
 /*.xpi
 
+#Parse files
+api/global.json
+
 # Mac OS
 .DS_STORE
 
