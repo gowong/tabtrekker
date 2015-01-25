@@ -113,10 +113,10 @@ var TabTrekkerHistory = {
             //link tags
             if(element.nodeName == 'LINK') {
                 var rel = attrs.getNamedItem('rel');
-                if(rel.nodeValue) {
+                if(rel.value) {
                     var href = attrs.getNamedItem('href') ? 
-                        attrs.getNamedItem('href').nodeValue : null;
-                    switch(rel.nodeValue) {
+                        attrs.getNamedItem('href').value : null;
+                    switch(rel.value) {
                         //apple touch icon (57x57 to 152x152)
                         case 'apple-touch-icon':
                             icon.appleIcon = href;
@@ -131,11 +131,11 @@ var TabTrekkerHistory = {
             //meta tags
             else if(element.nodeName == 'META') {
                 var content = attrs.getNamedItem('content') ? 
-                    attrs.getNamedItem('content').nodeValue : null;
+                    attrs.getNamedItem('content').value : null;
 
                 var itemprop = attrs.getNamedItem('itemprop');
                 if(itemprop) {
-                    switch(itemprop.nodeValue) {
+                    switch(itemprop.value) {
                         //higher-res favicon
                         case 'image':
                             icon.metaImage = content;
@@ -144,7 +144,7 @@ var TabTrekkerHistory = {
                 }
                 var name = attrs.getNamedItem('name');
                 if(name) {
-                    switch(name.nodeValue) {
+                    switch(name.value) {
                         //microsoft tile logo
                         case 'msapplication-square70x70logo':
                         case 'msapplication-square150x150logo':
@@ -163,7 +163,7 @@ var TabTrekkerHistory = {
                 }
                 var property = attrs.getNamedItem('property');
                 if(property) {
-                    switch(property.nodeValue) {
+                    switch(property.value) {
                         //open graph protocol image
                         case 'og:image':
                             icon.ogImage = content;
