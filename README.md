@@ -9,3 +9,6 @@ Explore the world one tab at a time with this Firefox addon.
 5. Install any [language packs](https://addons.mozilla.org/en-US/firefox/language-tools/) that you want to test.
 6. Build and install addon using: `cfx xpi; wget --post-file=tabtrekker.xpi http://localhost:8888/;`
 7. Update Parse using `parse deploy TabTrekkerDev`
+
+##Translations
+[Help translate TabTrekker!](https://gowong.oneskyapp.com/collaboration/project?id=47644)
