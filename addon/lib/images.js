@@ -8,6 +8,7 @@ Cu.import('resource://gre/modules/Promise.jsm');
 Cu.import('resource://gre/modules/Task.jsm');
 const array = require('sdk/util/array');
 const ss = require('sdk/simple-storage');
+const timers = require('sdk/timers');
 
 /* Modules */
 const files = require('files.js').TabTrekkerFiles;
@@ -27,6 +28,7 @@ const IMAGES_LASTUPDATED_TIME_SS = 'images_lastupdated';
 const IMAGES_IMAGE_SET_SS = 'images_image_set';
 //others
 const IMAGES_CHOOSE_INTERVAL_MILLIS = 5 * 60 * 1000; //5 minutes
+const IMAGES_DOWNLOAD_DELAY = 15 * 1000; //15 seconds
 const IMAGES_DOWNLOAD_DIR = 'images';
 const IMAGES_FALLBACKS = ['images/0.jpg', 'images/1.jpg', 'images/2.jpg', 
                           'images/3.jpg', 'images/4.jpg', 'images/5.jpg'];
@@ -60,8 +62,10 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
             TabTrekkerImages.displayImage(worker, false);
 
             //download images if needed
-            TabTrekkerImages.downloadImages().
-                then(TabTrekkerImages.removeDownloadedImages);
+            timers.setTimeout(function() {
+                TabTrekkerImages.downloadImages().
+                    then(TabTrekkerImages.removeDownloadedImages);
+            }, IMAGES_DOWNLOAD_DELAY);
         });
     },
 
