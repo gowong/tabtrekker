@@ -26,7 +26,7 @@ const IMAGES_LASTCHOSEN_TIME_SS = 'images_lastchosen';
 const IMAGES_LASTUPDATED_TIME_SS = 'images_lastupdated';
 const IMAGES_IMAGE_SET_SS = 'images_image_set';
 //others
-const IMAGES_CHOOSE_INTERVAL_MILLIS = 60 * 1000; //1 minute
+const IMAGES_CHOOSE_INTERVAL_MILLIS = 5 * 60 * 1000; //5 minutes
 const IMAGES_DOWNLOAD_DIR = 'images';
 const IMAGES_FALLBACKS = ['images/0.jpg', 'images/1.jpg', 'images/2.jpg', 
                           'images/3.jpg', 'images/4.jpg', 'images/5.jpg'];
