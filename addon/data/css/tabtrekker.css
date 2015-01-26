@@ -42,7 +42,7 @@ input:focus::-moz-placeholder {
     position: fixed;
     top: 0;
     right: 0;
-    margin: 0.5em 1.25em;
+    padding: 0.5em 1.25em 1.25em 1.25em;
 }
 #top_menu {
     padding: 0;
@@ -186,7 +186,7 @@ input:focus::-moz-placeholder {
 }
 #search_container {
     height: 50vh;
-    margin: 25vh 10vh;
+    margin: 25vh 5vw;
     transform-style: preserve-3d;
 }
 #search_form {
@@ -228,9 +228,8 @@ input:focus::-moz-placeholder {
     position: fixed;
     bottom: 0;
     left: 0;
-    margin-bottom: 2em;
-    margin-left: 10vh;
-    padding-left: 15px;
+    padding: 2em 5vw;
+    margin-left: 15px;
 }
 #image_set_info, #image_download {
     font-size: 0.875em;
@@ -243,8 +242,7 @@ input:focus::-moz-placeholder {
     position: fixed;
     bottom: 0;
     right: 0;
-    margin-bottom: 1em;
-    margin-right: 2em;
+    padding: 1em 2em;
 }
 #time_container {
     float: left;
