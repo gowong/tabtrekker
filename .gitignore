@@ -1,5 +1,5 @@
 # Firefox addon files
-/*.xpi
+addon/*.xpi
 
 # Parse files
 api/config/global.json
