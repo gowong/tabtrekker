@@ -5,8 +5,8 @@ const self = require('sdk/self');
 const tabs = require('sdk/tabs');
 
 /* Modules */
-const logger = require('logger.js').TabTrekkerLogger;
-const images = require('images.js').TabTrekkerImages;
+const logger = require('logger').TabTrekkerLogger;
+const images = require('images').TabTrekkerImages;
 
 /* Constants */
 const SETTINGS_MSG = 'menu_settings';

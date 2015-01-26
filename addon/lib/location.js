@@ -10,8 +10,8 @@ const simplePrefs = require('sdk/simple-prefs');
 const ss = require('sdk/simple-storage');
 
 /* Modules */
-const logger = require('logger.js').TabTrekkerLogger;
-const utils = require('utils.js').TabTrekkerUtils;
+const logger = require('logger').TabTrekkerLogger;
+const utils = require('utils').TabTrekkerUtils;
 var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */

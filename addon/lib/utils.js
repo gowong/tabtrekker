@@ -6,7 +6,7 @@ const {Cc, Ci} = require('chrome');
 const array = require('sdk/util/array');
 
 /* Modules */
-const logger = require('logger.js').TabTrekkerLogger;
+const logger = require('logger').TabTrekkerLogger;
 
 /**
  * Utils module.

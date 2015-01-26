@@ -5,8 +5,8 @@ const {Cc, Ci} = require('chrome');
 const Request = require('sdk/request').Request;
 
 /* Modules */
-const logger = require('logger.js').TabTrekkerLogger;
-const utils = require('utils.js').TabTrekkerUtils;
+const logger = require('logger').TabTrekkerLogger;
+const utils = require('utils').TabTrekkerUtils;
 var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */
@@ -25,7 +25,7 @@ var TabTrekkerHistory = {
      * Initializes history by sending history results to the content scripts.
      */
     initHistory: function(worker) {
-        tabtrekker = require('main.js').TabTrekkerMain;
+        tabtrekker = require('main').TabTrekkerMain;
         
         logger.log('Initializing history.');
 
