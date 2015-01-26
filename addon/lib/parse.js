@@ -9,8 +9,8 @@ const Request = require('sdk/request').Request;
 const ss = require('sdk/simple-storage');
 
 /* Modules */
-const config = require('config.js').TabTrekkerConfig;
-const logger = require('logger.js').TabTrekkerLogger;
+const config = require('config').TabTrekkerConfig;
+const logger = require('logger').TabTrekkerLogger;
 
 /* Constants */
 //simple storage

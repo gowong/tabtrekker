@@ -7,14 +7,14 @@ const simplePrefs = require('sdk/simple-prefs');
 const self = require('sdk/self');
 
 /* Modules */
-const history = require('history.js').TabTrekkerHistory;
-const images = require('images.js').TabTrekkerImages;
-const logger = require('logger.js').TabTrekkerLogger;
-const menu = require('menu.js').TabTrekkerMenu;
-const search = require('search.js').TabTrekkerSearch;
-const time = require('time.js').TabTrekkerTime;
-const utils = require('utils.js').TabTrekkerUtils;
-const weather = require('weather.js').TabTrekkerWeather;
+const history = require('history').TabTrekkerHistory;
+const images = require('images').TabTrekkerImages;
+const logger = require('logger').TabTrekkerLogger;
+const menu = require('menu').TabTrekkerMenu;
+const search = require('search').TabTrekkerSearch;
+const time = require('time').TabTrekkerTime;
+const utils = require('utils').TabTrekkerUtils;
+const weather = require('weather').TabTrekkerWeather;
 
 /* Constants */
 //preferences
