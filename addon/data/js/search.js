@@ -9,7 +9,7 @@ const SEARCH_SUGGESTIONS_RESULT_MSG = 'search_suggestions_result';
 //preferences
 const SHOW_SEARCH_PREF = 'show_search';
 //other
-const SEARCH_SUGGESTIONS_INTERVAL = 300;
+const SEARCH_SUGGESTIONS_DELAY = 300;
 
 /**
  * Search module.
@@ -149,7 +149,7 @@ var TabTrekkerSearch = {
             //set timer
             var wait = setTimeout(function() {
                 TabTrekkerSearch.requestSearchSuggestions(input);
-            }, SEARCH_SUGGESTIONS_INTERVAL);
+            }, SEARCH_SUGGESTIONS_DELAY);
 
             //attach timer to input element
             $(this).data('timer', wait);
