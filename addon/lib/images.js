@@ -46,7 +46,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
     /**
      * List of in progress downloads.
      */
-    downloadTargets: [],
+    inProgressDownloadTargets: [],
 
     /**
      * Initializes images by requesting new images (if needed), saving them
@@ -231,7 +231,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
         }
         return Task.spawn(function*() {
             let images = imageSet.images;
-            let downloadPromises = [];
+            let downloadResults = [];
 
             logger.log('Downloading images.');
 
@@ -253,23 +253,36 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
 
                 logger.info('Downloading ' + source + ' to ' + target);
 
+                //create download
+                let download = yield Downloads.createDownload({
+                    source: source,
+                    target: target
+                });
+
                 //start download
-                let download = Downloads.fetch(source, target).
+                let downloadResult = download.start().
                     then(function() {
                         logger.info('Download complete', target);
-                        //remove completed download
-                        array.remove(TabTrekkerImages.downloadTargets, target);
+                        //remove from in progress downloads
+                        array.remove(TabTrekkerImages.inProgressDownloadTargets, target);
                         //save downloaded image file uri
                         TabTrekkerImages.saveImageFileUri(index, target);
+                    }, function(error) {
+                        logger.error('Download failed', target);
+                        //remove from in progress downloads
+                        array.remove(TabTrekkerImages.inProgressDownloadTargets, target);
+                        //ensures download is stopped and removes partial data
+                        //so that the download can be retried next time
+                        download.finalize(true);
                     });
 
                 //keep track of downloads
-                downloadPromises.push(download);
-                TabTrekkerImages.downloadTargets.push(target);
+                downloadResults.push(downloadResult);
+                TabTrekkerImages.inProgressDownloadTargets.push(target);
             }
 
             //wait for all downloads to complete
-            yield Promise.all(downloadPromises);
+            yield Promise.all(downloadResults);
             logger.log('All downloads completed');
 
             return imageSet;
@@ -287,8 +300,8 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
     shouldDownloadImage: function(image, downloadTarget) {
         return Task.spawn(function*() {
             //iterate through in progress downloads
-            for(var i = 0; i < TabTrekkerImages.downloadTargets.length; i++) {
-                let inProgressDownloadTarget = TabTrekkerImages.downloadTargets[i];
+            for(var i = 0; i < TabTrekkerImages.inProgressDownloadTargets.length; i++) {
+                let inProgressDownloadTarget = TabTrekkerImages.inProgressDownloadTargets[i];
                 //image download is already in progress
                 if(downloadTarget === inProgressDownloadTarget) {
                     return false;
