@@ -38,7 +38,7 @@ var TabTrekkerTime = {
 
         var options = {}
         options[_24HOUR_PREF] = simplePrefs.prefs[_24HOUR_PREF];
-        options[SHOW_TIME_PREF] = simplePrefs.prefs[SHOW_TIME_PREF];
+        options[SHOW_TIME_PREF] = timeVisibility;
         utils.emit(tabtrekker.workers, worker, TIME_MSG, options);
     }
 };
