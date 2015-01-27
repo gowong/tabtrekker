@@ -153,6 +153,26 @@
                     "label": "Never"
                 }
             ]
+        },
+        {
+            "name": "show_image_info",
+            "title": "Show image info",
+            "type": "radio",
+            "value": "always",
+            "options": [
+                {
+                    "value": "always",
+                    "label": "Always"
+                },
+                {
+                    "value": "hover",
+                    "label": "Onhover"
+                },
+                {
+                    "value": "never",
+                    "label": "Never"
+                }
+            ]
         }
     ]
 }
