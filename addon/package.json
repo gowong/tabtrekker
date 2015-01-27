@@ -133,6 +133,26 @@
                     "label": "Yahoo"
                 }
             ]
+        },
+        {
+            "name": "show_menu",
+            "title": "Show menu",
+            "type": "radio",
+            "value": "always",
+            "options": [
+                {
+                    "value": "always",
+                    "label": "Always"
+                },
+                {
+                    "value": "hover",
+                    "label": "Onhover"
+                },
+                {
+                    "value": "never",
+                    "label": "Never"
+                }
+            ]
         }
     ]
 }

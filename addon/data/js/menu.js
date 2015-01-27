@@ -1,8 +1,13 @@
 'use strict';
 
 /* Constants */
-const SETTINGS_MSG = 'menu_settings';
+//messages
+const HIDE_MENU_MSG = 'hide_menu';
+const MENU_MSG = 'menu';
 const NEXTIMAGE_MSG = 'menu_next_image';
+const SETTINGS_MSG = 'menu_settings';
+//preferences
+const SHOW_MENU_PREF = 'show_menu';
 
 //called on document ready
 $(function() {
@@ -16,6 +21,13 @@ $(function() {
  */
 var TabTrekkerMenu = {
 
+    initMenu: function(data) {
+        if(!data) {
+            return;
+        }
+        TabTrekkerMenu.setMenuVisibility(data[SHOW_MENU_PREF]);
+    },
+
     /**
      * Handles a click event by sending a message of the event to the addon. 
      */
@@ -26,5 +38,34 @@ var TabTrekkerMenu = {
         self.port.emit(message);
         event.stopPropagation();
         event.preventDefault();
+    },
+
+    /**
+     * Sets visibility of the menu based on user preferences.
+     */
+    setMenuVisibility: function(visbilityPref) {
+        switch(visbilityPref) {
+            case 'always':
+                $('#top_menu_container').css('display', 'block');
+                $('#top_menu_container .hover_item').css('opacity', 1);
+                break;
+            case 'hover':
+                $('#top_menu_container').css('display', 'block');
+                break;
+            case 'never':
+                TabTrekkerMenu.hideMenu();
+                break;
+        }
+    },
+
+    /**
+     * Hides the menu.
+     */
+    hideMenu: function() {
+        $('#top_menu_container').css('display', 'none');
     }
 };
+
+//listen for messages
+self.port.on(HIDE_MENU_MSG, TabTrekkerUtils.receiveMessage(TabTrekkerMenu.hideMenu));
+self.port.on(MENU_MSG, TabTrekkerUtils.receiveMessage(TabTrekkerMenu.initMenu));

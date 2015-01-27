@@ -123,7 +123,7 @@ pageMod.PageMod({
         //initialize modules
         history.initHistory(worker);
         images.initImages(worker);
-        menu.attachListeners(worker);
+        menu.initMenu(worker);
         search.initSearch(worker);
         time.initTime(worker);
         weather.initWeather(worker);
