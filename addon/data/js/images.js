@@ -3,6 +3,8 @@
 /* Constants */
 //messages
 const IMAGES_DISPLAY_MSG = 'images_display';
+//preferences
+const SHOW_IMAGE_INFO_PREF = 'show_image_info';
 
 /**
  * Images module.
@@ -23,6 +25,9 @@ var TabTrekkerImages = {
             $('#image_set_info').text(data.imageSetName);
             $('#image_set_info').attr('href', data.imageSetInfoUrl);
             $('#image_download').attr('href', data.image.infoUrl);
+
+            //set image info visibility
+            TabTrekkerImages.setImageInfoVisibility(data[SHOW_IMAGE_INFO_PREF]);
         } else {
             TabTrekkerImages.displayFallbackImage(data.fallback);
         }
@@ -39,6 +44,24 @@ var TabTrekkerImages = {
                 $(this).load();
             }
         });
+    },
+
+    /**
+     * Sets visibility of the image info based on user preferences.
+     */
+    setImageInfoVisibility: function(visbilityPref) {
+        switch(visbilityPref) {
+            case 'always':
+                $('#image_info_container').css('display', 'block');
+                $('#image_info_container').css('opacity', 1);
+                break;
+            case 'hover':
+                $('#image_info_container').css('display', 'block');
+                break;
+            case 'never':
+                $('#image_info_container').css('display', 'none');
+                break;
+        }
     },
 
     /**

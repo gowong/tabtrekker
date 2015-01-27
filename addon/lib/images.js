@@ -7,6 +7,7 @@ Cu.import('resource://gre/modules/osfile.jsm');
 Cu.import('resource://gre/modules/Promise.jsm');
 Cu.import('resource://gre/modules/Task.jsm');
 const array = require('sdk/util/array');
+const simplePrefs = require('sdk/simple-prefs');
 const ss = require('sdk/simple-storage');
 const timers = require('sdk/timers');
 
@@ -26,6 +27,8 @@ const IMAGES_FALLBACK_ID_SS = 'images_fallback_id';
 const IMAGES_LASTCHOSEN_TIME_SS = 'images_lastchosen';
 const IMAGES_LASTUPDATED_TIME_SS = 'images_lastupdated';
 const IMAGES_IMAGE_SET_SS = 'images_image_set';
+//preferences
+const SHOW_IMAGE_INFO_PREF = 'show_image_info';
 //others
 const IMAGES_CHOOSE_INTERVAL_MILLIS = 5 * 60 * 1000; //5 minutes
 const IMAGES_DOWNLOAD_DELAY = 15 * 1000; //15 seconds
@@ -78,6 +81,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
         }
         var image = TabTrekkerImages.getChosenImage() || {};
         image.fallback = TabTrekkerImages.getFallbackImage();
+        image[SHOW_IMAGE_INFO_PREF] = simplePrefs.prefs[SHOW_IMAGE_INFO_PREF];
         utils.emit(tabtrekker.workers, worker, IMAGES_DISPLAY_MSG, image);
      },
 
