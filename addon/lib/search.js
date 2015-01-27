@@ -51,7 +51,7 @@ var TabTrekkerSearch = {
                 placeholder: TabTrekkerSearch.getInputPlaceholder()
             }
         };
-        options[SHOW_SEARCH_PREF] = simplePrefs.prefs[SHOW_SEARCH_PREF];
+        options[SHOW_SEARCH_PREF] = searchVisibility;
         utils.emit(tabtrekker.workers, worker, SEARCH_MSG, options);
 
         //listen for search suggestion requests
