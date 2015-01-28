@@ -27,11 +27,10 @@ var TabTrekkerHistory = {
         var url = result.url;
         var title = result.title || url;
         //small favicon url
-        var iconUrl = result.iconUri ? 
-            result.iconUri.substring('moz-anno:favicon:'.length) : null;
+        var favicon = result.favicon;
         //show either the small favicon (if there is one) or a generic page icon
-        var objectFallback = iconUrl ? 
-            $('<span>').css('background-image', 'url(' + iconUrl + ')') :
+        var objectFallback = favicon ? 
+            $('<span>').css('background-image', 'url(' + favicon + ')') :
             $('<span>').attr('class', 'glyphicon glyphicon-file');
         //append the result
         $('#history_list').append(

@@ -1,8 +1,12 @@
 'use strict';
 
 /* SDK Modules */
-const {Cc, Ci} = require('chrome');
+const {Cc, Ci, Cu} = require('chrome');
+Cu.import('resource://gre/modules/Promise.jsm');
+Cu.import('resource://gre/modules/Task.jsm');
+Cu.import('resource://gre/modules/NewTabUtils.jsm');
 const Request = require('sdk/request').Request;
+const {getFavicon} = require("sdk/places/favicon");
 
 /* Modules */
 const logger = require('logger').TabTrekkerLogger;
@@ -26,44 +30,54 @@ var TabTrekkerHistory = {
      */
     initHistory: function(worker) {
         tabtrekker = require('main').TabTrekkerMain;
-        
         logger.log('Initializing history.');
-
-        var mostVisited = TabTrekkerHistory.getMostVisited(MAX_MOST_VISITED);
-        utils.emit(tabtrekker.workers, worker, HISTORY_MSG, mostVisited);
-        TabTrekkerHistory.setLargeIcons(worker, mostVisited);
+        return Task.spawn(function*() {
+            let mostVisited = yield TabTrekkerHistory.getMostVisited(MAX_MOST_VISITED);
+            utils.emit(tabtrekker.workers, worker, HISTORY_MSG, mostVisited);
+            TabTrekkerHistory.setLargeIcons(worker, mostVisited);
+        });
     },
 
     /**
-     * Returns most visited web pages.
+     * Returns a promise that is resolved by the most visited web pages.
      */
     getMostVisited: function(maxResults) {
+        return Task.spawn(function*() {
+            NewTabUtils.init();
+            let links = NewTabUtils.links.getLinks();
+            let mostVisited = [];
 
-        var mostVisited = [];
+            //get history links only
+            for(let i = 0; i < links.length; i++) {
+                if(links[i].type === 'history') {
+                    mostVisited.push(links[i]);
+                }
+                if(mostVisited.length === maxResults) {
+                    break;
+                }
+            }
 
-        //query history for most visited pages
-        var historyService = Cc['@mozilla.org/browser/nav-history-service;1']
-                                .getService(Ci.nsINavHistoryService);
-        var query = historyService.getNewQuery();
-        var options = historyService.getNewQueryOptions();
-        options.sortingMode = options.SORT_BY_VISITCOUNT_DESCENDING;
-        options.maxResults = maxResults;
-        var result = historyService.executeQuery(query, options);
+            //get favicons
+            let faviconPromises = [];
+            for(let i = 0; i < mostVisited.length; i++) {
+                let item = mostVisited[i];
+                let faviconPromise = new Promise(function(resolve, reject) {
+                    getFavicon(item.url, function(faviconUrl) {
+                        item.favicon = faviconUrl;
+                        resolve();
+                    });
+                });
+                faviconPromises.push(faviconPromise);
+            }
+            //wait for all favicons to be obtained
+            yield Promise.all(faviconPromises);
 
-        //extract each result
-        result.root.containerOpen = true;
-        var count = result.root.childCount;
-        for (var i = 0; i < count; i++) {
-            var node = result.root.getChild(i);
-            mostVisited.push({
-                title: node.title,
-                url: node.uri,
-                iconUri: node.icon
-            });
-        }
+            return mostVisited;
 
-        result.root.containerOpen = false;
-        return mostVisited;
+        }).then(null, function(error) {
+            logger.error('Error getting most visited pages.', error);
+            throw error;
+        });
     },
 
     /**
