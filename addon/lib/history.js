@@ -43,7 +43,14 @@ var TabTrekkerHistory = {
      */
     getMostVisited: function(maxResults) {
         return Task.spawn(function*() {
+            //initialize links cache
             NewTabUtils.init();
+            yield new Promise(function(resolve, reject) {
+                NewTabUtils.links.populateCache(function() {
+                    resolve();
+                });
+            });
+
             let links = NewTabUtils.links.getLinks();
             let mostVisited = [];
 
