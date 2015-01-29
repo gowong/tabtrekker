@@ -26,15 +26,15 @@ var TabTrekkerWeather = {
         TabTrekkerWeather.setWeatherResultsLink(data.location);
         //temperature (show as int)
         var temperature = parseInt(data.temperature, 10) || data.temperature;
-        $('#weather_temperature').html(temperature);
+        $('#weather_temperature').text(temperature);
         //temperature units
-        $('#weather_temperature_units').html(data.temperatureUnits);
+        $('#weather_temperature_units').text(data.temperatureUnits);
         //conditions description
         $('#weather_temperature').attr('title', data.conditions.description);
         //conditions icon
         $('#weather_temperature').attr('data-icon', data.conditions.icon);
         //location
-        $('#weather_location').html(data.location.toUpperCase());
+        $('#weather_location').text(data.location.toUpperCase());
         //hide loading spinner when weather has been updated
         TabTrekkerWeather.hideLoadingSpinner();
         TabTrekkerWeather.setWeatherVisbility(data[SHOW_WEATHER_PREF]);

@@ -43,19 +43,19 @@ var TabTrekkerTime = {
 
         //user-specified 24-hour format
         if(force24hour) {
-            $('#time').html(now.format('HH:mm'));
-            $('#time_ampm').html('');
+            $('#time').text(now.format('HH:mm'));
+            $('#time_ampm').text('');
         } else {
             var formattedTime = now.format('LT');
             //english 12-hour format
             var ampmIndex = Math.max(formattedTime.indexOf('AM'), formattedTime.indexOf('PM'));
             if(ampmIndex !== -1) {
-                $('#time').html(formattedTime.substring(0, ampmIndex));
-                $('#time_ampm').html(formattedTime.substring(ampmIndex, formattedTime.length));
+                $('#time').text(formattedTime.substring(0, ampmIndex));
+                $('#time_ampm').text(formattedTime.substring(ampmIndex, formattedTime.length));
             }
             //other locales or formats
             else {
-                $('#time').html(formattedTime);
+                $('#time').text(formattedTime);
             }
         }
         return function() { TabTrekkerTime.displayTime(force24hour) };
