@@ -26,20 +26,28 @@ var TabTrekkerHistory = {
     appendHistoryResult: function(result) {
         var url = result.url;
         var title = result.title || url;
-        //small favicon url
         var favicon = result.favicon;
+
         //show either the small favicon (if there is one) or a generic page icon
-        var objectFallback = favicon ? 
-            $('<span>').css('background-image', 'url(' + favicon + ')') :
-            $('<span>').attr('class', 'glyphicon glyphicon-file');
+        var objFallback = document.createElement('span');
+        if(favicon) {
+            objFallback.style.backgroundImage = 'url(' + favicon + ')';
+        } else {
+            objFallback.className = 'glyphicon glyphicon-file';
+        }
+
+        //create elements
+        var item = document.createElement('li');
+        var link = document.createElement('a');
+        var obj = document.createElement('object');
+        var text = document.createElement('span');
+        link.setAttribute('href', url);
+        text.textContent = title;
+
         //append the result
-        $('#history_list').append(
-            $('<li>').append(
-                $('<a>').attr('href', url).append(
-                    $('<object>').append(
-                        objectFallback)).append(
-                    $('<span>').append(title))
-        ));
+        var list = document.getElementById('history_list');
+        list.appendChild(item).appendChild(link).appendChild(obj).appendChild(objFallback);
+        link.appendChild(text);
     },
 
     /**
