@@ -21,6 +21,7 @@ var tabtrekker; //load on initialization to ensure main module is loaded
 /* Constants */
 //messages
 const IMAGES_DISPLAY_MSG = 'images_display';
+const IMAGES_DISPLAY_FAILED_MSG = 'images_display_failed';
 //simple storage
 const IMAGES_CHOSEN_ID_SS = 'images_chosen_id';
 const IMAGES_FALLBACK_ID_SS = 'images_fallback_id';
@@ -83,6 +84,10 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
         image.fallback = TabTrekkerImages.getFallbackImage();
         image[SHOW_IMAGE_INFO_PREF] = simplePrefs.prefs[SHOW_IMAGE_INFO_PREF];
         utils.emit(tabtrekker.workers, worker, IMAGES_DISPLAY_MSG, image);
+
+        //handle display image failures
+        worker.port.on(IMAGES_DISPLAY_FAILED_MSG,
+            TabTrekkerImages.handleFailedDisplayImage);
      },
 
      /**
@@ -168,6 +173,30 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
         fallbackId = fallbackId == null ? 0 : ((fallbackId + 1) % IMAGES_FALLBACKS.length);
         ss.storage[IMAGES_FALLBACK_ID_SS] = fallbackId;
         return IMAGES_FALLBACKS[fallbackId];
+    },
+
+    /**
+     * Handles images that could not be displayed. This means that the
+     * downloaded image is corrupt and needs to be redownloaded.
+     */
+    handleFailedDisplayImage: function(imageFileUri) {
+        if(!imageFileUri) {
+            return;
+        }
+        logger.info('Removing image that could not be displayed', imageFileUri);
+        //remove image file uri
+        var images = ss.storage[IMAGES_IMAGE_SET_SS].images;
+        for(var i = 0; i < images.length; i++) {
+            if(images[i].fileUri === imageFileUri) {
+                delete images[i].fileUri;
+            }
+        }
+        //remove downloaded image file
+        var path = OS.Path.fromFileURI(imageFileUri);
+        files.removeFile(path).
+            then(null, function(error) {
+                logger.error('Error removing image file', error);
+            });
     },
 
     /**
