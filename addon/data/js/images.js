@@ -72,8 +72,7 @@ var TabTrekkerImages = {
         var fallbackImage = 'url(' + fallback + ')';
         $(document.body).css('background-image', fallbackImage);
         //hide image info
-        $('#image_set_info').css('display', 'none');
-        $('#image_download').css('display', 'none');
+        TabTrekkerImages.setImageInfoVisibility('never');
     }
 };
 

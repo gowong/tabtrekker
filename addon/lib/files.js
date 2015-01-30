@@ -68,10 +68,9 @@ var TabTrekkerFiles = {
     },
 
     /**
-     * Removes all files and directories that are located in the path
-     * and satisfy the filter.
+     * Removes everything in the path's directory that satisfies the filter.
      */
-    removeInPath: function(path, filter) {
+    removeInDirectory: function(path, filter) {
         return Task.spawn(function*() {
             let iterator = new OS.File.DirectoryIterator(path);
             let removePromises = [];
@@ -103,7 +102,7 @@ var TabTrekkerFiles = {
             return yield Promise.all(removePromises);
 
         }).then(null, function(error) {
-            logger.error('Error removing file', error);
+            logger.error('Error removing directory', error);
             throw error;
         });
     }
