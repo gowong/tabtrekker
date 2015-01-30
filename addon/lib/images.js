@@ -360,7 +360,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
         //remove all files in the images path that pass the filter
         return Task.spawn(function*() {
             let imagesPath = yield TabTrekkerImages.getOrCreateImagesPath();
-            return yield files.removeInPath(imagesPath, filter);
+            return yield files.removeInDirectory(imagesPath, filter);
         }).then(null, function(error) {
             logger.error('Error removing downloaded images', error);
             throw error;
