@@ -3,6 +3,7 @@
 /* Constants */
 //messages
 const IMAGES_DISPLAY_MSG = 'images_display';
+const IMAGES_DISPLAY_FAILED_MSG = 'images_display_failed';
 //preferences
 const SHOW_IMAGE_INFO_PREF = 'show_image_info';
 
@@ -15,9 +16,38 @@ var TabTrekkerImages = {
      * Displays the image.
      */
     displayImage: function(data) {
-        var imageSrc = data.image.fileUri || data.image.imageUrl;
-        if(imageSrc) {
-            //set image
+        var localImage = data.image.fileUri;
+        var remoteImage = data.image.imageUrl;
+
+        //local image
+        TabTrekkerImages.setImageBackground(localImage, data, function() {
+            
+            //notify addon that local image failed to load
+            self.port.emit(IMAGES_DISPLAY_FAILED_MSG, localImage);
+
+            //remote image
+            TabTrekkerImages.setImageBackground(remoteImage, data, function() {
+                TabTrekkerImages.displayFallbackImage(data.fallback);
+            });
+        });
+    },
+
+    /**
+     * Tries to load and set the background image.
+     * Callback is called if the image fails to load.
+     */
+    setImageBackground: function(imageSrc, data, callback) {
+
+        if(!imageSrc) {
+            callback();
+            return;
+        }
+
+        //detect errors when loading image, jquery docs say errors when loading
+        //local images (file://image.png) might not be detected, but it seems
+        //to be working in firefox
+        $(document.createElement('img')).on('load', function() {
+            //set background image
             var backgroundImage = 'url(' + imageSrc + ')';
             $(document.body).css('background-image', backgroundImage);
 
@@ -28,15 +58,10 @@ var TabTrekkerImages = {
 
             //set image info visibility
             TabTrekkerImages.setImageInfoVisibility(data[SHOW_IMAGE_INFO_PREF]);
-        } else {
-            TabTrekkerImages.displayFallbackImage(data.fallback);
-        }
 
-        //detect errors when loading image, jquery docs say errors when loading
-        //local images (file://image.png) won't be detected, but it seems to be
-        //working in firefox
-        $('<img>').error(function() {
-            TabTrekkerImages.displayFallbackImage(data.fallback);
+            $(this).remove();
+        }).on('error', function() {
+            callback();
             $(this).remove();
         }).attr('src', imageSrc).each(function() {
             //fail-safe for cached images which sometimes don't trigger load events

@@ -68,6 +68,22 @@ var TabTrekkerFiles = {
     },
 
     /**
+     * Removes the file at the specified path.
+     */
+    removeFile: function(path) {
+        return Task.spawn(function*() {
+            let isFile = !(yield OS.File.stat(path).isDir);
+            if(isFile) {
+                return yield OS.File.remove(path);
+            } 
+            throw new Error(path + ' is a directory.');
+        }).then(null, function(error) {
+            logger.error('Error removing file', error);
+            throw error;
+        });
+    },
+
+    /**
      * Removes everything in the path's directory that satisfies the filter.
      */
     removeInDirectory: function(path, filter) {
