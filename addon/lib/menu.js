@@ -40,10 +40,10 @@ var TabTrekkerMenu = {
 
         logger.log('Initializing menu.');
 
-        //clear URL bar
+        //clear URL bar to hide the html page's resource path
         var activeBrowserWindow = windowUtils.getMostRecentBrowserWindow();
         var urlBar = activeBrowserWindow.gURLBar;
-        if(urlBar) {
+        if(urlBar && urlBar.value.indexOf('resource://') === 0) {
             urlBar.value = '';
             urlBar.select();
         }
