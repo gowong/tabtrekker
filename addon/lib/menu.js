@@ -19,6 +19,12 @@ const NEXTIMAGE_MSG = 'menu_next_image';
 const SETTINGS_MSG = 'menu_settings';
 //preferences
 const SHOW_MENU_PREF = 'show_menu';
+//other
+const HTML_RESOURCE_PATH = (function() {
+    var path = 'resource://' + self.id;
+    path = path.replace('@jetpack', '-at-jetpack/tabtrekker/data/tabtrekker.html');
+    return path;
+})();
 
 /**
  * Menu module.
@@ -43,9 +49,10 @@ var TabTrekkerMenu = {
         //clear URL bar to hide the html page's resource path
         var activeBrowserWindow = windowUtils.getMostRecentBrowserWindow();
         var urlBar = activeBrowserWindow.gURLBar;
-        if(urlBar && urlBar.value.indexOf('resource://') === 0) {
-            urlBar.value = '';
-            urlBar.select();
+        if(urlBar && urlBar.value && urlBar.value.toLowerCase().
+            indexOf(HTML_RESOURCE_PATH.toLowerCase()) === 0) {
+            //keep anything typed after the resource path
+            urlBar.value = urlBar.value.slice(HTML_RESOURCE_PATH.length);
         }
 
         var options = {}
