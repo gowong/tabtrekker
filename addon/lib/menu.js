@@ -4,6 +4,7 @@
 const self = require('sdk/self');
 const simplePrefs = require('sdk/simple-prefs');
 const tabs = require('sdk/tabs');
+const windowUtils = require('sdk/window/utils');
 
 /* Modules */
 const images = require('images').TabTrekkerImages;
@@ -38,6 +39,14 @@ var TabTrekkerMenu = {
         }
 
         logger.log('Initializing menu.');
+
+        //clear URL bar
+        var activeBrowserWindow = windowUtils.getMostRecentBrowserWindow();
+        var urlBar = activeBrowserWindow.gURLBar;
+        if(urlBar) {
+            urlBar.value = '';
+            urlBar.select();
+        }
 
         var options = {}
         options[SHOW_MENU_PREF] = menuVisibility;
