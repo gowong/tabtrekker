@@ -8,6 +8,7 @@ const _ = require('sdk/l10n').get;
 const Request = require('sdk/request').Request;
 const simplePrefs = require('sdk/simple-prefs');
 const ss = require('sdk/simple-storage');
+const windowUtils = require('sdk/window/utils');
 
 /* Modules */
 const logger = require('logger').TabTrekkerLogger;
@@ -128,8 +129,7 @@ var TabTrekkerLocation = {
             }
 
             //prompt user for geolocation permission
-            var activeBrowserWindow = require('sdk/window/utils')
-                                        .getMostRecentBrowserWindow();
+            var activeBrowserWindow = windowUtils.getMostRecentBrowserWindow();
             let prompt = activeBrowserWindow.PopupNotifications.show(
                             activeBrowserWindow.gBrowser.selectedBrowser,
                             'geolocation',
