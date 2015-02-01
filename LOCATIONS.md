@@ -3,6 +3,7 @@
 [https://www.google.com/maps/d/viewer?mid=zfrS83gUGM-c.k_3pQGmBdWTg](https://www.google.com/maps/d/viewer?mid=zfrS83gUGM-c.k_3pQGmBdWTg)
 
 ##Cities
+- Innsbruck, Austria
 - Rio de Janeiro, Brazil ***(Done)***
 - Paris, France ***(Done)***
 - Venice, Italy ***(Done)***
