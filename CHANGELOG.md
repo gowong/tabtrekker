@@ -1,5 +1,5 @@
-Changelog
-=========
+#Changelog
+
 ##v1.1.1 - January 28, 2015
 * Fix bug where most visited links dropdown would be empty.
 
