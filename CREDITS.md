@@ -1,17 +1,16 @@
-Inspired by the Dream Afar New Tab extension for Google Chrome (https://chrome.google.com/webstore/detail/dream-afar-new-tab/)
+**Inspired by the [Dream Afar New Tab](https://chrome.google.com/webstore/detail/dream-afar-new-tab/) extension for Google Chrome**  
 
-Google Maps - geocoding (https://developers.google.com/maps/documentation/geocoding/)
+[Google Maps](https://developers.google.com/maps/documentation/geocoding/) - geocoding
 
-Meteocons - weather icons (http://www.alessioatzeni.com/meteocons/)
+[Meteocons](http://www.alessioatzeni.com/meteocons/) - weather icons
 
-OpenWeatherMap - weather info (http://openweathermap.org/)
+[OpenWeatherMap](http://openweathermap.org/) - weather info
 
-Parse - backend (https://www.parse.com/)
+[Parse](https://www.parse.com/) - backend
 
 
-Bootstrap (http://getbootstrap.com/)
------------------------------------------------------------
-
+##[Bootstrap](http://getbootstrap.com/)
+```
 The MIT License (MIT)
 
 Copyright (c) 2011-2014 Twitter, Inc
@@ -32,11 +31,10 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
 
-
-Moment.js (https://github.com/moment/moment/)
------------------------------------------------------------
-
+##[Moment.js](https://github.com/moment/moment/)
+```
 The MIT License (MIT)
 
 Copyright (c) 2011-2014 Tim Wood, Iskren Chernev, Moment.js contributors
@@ -57,11 +55,10 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
 
-
-SpinKit (https://github.com/tobiasahlin/SpinKit/)
------------------------------------------------------------
-
+##[SpinKit](https://github.com/tobiasahlin/SpinKit/)
+```
 The MIT License (MIT)
 
 Copyright (c) 2014 Tobias Ahlin
@@ -82,11 +79,10 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
 
-
-Typeahead.js (https://twitter.github.io/typeahead.js/)
------------------------------------------------------------
-
+##[Typeahead.js](https://twitter.github.io/typeahead.js/)
+```
 The MIT License (MIT)
 
 Copyright (c) 2013-2014 Twitter, Inc
@@ -107,11 +103,10 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
 
-
-URL.js (https://github.com/ericf/urljs/)
------------------------------------------------------------
-
+##[URL.js](https://github.com/ericf/urljs/)
+```
 The MIT License (MIT)
 
 Copyright (c) 2011 Eric Ferraiuolo (http://eric.ferraiuolo.name/)
@@ -132,4 +127,4 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
+```
