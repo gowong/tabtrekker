@@ -119,8 +119,6 @@ input:focus::-moz-placeholder {
 #history_list > li > a > object {
     border-radius: 3px;
     display: block;
-    font-size: 56px;
-    line-height: 56px;
     margin: 0 auto 10px auto;
     height: 56px;
     width: 56px;
@@ -129,20 +127,23 @@ input:focus::-moz-placeholder {
 #history_list > li > a > object.ms_tile_color {
     padding: 5px;
 }
-/* Generic web page icon */
+/* Small icons */
 #history_list > li > a > object > span {
-    color: rgba(125, 125, 125, 0.5);
-}
-/* Small favicons */
-#history_list > li > a > object > span:not(.glyphicon) {
     background-color: rgba(0, 0, 0, 0.05);
+    background-size: 16px;
     background-repeat: no-repeat;
     background-position: center;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 3px;
     display: block;
+    font-size: 16px;
+    line-height: 56px;
     height: 100%;
     width: 100%;
+}
+/* Generic web page icon */
+#history_list > li > a > object > span.glyphicon {
+    color: rgba(25, 25, 25, 0.85);
 }
 /* Link titles */
 #history_list > li > a > span {
