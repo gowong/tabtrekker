@@ -1,5 +1,8 @@
 #Changelog
 
+##v1.1.2 - February 6, 2015
+* Re-download images that failed to download when getting the day's location.
+
 ##v1.1.1 - January 28, 2015
 * Fix bug where most visited links dropdown would be empty.
 
