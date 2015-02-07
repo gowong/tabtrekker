@@ -155,11 +155,8 @@ var TabTrekkerLocation = {
                             }],
                             {
                                 eventCallback: function(event) {
-                                    if (event === 'dismissed') {
-                                        if (!done) {
-                                            reject(new Error('Geolocation permission prompt dismissed.'));
-                                        }
-                                        PopupNotifications.remove(prompt);
+                                    if (event === 'dismissed' && !done) {
+                                        reject(new Error('Geolocation permission prompt dismissed.'));
                                     }
                                 }
                             });
