@@ -8,7 +8,6 @@ Cu.import('resource://gre/modules/Promise.jsm');
 Cu.import('resource://gre/modules/Task.jsm');
 const array = require('sdk/util/array');
 const simplePrefs = require('sdk/simple-prefs');
-const ss = require('sdk/simple-storage');
 const timers = require('sdk/timers');
 
 /* Modules */
@@ -22,14 +21,14 @@ var tabtrekker; //load on initialization to ensure main module is loaded
 //messages
 const IMAGES_DISPLAY_MSG = 'images_display';
 const IMAGES_DISPLAY_FAILED_MSG = 'images_display_failed';
-//simple storage
-const IMAGES_CHOSEN_ID_SS = 'images_chosen_id';
-const IMAGES_FALLBACK_ID_SS = 'images_fallback_id';
-const IMAGES_LASTCHOSEN_TIME_SS = 'images_lastchosen';
-const IMAGES_LASTUPDATED_TIME_SS = 'images_lastupdated';
-const IMAGES_IMAGE_SET_SS = 'images_image_set';
 //preferences
 const SHOW_IMAGE_INFO_PREF = 'show_image_info';
+const IMAGES_PREFS = 'images';
+const IMAGES_CHOSEN_ID_PREFS = 'images_chosen_id';
+const IMAGES_FALLBACK_ID_PREFS = 'images_fallback_id';
+const IMAGES_LASTCHOSEN_TIME_PREFS = 'images_lastchosen';
+const IMAGES_LASTUPDATED_TIME_PREFS = 'images_lastupdated';
+const IMAGES_IMAGE_SET_PREFS = 'images_image_set';
 //others
 const IMAGES_CHOOSE_INTERVAL_MILLIS = 5 * 60 * 1000; //5 minutes
 const IMAGES_DOWNLOAD_DELAY = 15 * 1000; //15 seconds
@@ -59,7 +58,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
         return Task.spawn(function*() {
             //request new images
             if(TabTrekkerImages.shouldUpdate()) {
-                yield TabTrekkerImages.getImages(worker);
+                yield TabTrekkerImages.updateImages(worker);
             }
 
             //display saved image
@@ -101,11 +100,13 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
       * Returns whether a new image should be chosen.
       */
     shouldChooseNewImage: function() {
-        var lastChosen = ss.storage[IMAGES_LASTCHOSEN_TIME_SS];
-        var chosenId = ss.storage[IMAGES_CHOSEN_ID_SS];
+        var lastChosen = parseFloat(
+            simplePrefs.prefs[IMAGES_LASTCHOSEN_TIME_PREFS]);
+        var chosenId = simplePrefs.prefs[IMAGES_CHOSEN_ID_PREFS];
         
         //no image previously chosen
-        if(lastChosen == null || chosenId == null) {
+        if((!lastChosen && lastChosen !== 0)
+            || (!chosenId && chosenId !== 0)) {
             return true;
         }
 
@@ -120,14 +121,18 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
      * Returns the chosen images to display.
      */
     getChosenImage: function() {
-        var imageSet = ss.storage[IMAGES_IMAGE_SET_SS];
+        var imageSet = TabTrekkerImages.getImageSet();
         if(!imageSet) {
+            return null;
+        }
+        var images = TabTrekkerImages.getImages();
+        if(!images || images.length === 0) {
             return null;
         }
 
         //get image
-        var chosenId = ss.storage[IMAGES_CHOSEN_ID_SS];
-        var image = ss.storage[IMAGES_IMAGE_SET_SS].images[chosenId];
+        var chosenId = simplePrefs.prefs[IMAGES_CHOSEN_ID_PREFS];
+        var image = images[chosenId];
 
         //add image set info
         return {
@@ -142,15 +147,14 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
      */
     chooseNewImage: function() {
         logger.info('Choosing new image.');
-        var imageSet = ss.storage[IMAGES_IMAGE_SET_SS];
-        if(!imageSet || !imageSet.images || imageSet.images.length === 0) {
+        var imageSet = TabTrekkerImages.getImageSet();
+        if(!imageSet || imageSet.numImages === 0) {
             return;
         }
 
         //choose next image 
-        var images = imageSet.images;
-        var chosenId = ss.storage[IMAGES_CHOSEN_ID_SS];
-        chosenId = chosenId == null ? 0 : ((chosenId + 1) % images.length);
+        var chosenId = simplePrefs.prefs[IMAGES_CHOSEN_ID_PREFS];
+        chosenId = chosenId == null ? 0 : ((chosenId + 1) % imageSet.numImages);
 
         //save chosen image
         TabTrekkerImages.setChosenImage(chosenId);
@@ -160,8 +164,8 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
      * Sets the chosen image.
      */
     setChosenImage: function(chosenId) {
-        ss.storage[IMAGES_CHOSEN_ID_SS] = chosenId;
-        ss.storage[IMAGES_LASTCHOSEN_TIME_SS] = Date.now();
+        simplePrefs.prefs[IMAGES_CHOSEN_ID_PREFS] = chosenId;
+        simplePrefs.prefs[IMAGES_LASTCHOSEN_TIME_PREFS] = String(Date.now());
     },
 
     /**
@@ -169,9 +173,9 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
      * fails to load.
      */
     getFallbackImage: function() {
-        var fallbackId = ss.storage[IMAGES_FALLBACK_ID_SS];
+        var fallbackId = simplePrefs.prefs[IMAGES_FALLBACK_ID_PREFS];
         fallbackId = fallbackId == null ? 0 : ((fallbackId + 1) % IMAGES_FALLBACKS.length);
-        ss.storage[IMAGES_FALLBACK_ID_SS] = fallbackId;
+        simplePrefs.prefs[IMAGES_FALLBACK_ID_PREFS] = fallbackId;
         return IMAGES_FALLBACKS[fallbackId];
     },
 
@@ -185,12 +189,14 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
         }
         logger.info('Removing image that could not be displayed', imageFileUri);
         //remove image file uri
-        var images = ss.storage[IMAGES_IMAGE_SET_SS].images;
+        var images = TabTrekkerImages.getImages();
         for(var i = 0; i < images.length; i++) {
             if(images[i].fileUri === imageFileUri) {
                 delete images[i].fileUri;
             }
         }
+        TabTrekkerImages.saveImages(images);
+
         //remove downloaded image file
         var path = OS.Path.fromFileURI(imageFileUri);
         files.removeFile(path).
@@ -204,8 +210,9 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
      */
     shouldUpdate: function() {
         //images have never been updated
-        var lastUpdated = ss.storage[IMAGES_LASTUPDATED_TIME_SS];
-        if(lastUpdated == null) {
+        var lastUpdated = parseFloat(
+            simplePrefs.prefs[IMAGES_LASTUPDATED_TIME_PREFS]);
+        if(!lastUpdated && lastUpdated !== 0) {
             return true;
         }
 
@@ -220,7 +227,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
      * Returns a promise that is fulfilled with the images requested from
      * the image sources.
      */
-    getImages: function(worker) {
+    updateImages: function(worker) {
         logger.info('Requesting images.');
         //prevent other updates from happening during this update
         TabTrekkerImages.disableUpdates(IMAGES_UPDATE_WAIT_MILLIS);
@@ -228,23 +235,61 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
         return parse.getNextImageSet().
             then(function(imageSet) {
                 //save images
-                ss.storage[IMAGES_IMAGE_SET_SS] = imageSet;
-                ss.storage[IMAGES_LASTUPDATED_TIME_SS] = Date.now();
+                var images = imageSet.images;
+                TabTrekkerImages.saveImages(images);
+
+                //only save image set
+                delete imageSet.images;
+                TabTrekkerImages.saveImageSet(imageSet, images.length);
+
+                simplePrefs.prefs[IMAGES_LASTUPDATED_TIME_PREFS] = String(Date.now());
                 TabTrekkerImages.setChosenImage(imageSet.startingImageId);
                 return worker;
             }, function(error) {
                 logger.warn('Forcing next image update because of', error.message);
                 //force next image update
-                ss.storage[IMAGES_LASTUPDATED_TIME_SS] = null;
+                simplePrefs.prefs[IMAGES_LASTUPDATED_TIME_PREFS] = '';
             });
+    },
+
+    /**
+     *  Returns the current image set.
+     */
+    getImageSet: function() {
+        var imageSet = simplePrefs.prefs[IMAGES_IMAGE_SET_PREFS];
+        return imageSet ? JSON.parse(imageSet) : null;
+    },
+
+    /**
+     * Saves the image set.
+     */
+    saveImageSet: function(imageSet, numImages) {
+        imageSet.numImages = numImages;
+        simplePrefs.prefs[IMAGES_IMAGE_SET_PREFS] = JSON.stringify(imageSet);
+    },
+
+    /**
+     * Returns the current collection of images.
+     */
+    getImages: function() {
+        var images = simplePrefs.prefs[IMAGES_PREFS];
+        return images ? JSON.parse(images) : null;
+    },
+
+    /**
+     * Saves the collection of images.
+     */
+    saveImages: function(images) {
+        simplePrefs.prefs[IMAGES_PREFS] = JSON.stringify(images);
     },
 
     /**
      * Disables updates for the specified milliseconds.
      */
     disableUpdates: function(millis) {
-       ss.storage[IMAGES_LASTUPDATED_TIME_SS] = Date.now() -
-            IMAGES_UPDATE_INTERVAL_MILLIS + millis; 
+        var lastUpdated = String(Date.now() - IMAGES_UPDATE_INTERVAL_MILLIS
+            + millis);
+        simplePrefs.prefs[IMAGES_LASTUPDATED_TIME_PREFS] = lastUpdated; 
     },
 
     /**
@@ -253,13 +298,17 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
      * have been downloaded.
      */
     downloadImages: function() {
-        let imageSet = ss.storage[IMAGES_IMAGE_SET_SS];
-        if(!imageSet || !imageSet.images || imageSet.images.length === 0) {
+        let imageSet = TabTrekkerImages.getImageSet();
+        if(!imageSet) {
+            logger.info('No images to download.');
+            return;
+        }
+        let images = TabTrekkerImages.getImages();
+        if(!images || images.length === 0) {
             logger.info('No images to download.');
             return;
         }
         return Task.spawn(function*() {
-            let images = imageSet.images;
             let downloadResults = [];
 
             logger.log('Downloading images.');
@@ -372,7 +421,9 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
      */
     saveImageFileUri: function(id, path) {
         var fileUri = OS.Path.toFileURI(path);
-        ss.storage[IMAGES_IMAGE_SET_SS].images[id].fileUri = fileUri;
+        var images = TabTrekkerImages.getImages();
+        images[id].fileUri = fileUri;
+        TabTrekkerImages.saveImages(images);
     },
 
     /**

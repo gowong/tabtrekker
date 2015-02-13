@@ -6,6 +6,7 @@ Cu.import('resource://gre/modules/Promise.jsm');
 Cu.import('resource://gre/modules/Task.jsm');
 const array = require('sdk/util/array');
 const Request = require('sdk/request').Request;
+const simplePrefs = require('sdk/simple-prefs');
 const ss = require('sdk/simple-storage');
 
 /* Modules */
@@ -16,6 +17,9 @@ const logger = require('logger').TabTrekkerLogger;
 //simple storage
 const PARSE_IMAGE_SET_ID_SS = 'parse_image_set_id';
 const PARSE_VIEWED_IMAGE_SET_IDS_SS = 'parse_viewed_image_set_ids';
+//preferences
+const PARSE_IMAGE_SET_ID_PREFS = 'parse_image_set_id';
+const PARSE_VIEWED_IMAGE_SET_IDS_PREFS = 'parse_viewed_image_set_ids';
 //others
 const PARSE_GET_NEXT_IMAGE_SET_URL ='https://api.parse.com/1/functions/getNextImageSet';
 
@@ -31,7 +35,7 @@ var TabTrekkerParse = {
         return Task.spawn(function*() {
             logger.info('Requesting next image set from Parse.');
             let data = {
-                id: ss.storage[PARSE_IMAGE_SET_ID_SS],
+                id: TabTrekkerParse.getImageId(),
                 viewedIds: TabTrekkerParse.getViewedImageSets()
             };
             //request image set
@@ -42,7 +46,7 @@ var TabTrekkerParse = {
                 throw new Error('Parse response contained no images.');
             }
             //store image set id
-            ss.storage[PARSE_IMAGE_SET_ID_SS] = imageSet.id;
+            simplePrefs.prefs[PARSE_IMAGE_SET_ID_PREFS] = imageSet.id;
             //add to viewed image sets
             TabTrekkerParse.addViewedImageSet(imageSet);
             return imageSet;
@@ -76,22 +80,48 @@ var TabTrekkerParse = {
     },
 
     /**
+     * Returns the current image set id. Handles migrating from simple-storage
+     * to simple-prefs.
+     */
+    getImageId: function() {
+        var ssId = ss.storage[PARSE_IMAGE_SET_ID_SS];
+        if(ssId != null) {
+            //migrate from simple storage to simple prefs
+            simplePrefs.prefs[PARSE_IMAGE_SET_ID_PREFS] = ssId;
+            //remove from simple-storage
+            delete ss.storage[PARSE_IMAGE_SET_ID_SS];
+        }
+        return simplePrefs.prefs[PARSE_IMAGE_SET_ID_PREFS];
+    },
+
+    /**
      * Adds the image set to the collection of viewed image sets.
      */
     addViewedImageSet: function(imageSet) {
         if(!imageSet || imageSet.id == null) {
             return;
         }
-        var viewedImageSetIds = ss.storage[PARSE_VIEWED_IMAGE_SET_IDS_SS] || [];
+        var viewedImageSetIds = TabTrekkerParse.getViewedImageSets();
         array.add(viewedImageSetIds, imageSet.id);
-        ss.storage[PARSE_VIEWED_IMAGE_SET_IDS_SS] = viewedImageSetIds;
+        simplePrefs.prefs[PARSE_VIEWED_IMAGE_SET_IDS_PREFS] = 
+            JSON.stringify(viewedImageSetIds);
     },
 
     /**
-     * Returns the viewed image sets.
+     * Returns the viewed image sets. Handles migrating from simple-storage
+     * to simple-prefs.
      */
     getViewedImageSets: function() {
-        return ss.storage[PARSE_VIEWED_IMAGE_SET_IDS_SS] || [];
+        var ssViewedImageSets = ss.storage[PARSE_VIEWED_IMAGE_SET_IDS_SS];
+        if(ssViewedImageSets && ssViewedImageSets.length > 0) {
+            //migrate from simple storage to simple prefs
+            simplePrefs.prefs[PARSE_VIEWED_IMAGE_SET_IDS_PREFS] = 
+                JSON.stringify(ssViewedImageSets);
+            //remove from simple-storage
+            delete ss.storage[PARSE_VIEWED_IMAGE_SET_IDS_SS];
+        }
+        var viewedImageSetIds = simplePrefs.prefs[PARSE_VIEWED_IMAGE_SET_IDS_PREFS];
+        return viewedImageSetIds ? JSON.parse(viewedImageSetIds) : [];
     }
 };
 
