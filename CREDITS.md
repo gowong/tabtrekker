@@ -4,10 +4,11 @@
 
 [Meteocons](http://www.alessioatzeni.com/meteocons/) - weather icons
 
+[OneSky's](https://gowong.oneskyapp.com/) translation service and those who helped translate TabTrekker
+
 [OpenWeatherMap](http://openweathermap.org/) - weather info
 
-[Parse](https://www.parse.com/) - backend
-
+[Parse](https://www.parse.com/) - backend and hosting
 
 ##[Bootstrap](http://getbootstrap.com/)
 ```
