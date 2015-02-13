@@ -1,5 +1,8 @@
 #Changelog
 
+##v1.1.3 - February 12, 2015
+* Fixed issue that could cause TabTrekker to forget which image location the user is on.
+
 ##v1.1.2 - February 6, 2015
 * Re-download images that failed to download when getting the day's location.
 
