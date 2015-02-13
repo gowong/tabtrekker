@@ -7,7 +7,6 @@ Cu.import('resource://gre/modules/Task.jsm');
 const _ = require('sdk/l10n').get;
 const Request = require('sdk/request').Request;
 const simplePrefs = require('sdk/simple-prefs');
-const ss = require('sdk/simple-storage');
 const windowUtils = require('sdk/window/utils');
 
 /* Modules */
@@ -19,10 +18,9 @@ var tabtrekker; //load on initialization to ensure main module is loaded
 //preferences
 const LOCATION_PREF = 'location';
 const LOCATION_ALLOW_GEOLOCATION_PREF = 'location_allow_geolocation';
-//simple storage
-const LOCATION_GEOLOCATION_LAT_SS = 'location_geolocation_latitude';
-const LOCATION_GEOLOCATION_LNG_SS = 'location_geolocation_longitude';
-const LOCATION_GEOCODED_NAME_SS = 'location_geocoded_name';
+const LOCATION_GEOLOCATION_LAT_PREF = 'location_geolocation_latitude';
+const LOCATION_GEOLOCATION_LNG_PREF = 'location_geolocation_longitude';
+const LOCATION_GEOCODED_NAME_PREF = 'location_geocoded_name';
 //others
 //geolocation coordinates at the same location usually differ by about 0.00001
 const LOCATION_MIN_LAT_DIFF = 0.001;
@@ -170,14 +168,14 @@ var TabTrekkerLocation = {
     shouldGeocode: function(coords) {
         var lat = coords.latitude;
         var lng = coords.longitude;
-        var cachedLat = ss.storage[LOCATION_GEOLOCATION_LAT_SS];
-        var cachedLng = ss.storage[LOCATION_GEOLOCATION_LNG_SS];
-        var name = ss.storage[LOCATION_GEOCODED_NAME_SS];
+        var cachedLat = parseFloat(simplePrefs.prefs[LOCATION_GEOLOCATION_LAT_PREF]);
+        var cachedLng = parseFloat(simplePrefs.prefs[LOCATION_GEOLOCATION_LNG_PREF]);
+        var name = simplePrefs.prefs[LOCATION_GEOCODED_NAME_PREF];
 
         //no cached geolocation or location name
         //or large difference between current and cached geolocations
-        return cachedLat == null
-             || cachedLng == null 
+        return (!cachedLat && cachedLat !== 0)
+             || (!cachedLng && cachedLng !== 0)
              || !name
              || Math.abs(cachedLat - lat) >= LOCATION_MIN_LAT_DIFF
              || Math.abs(cachedLng - lng) >= LOCATION_MIN_LNG_DIFF;
@@ -271,7 +269,7 @@ var TabTrekkerLocation = {
      * Returns the position after adding the cached geocoded name.
      */
     getCachedGeocodedPosition: function(position) {
-        position.location = ss.storage[LOCATION_GEOCODED_NAME_SS];
+        position.location = simplePrefs.prefs[LOCATION_GEOCODED_NAME_PREF];
         return position;
     },
 
@@ -285,18 +283,18 @@ var TabTrekkerLocation = {
             logger.warn('Cannot cache invalid geocoded position.');
             return;
         }
-        ss.storage[LOCATION_GEOCODED_NAME_SS] = position.location;
-        ss.storage[LOCATION_GEOLOCATION_LAT_SS] = position.coords.latitude;
-        ss.storage[LOCATION_GEOLOCATION_LNG_SS] = position.coords.longitude;
+        simplePrefs.prefs[LOCATION_GEOCODED_NAME_PREF] = String(position.location);
+        simplePrefs.prefs[LOCATION_GEOLOCATION_LAT_PREF] = String(position.coords.latitude);
+        simplePrefs.prefs[LOCATION_GEOLOCATION_LNG_PREF] = String(position.coords.longitude);
     },
 
     /**
      * Clears cached geocoded position.
      */
     clearCachedGeocodedPosition: function() {
-        ss.storage[LOCATION_GEOCODED_NAME_SS] = null;
-        ss.storage[LOCATION_GEOLOCATION_LAT_SS] = null;
-        ss.storage[LOCATION_GEOLOCATION_LNG_SS] = null;
+        simplePrefs.prefs[LOCATION_GEOCODED_NAME_PREF] = '';
+        simplePrefs.prefs[LOCATION_GEOLOCATION_LAT_PREF] = '';
+        simplePrefs.prefs[LOCATION_GEOLOCATION_LNG_PREF] = '';
     }
 };
 

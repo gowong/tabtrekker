@@ -6,7 +6,6 @@ Cu.import('resource://gre/modules/Promise.jsm');
 const _ = require('sdk/l10n').get;
 const Request = require('sdk/request').Request;
 const simplePrefs = require('sdk/simple-prefs');
-const ss = require('sdk/simple-storage');
 
 /* Modules */
 const location = require('location').TabTrekkerLocation;
@@ -23,12 +22,11 @@ const WEATHER_SHOW_LOADING_MSG = 'weather_show_loading';
 const LOCATION_PREF = 'location';
 const TEMPERATURE_UNITS_PREF = 'temperature_units';
 const SHOW_WEATHER_PREF = 'show_weather';
-//simple storage
-const WEATHER_CONDITIONS_SS = 'weather_conditions';
-const WEATHER_LASTUPDATED_TIME_SS = 'weather_lastupdated';
-const WEATHER_LOCATION_NAME_SS = 'weather_location_name';
-const WEATHER_TEMPERATURE_SS = 'weather_temperature';
-const WEATHER_TEMPERATURE_UNITS_SS = 'weather_temperature_units';
+const WEATHER_CONDITIONS_PREFS = 'weather_conditions';
+const WEATHER_LASTUPDATED_TIME_PREFS = 'weather_lastupdated';
+const WEATHER_LOCATION_NAME_PREFS = 'weather_location_name';
+const WEATHER_TEMPERATURE_PREFS = 'weather_temperature';
+const WEATHER_TEMPERATURE_UNITS_PREFS = 'weather_temperature_units';
 //others
 const OPENWEATHERMAP_APPID = '19c860e2c76bbe9e5f747af2250f751c';
 const OPENWEATHERMAP_URL = 'http://api.openweathermap.org/data/2.5/weather?APPID=';
@@ -97,8 +95,9 @@ var TabTrekkerWeather = {
      */
     shouldUpdate: function() {
         //no weather result exists
-        var lastUpdated = ss.storage[WEATHER_LASTUPDATED_TIME_SS];
-        if(lastUpdated == null) {
+        var lastUpdated = parseFloat(
+            simplePrefs.prefs[WEATHER_LASTUPDATED_TIME_PREFS]);
+        if(!lastUpdated && lastUpdated !== 0) {
             return true;
         }
 
@@ -113,8 +112,9 @@ var TabTrekkerWeather = {
      * Disables updates for the specified milliseconds.
      */
     disableUpdates: function(millis) {
-       ss.storage[WEATHER_LASTUPDATED_TIME_SS] = Date.now() -
-            WEATHER_UPDATE_INTERVAL_MILLIS + millis; 
+        var lastUpdated = String(Date.now() - WEATHER_UPDATE_INTERVAL_MILLIS
+            + millis);
+        simplePrefs.prefs[WEATHER_LASTUPDATED_TIME_PREFS] = lastUpdated; 
     },
 
     /**
@@ -122,7 +122,7 @@ var TabTrekkerWeather = {
      */
     clearCachedWeatherResult: function() {
         logger.log('Clearing cached weather result.');
-        ss.storage[WEATHER_LASTUPDATED_TIME_SS] = null;
+        simplePrefs.prefs[WEATHER_LASTUPDATED_TIME_PREFS] = '';
     },
 
     /**
@@ -210,11 +210,11 @@ var TabTrekkerWeather = {
 
         logger.log('Caching weather result.');
 
-        ss.storage[WEATHER_CONDITIONS_SS] = weather.conditions;
-        ss.storage[WEATHER_LASTUPDATED_TIME_SS] = Date.now();
-        ss.storage[WEATHER_LOCATION_NAME_SS] = weather.location;
-        ss.storage[WEATHER_TEMPERATURE_SS] = weather.temperature;
-        ss.storage[WEATHER_TEMPERATURE_UNITS_SS] = weather.temperatureUnits;
+        simplePrefs.prefs[WEATHER_CONDITIONS_PREFS] = JSON.stringify(weather.conditions);
+        simplePrefs.prefs[WEATHER_LASTUPDATED_TIME_PREFS] = String(Date.now());
+        simplePrefs.prefs[WEATHER_LOCATION_NAME_PREFS] = String(weather.location);
+        simplePrefs.prefs[WEATHER_TEMPERATURE_PREFS] = String(weather.temperature);
+        simplePrefs.prefs[WEATHER_TEMPERATURE_UNITS_PREFS] = String(weather.temperatureUnits);
     },
 
      /**
@@ -290,11 +290,13 @@ var TabTrekkerWeather = {
      * Returns the cached weather result.
      */
     getCachedWeatherResult: function(worker) {
+        var conditions = simplePrefs.prefs[WEATHER_CONDITIONS_PREFS];
+        conditions = conditions ? JSON.parse(conditions) : {};
         var weather = {
-            conditions: ss.storage[WEATHER_CONDITIONS_SS],
-            location: ss.storage[WEATHER_LOCATION_NAME_SS],
-            temperature: ss.storage[WEATHER_TEMPERATURE_SS],
-            temperatureUnits: ss.storage[WEATHER_TEMPERATURE_UNITS_SS],
+            conditions: conditions,
+            location: simplePrefs.prefs[WEATHER_LOCATION_NAME_PREFS],
+            temperature: parseFloat(simplePrefs.prefs[WEATHER_TEMPERATURE_PREFS]),
+            temperatureUnits: simplePrefs.prefs[WEATHER_TEMPERATURE_UNITS_PREFS],
             worker: worker
         };
         weather[SHOW_WEATHER_PREF] = simplePrefs.prefs[SHOW_WEATHER_PREF];
