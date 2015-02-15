@@ -12,6 +12,14 @@
 - Stockholm, Sweden ***(Done)***
 - New York, USA ***(Done)***
 - San Francisco, USA ***(Done)***
+- Washington DC, USA
+- Cape Town, South Africa
+- Dubai, United Arab Emriates
+- Toronto, Canada
+- London, UK
+- Hong Kong, China
+- Kuala Lumpur, Malaysia
+- Sydney, Australia
 
 ##Towns, Villages
 - Cappadocia, Turkey
@@ -30,11 +38,20 @@
 - Antelope Canyon, USA
 - Grand Canyon, USA *(and Horseshoe Bend)* ***(Done)***
 - Yosemite National Park, USA ***(Done)***
+- Death Valley National Park, USA
 
 ##Historical Landmarks
 - Great Wall of China ***(Done)***
 - Meteora, Greece ***(Done)***
 - Bagan, Myanmar
+- Pyramids of Giza, Egypt
+- Petra, Jordan
+- Chichen Itza, Mexico
+- Parthenon, Greece
+- Machu Picchu, Peru
+- Taj Mahal, India
+- St. Basil's Cathedral, Moscow
+- Forbidden City, Beijing, China
 - *Castles*
     - Neuschwanstein Castle, Germany ***(Done)***
     - Matsumoto Castle, Japan ***(Done)***
