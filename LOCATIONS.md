@@ -64,6 +64,7 @@
 - Gásadalur, Faroe Islands
 - Bora Bora, French Polynesia ***(Done)***
 - Santorini, Greece
+- Malé, Maldives
 
 ##Others
 - Auroras ***(Done)***
