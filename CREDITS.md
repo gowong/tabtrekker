@@ -1,4 +1,4 @@
-**Inspired by the [Dream Afar New Tab](https://chrome.google.com/webstore/detail/dream-afar-new-tab/) extension for Google Chrome**  
+**Inspired by the [Dream Afar New Tab](https://chrome.google.com/webstore/detail/dream-afar-new-tab/henmfoppjjkcencpbjaigfahdjlgpegn) extension for Google Chrome**  
 
 [Google Maps](https://developers.google.com/maps/documentation/geocoding/) - geocoding
 
