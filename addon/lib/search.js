@@ -68,10 +68,14 @@ var TabTrekkerSearch = {
         switch(searchEnginePref) {
             case 'bing':
                 return 'https://bing.com/search';
+            case 'duckduckgo':
+                return 'https://duckduckgo.com/';
             case 'google':
                 return 'https://google.com/search';
             case 'yahoo':
                 return 'https://search.yahoo.com/search';
+            default:
+                return '';
         }
     },
 
@@ -82,8 +86,10 @@ var TabTrekkerSearch = {
         var searchEnginePref = simplePrefs.prefs[SEARCH_ENGINE_PREF];
         switch(searchEnginePref) {
             case 'bing':
+            case 'duckduckgo':
             case 'google':
             case 'yahoo':
+            default:
                 return 'get';
         }
     },
@@ -95,10 +101,13 @@ var TabTrekkerSearch = {
         var searchEnginePref = simplePrefs.prefs[SEARCH_ENGINE_PREF];
         switch(searchEnginePref) {
             case 'bing':
+            case 'duckduckgo':
             case 'google':
                 return 'q';
             case 'yahoo':
                 return 'p';
+            default:
+                return '';
         }
     },
 
@@ -110,10 +119,14 @@ var TabTrekkerSearch = {
         switch(searchEnginePref) {
             case 'bing':
                 return _('search_bing');
+            case 'duckduckgo':
+                return _('search_duckduckgo');
             case 'google':
                 return _('search_google');
             case 'yahoo':
                 return _('search_yahoo');
+            default:
+                return '';
         }
     },
 
