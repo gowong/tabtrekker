@@ -13,8 +13,8 @@ var tabtrekker; //load on initialization to ensure main module is loaded
 const HIDE_TIME_MSG = 'hide_time';
 const TIME_MSG = 'time';
 //preferences
-const _24HOUR_PREF = '24hour';
 const SHOW_TIME_PREF = 'show_time';
+const TIME_FORMAT_PREF = 'time_format';
 
 /**
  * Time module.
@@ -37,7 +37,7 @@ var TabTrekkerTime = {
         logger.log('Initializing time.');
 
         var options = {}
-        options[_24HOUR_PREF] = simplePrefs.prefs[_24HOUR_PREF];
+        options[TIME_FORMAT_PREF] = simplePrefs.prefs[TIME_FORMAT_PREF];
         options[SHOW_TIME_PREF] = timeVisibility;
         utils.emit(tabtrekker.workers, worker, TIME_MSG, options);
     }

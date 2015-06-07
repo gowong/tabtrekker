@@ -46,10 +46,24 @@
             ]
         },
         {
-            "name": "24hour",
-            "title": "Use 24-hour clock",
-            "type": "bool",
-            "value": false
+            "name": "time_format",
+            "title": "Time format",
+            "type": "radio",
+            "value": "default",
+            "options": [
+                {
+                    "value": "default",
+                    "label": "Default"
+                },
+                {
+                    "value": "12hour",
+                    "label": "12-hour"
+                },
+                {
+                    "value": "24hour",
+                    "label": "24-hour"
+                }
+            ]
         },
         {
             "name": "show_weather",
