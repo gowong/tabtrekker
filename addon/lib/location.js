@@ -10,8 +10,8 @@ const simplePrefs = require('sdk/simple-prefs');
 const windowUtils = require('sdk/window/utils');
 
 /* Modules */
-const logger = require('logger').TabTrekkerLogger;
-const utils = require('utils').TabTrekkerUtils;
+const logger = require('./logger').TabTrekkerLogger;
+const utils = require('./utils').TabTrekkerUtils;
 var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */

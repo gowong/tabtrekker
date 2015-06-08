@@ -6,8 +6,8 @@ const simplePrefs = require('sdk/simple-prefs');
 const Request = require('sdk/request').Request;
 
 /* Modules */
-const logger = require('logger').TabTrekkerLogger;
-const utils = require('utils').TabTrekkerUtils;
+const logger = require('./logger').TabTrekkerLogger;
+const utils = require('./utils').TabTrekkerUtils;
 var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */
@@ -31,7 +31,7 @@ var TabTrekkerSearch = {
      * Initializes search by sending search options to the content scripts.
      */
     initSearch: function(worker) {
-        tabtrekker = require('main').TabTrekkerMain;
+        tabtrekker = require('./main').TabTrekkerMain;
         
         //don't initialize search when it is hidden
         var searchVisibility = simplePrefs.prefs[SHOW_SEARCH_PREF];

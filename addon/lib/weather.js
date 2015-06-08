@@ -8,9 +8,9 @@ const Request = require('sdk/request').Request;
 const simplePrefs = require('sdk/simple-prefs');
 
 /* Modules */
-const location = require('location').TabTrekkerLocation;
-const logger = require('logger').TabTrekkerLogger;
-const utils = require('utils').TabTrekkerUtils;
+const location = require('./location').TabTrekkerLocation;
+const logger = require('./logger').TabTrekkerLogger;
+const utils = require('./utils').TabTrekkerUtils;
 var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */
@@ -55,7 +55,7 @@ var TabTrekkerWeather = {
      * the latest weather result and sending the result to the content scripts.
      */
     initWeather: function(worker) {
-        tabtrekker = require('main').TabTrekkerMain;
+        tabtrekker = require('./main').TabTrekkerMain;
 
         //don't initialize weather if it is hidden
         var weatherVisibility = simplePrefs.prefs[SHOW_WEATHER_PREF];

@@ -7,7 +7,7 @@ Cu.import('resource://gre/modules/Promise.jsm');
 Cu.import('resource://gre/modules/Task.jsm');
 
 /* Modules */
-const logger = require('logger').TabTrekkerLogger;
+const logger = require('./logger').TabTrekkerLogger;
 
 /* Constants */
 const FILES_PROFILE_TABTREKKER_DIR = 'tabtrekker';
