@@ -4,8 +4,8 @@
 const simplePrefs = require('sdk/simple-prefs');
 
 /* Modules */
-const logger = require('logger').TabTrekkerLogger;
-const utils = require('utils').TabTrekkerUtils;
+const logger = require('./logger').TabTrekkerLogger;
+const utils = require('./utils').TabTrekkerUtils;
 var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */
@@ -25,7 +25,7 @@ var TabTrekkerTime = {
      * Initializes time by sending time options to the content scripts.
      */
     initTime: function(worker) {
-        tabtrekker = require('main').TabTrekkerMain;
+        tabtrekker = require('./main').TabTrekkerMain;
 
         //don't initialize time when it is hidden
         var timeVisibility = simplePrefs.prefs[SHOW_TIME_PREF];

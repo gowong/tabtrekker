@@ -11,10 +11,10 @@ const simplePrefs = require('sdk/simple-prefs');
 const timers = require('sdk/timers');
 
 /* Modules */
-const files = require('files').TabTrekkerFiles;
-const logger = require('logger').TabTrekkerLogger;
-const parse = require('parse').TabTrekkerParse;
-const utils = require('utils').TabTrekkerUtils;
+const files = require('./files').TabTrekkerFiles;
+const logger = require('./logger').TabTrekkerLogger;
+const parse = require('./parse').TabTrekkerParse;
+const utils = require('./utils').TabTrekkerUtils;
 var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */
@@ -53,7 +53,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
      * to disk, and sending a random image to the content scripts.
      */
     initImages: function(worker) {
-        tabtrekker = require('main').TabTrekkerMain;
+        tabtrekker = require('./main').TabTrekkerMain;
         logger.log('Initializing images.');
         return Task.spawn(function*() {
             //request new images

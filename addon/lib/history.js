@@ -9,8 +9,8 @@ const Request = require('sdk/request').Request;
 const {getFavicon} = require("sdk/places/favicon");
 
 /* Modules */
-const logger = require('logger').TabTrekkerLogger;
-const utils = require('utils').TabTrekkerUtils;
+const logger = require('./logger').TabTrekkerLogger;
+const utils = require('./utils').TabTrekkerUtils;
 var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */
@@ -29,7 +29,7 @@ var TabTrekkerHistory = {
      * Initializes history by sending history results to the content scripts.
      */
     initHistory: function(worker) {
-        tabtrekker = require('main').TabTrekkerMain;
+        tabtrekker = require('./main').TabTrekkerMain;
         logger.log('Initializing history.');
         return Task.spawn(function*() {
             let mostVisited = yield TabTrekkerHistory.getMostVisited(MAX_MOST_VISITED);

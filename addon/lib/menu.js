@@ -7,9 +7,9 @@ const tabs = require('sdk/tabs');
 const windowUtils = require('sdk/window/utils');
 
 /* Modules */
-const images = require('images').TabTrekkerImages;
-const logger = require('logger').TabTrekkerLogger;
-const utils = require('utils').TabTrekkerUtils;
+const images = require('./images').TabTrekkerImages;
+const logger = require('./logger').TabTrekkerLogger;
+const utils = require('./utils').TabTrekkerUtils;
 var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */
@@ -35,7 +35,7 @@ var TabTrekkerMenu = {
      * Initializes menu by sending menu options to the content scripts.
      */
     initMenu: function(worker) {
-        tabtrekker = require('main').TabTrekkerMain;
+        tabtrekker = require('./main').TabTrekkerMain;
 
         //don't initialize menu when it is hidden
         var menuVisibility = simplePrefs.prefs[SHOW_MENU_PREF];
