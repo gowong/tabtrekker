@@ -1,5 +1,9 @@
 #Changelog
 
+##v1.1.4 - June 7, 2015
+* Added DuckDuckGo search engine support.
+* Added additional time format options.
+
 ##v1.1.3 - February 12, 2015
 * Fixed issue that could cause TabTrekker to forget which image location the user is on.
 
