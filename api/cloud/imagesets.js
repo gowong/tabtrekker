@@ -49,6 +49,4 @@ exports.ImageSets = [
 	require('cloud/imagesets/washington_dc.js').ImageSet,
 	//21
 	require('cloud/imagesets/toronto.js').ImageSet
-	//22
-	//require('cloud/imagesets/dubai.js').ImageSet,	
 ];

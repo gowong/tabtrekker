@@ -43,6 +43,6 @@ exports.ImageSet = {
         {
             infoUrl: 'https://www.flickr.com/photos/9525555@N07/6927365789',
             imageUrl: 'http://tabtrekker.parseapp.com/images/washington_dc/9.jpg'
-        },
+        }
     ]
 };

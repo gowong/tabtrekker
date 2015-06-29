@@ -35,6 +35,6 @@ exports.ImageSet = {
         {
             infoUrl: 'https://www.flickr.com/photos/markwatmough/4960189905',
             imageUrl: 'http://tabtrekker.parseapp.com/images/toronto/7.jpg'
-        },
+        }
     ]
 };
