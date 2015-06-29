@@ -12,10 +12,10 @@
 - Stockholm, Sweden ***(Done)***
 - New York, USA ***(Done)***
 - San Francisco, USA ***(Done)***
-- Washington DC, USA
+- Washington D.C., USA ***(Done)***
 - Cape Town, South Africa
 - Dubai, United Arab Emriates
-- Toronto, Canada
+- Toronto, Canada ***(Done)***
 - London, UK
 - Hong Kong, China
 - Kuala Lumpur, Malaysia
