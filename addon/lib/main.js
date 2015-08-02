@@ -42,7 +42,15 @@ var TabTrekkerMain = {
     setNewTabPage: function(keepExistingPage) {
         if(simplePrefs.prefs[NEWTAB_ENABLED_PREF]) {
             logger.log('Overriding new tab page preference.');
-            globalPrefs.set(GLOBAL_NEWTAB_PREF, self.data.url(HTML_PAGE));
+            // Use NewTabURL module in Firefox 41+
+            var newTabUrl = TabTrekkerMain.getNewTabUrlModule();
+            if(newTabUrl) {
+                newTabUrl.override(self.data.url(HTML_PAGE));
+            }
+            // Set new tab url preference
+            else {
+                globalPrefs.set(GLOBAL_NEWTAB_PREF, self.data.url(HTML_PAGE));
+            }
         } else if(!keepExistingPage) {
             TabTrekkerMain.resetNewTabPage();
         }
@@ -66,7 +74,15 @@ var TabTrekkerMain = {
      */
     resetNewTabPage: function() {
         logger.log('Restoring new tab page preference.');
-        globalPrefs.reset(GLOBAL_NEWTAB_PREF);
+        // Use NewTabURL module in Firefox 41+
+        var newTabUrl = TabTrekkerMain.getNewTabUrlModule();
+        if(newTabUrl) {
+            newTabUrl.reset();
+        }
+        // Set new tab url preference
+        else {
+            globalPrefs.reset(GLOBAL_NEWTAB_PREF);
+        }
     },
 
     /**
@@ -75,6 +91,17 @@ var TabTrekkerMain = {
     resetHomePage: function() {
         logger.log('Restoring home page preference.');
         globalPrefs.reset(GLOBAL_HOME_PREF);
+    },
+
+    /**
+     * Returns the NewTabURL module if present (only available on Firefox 41+).
+     */
+    getNewTabUrlModule: function() {
+        try {
+            return require('resource:///modules/NewTabURL.jsm').NewTabURL;
+        } catch (e) {
+            return null;
+        }
     }
 };
 
