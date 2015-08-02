@@ -1,5 +1,9 @@
 #Changelog
 
+##v1.1.5 - August 1, 2015
+* Fixed new tab page on Firefox 41+.
+* Fixed new tab and home page preferences being overwritten when restarting Firefox.
+
 ##v1.1.4 - June 7, 2015
 * Added DuckDuckGo search engine support.
 * Added additional time format options.
