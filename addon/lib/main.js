@@ -39,11 +39,11 @@ var TabTrekkerMain = {
      * Overrides new tab page if addon is enabled. 
      * Resets new tab page if addon is disabled.
      */
-    setNewTabPage: function() {
+    setNewTabPage: function(keepExistingPage) {
         if(simplePrefs.prefs[NEWTAB_ENABLED_PREF]) {
             logger.log('Overriding new tab page preference.');
             globalPrefs.set(GLOBAL_NEWTAB_PREF, self.data.url(HTML_PAGE));
-        } else {
+        } else if(!keepExistingPage) {
             TabTrekkerMain.resetNewTabPage();
         }
     },
@@ -52,11 +52,11 @@ var TabTrekkerMain = {
      * Overrides home page if addon is enabled. 
      * Resets home page if addon is disabled.
      */
-    setHomePage: function() {
+    setHomePage: function(keepExistingPage) {
         if(simplePrefs.prefs[HOME_ENABLED_PREF]) {
             logger.log('Overriding home page preference.');
             globalPrefs.set(GLOBAL_HOME_PREF, self.data.url(HTML_PAGE));
-        } else {
+        } else if(!keepExistingPage) {
             TabTrekkerMain.resetHomePage();
         }
     },
@@ -80,19 +80,23 @@ var TabTrekkerMain = {
 
 //on addon load
 exports.main = function(options, callbacks) {
-    TabTrekkerMain.setNewTabPage();
-    TabTrekkerMain.setHomePage();
+    TabTrekkerMain.setNewTabPage(true);
+    TabTrekkerMain.setHomePage(true);
 };
 
 //on addon unload
 exports.onUnload = function(reason) {
-    TabTrekkerMain.resetNewTabPage();
-    TabTrekkerMain.resetHomePage();
+    // Only reset new tab and home pages if the addon is being uninstalled
+    // or disabled
+    if(reason !== 'shutdown') {
+        TabTrekkerMain.resetNewTabPage();
+        TabTrekkerMain.resetHomePage();
+    }
 };
 
 //listen to preference changes
-simplePrefs.on(NEWTAB_ENABLED_PREF, TabTrekkerMain.setNewTabPage);
-simplePrefs.on(HOME_ENABLED_PREF, TabTrekkerMain.setHomePage);
+simplePrefs.on(NEWTAB_ENABLED_PREF, function() { TabTrekkerMain.setNewTabPage(false); });
+simplePrefs.on(HOME_ENABLED_PREF, function() { TabTrekkerMain.setHomePage(false); });
 
 //load content scripts
 pageMod.PageMod({
