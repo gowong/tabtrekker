@@ -134,7 +134,7 @@ var TabTrekkerHistory = {
             //link tags
             if(element.nodeName == 'LINK') {
                 var rel = attrs.getNamedItem('rel');
-                if(rel.value) {
+                if(rel && rel.value) {
                     var href = attrs.getNamedItem('href') ? 
                         attrs.getNamedItem('href').value : null;
                     switch(rel.value) {
