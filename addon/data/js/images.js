@@ -3,7 +3,6 @@
 /* Constants */
 //messages
 const IMAGES_DISPLAY_MSG = 'images_display';
-const IMAGES_DISPLAY_FAILED_MSG = 'images_display_failed';
 //preferences
 const SHOW_IMAGE_INFO_PREF = 'show_image_info';
 
@@ -22,9 +21,6 @@ var TabTrekkerImages = {
         //local image
         TabTrekkerImages.setImageBackground(localImage, data, function() {
             
-            //notify addon that local image failed to load
-            self.port.emit(IMAGES_DISPLAY_FAILED_MSG, localImage);
-
             //remote image
             TabTrekkerImages.setImageBackground(remoteImage, data, function() {
                 TabTrekkerImages.displayFallbackImage(data.fallback);
@@ -47,6 +43,15 @@ var TabTrekkerImages = {
         //local images (file://image.png) might not be detected, but it seems
         //to be working in firefox
         $(document.createElement('img')).on('load', function() {
+
+            $(this).remove();
+
+            //check that the image was actually loaded
+            if(!this.complete || (this.naturalWidth === 0)) {
+                callback();
+                return;
+            }
+
             //set background image
             var backgroundImage = 'url(' + imageSrc + ')';
             $(document.body).css('background-image', backgroundImage);
@@ -59,7 +64,6 @@ var TabTrekkerImages = {
             //set image info visibility
             TabTrekkerImages.setImageInfoVisibility(data[SHOW_IMAGE_INFO_PREF]);
 
-            $(this).remove();
         }).on('error', function() {
             callback();
             $(this).remove();
