@@ -1,5 +1,9 @@
 #Changelog
 
+##v1.1.6 - September 7, 2015
+* Switched weather provider to Forecast for more accurate weather updates.
+* Fixed images not loading on Firefox 42+.
+
 ##v1.1.5 - August 1, 2015
 * Fixed new tab page on Firefox 41+.
 * Fixed new tab and home page preferences being overwritten when restarting Firefox.
