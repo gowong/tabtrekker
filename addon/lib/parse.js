@@ -10,7 +10,7 @@ const simplePrefs = require('sdk/simple-prefs');
 const ss = require('sdk/simple-storage');
 
 /* Modules */
-const config = require('./config').TabTrekkerConfig;
+const secrets = require('./secrets').TabTrekkerSecrets;
 const logger = require('./logger').TabTrekkerLogger;
 
 /* Constants */
@@ -62,8 +62,8 @@ var TabTrekkerParse = {
             Request({
                 url: url,
                 headers: {
-                    'X-Parse-Application-Id': config.getParseAppId(),
-                    'X-Parse-REST-API-Key': config.getParseRestApiKey()
+                    'X-Parse-Application-Id': secrets.getParseAppId(),
+                    'X-Parse-REST-API-Key': secrets.getParseRestApiKey()
                 },
                 contentType: 'application/json',
                 content: JSON.stringify(dataObj),

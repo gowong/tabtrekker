@@ -12,6 +12,7 @@ const windowUtils = require('sdk/window/utils');
 /* Modules */
 const logger = require('./logger').TabTrekkerLogger;
 const utils = require('./utils').TabTrekkerUtils;
+const secrets = require('./secrets').TabTrekkerSecrets;
 var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */
@@ -25,7 +26,7 @@ const LOCATION_GEOCODED_NAME_PREF = 'location_geocoded_name';
 //geolocation coordinates at the same location usually differ by about 0.00001
 const LOCATION_MIN_LAT_DIFF = 0.001;
 const LOCATION_MIN_LNG_DIFF = 0.001;
-const GEOCODE_KEY = 'AIzaSyDmP9Qog5YYUb2BASGg32a6uu-GnbDXJgk';
+const GEOCODE_KEY = secrets.GEOCODE_KEY;
 const GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?key='
     + GEOCODE_KEY + '&result_type=locality' + '&latlng=';
 

@@ -1,5 +1,6 @@
 # Firefox addon files
 addon/*.xpi
+addon/lib/secrets.js
 
 # Parse files
 api/config/global.json
