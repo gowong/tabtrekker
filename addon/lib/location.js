@@ -13,7 +13,6 @@ const windowUtils = require('sdk/window/utils');
 const logger = require('./logger').TabTrekkerLogger;
 const utils = require('./utils').TabTrekkerUtils;
 const secrets = require('./secrets').TabTrekkerSecrets;
-var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */
 //preferences
@@ -27,8 +26,10 @@ const LOCATION_GEOCODED_NAME_PREF = 'location_geocoded_name';
 const LOCATION_MIN_LAT_DIFF = 0.001;
 const LOCATION_MIN_LNG_DIFF = 0.001;
 const GEOCODE_KEY = secrets.GEOCODE_KEY;
-const GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?key='
+const GEOCODE_COORDINATES_URL = 'https://maps.googleapis.com/maps/api/geocode/json?key='
     + GEOCODE_KEY + '&result_type=locality' + '&latlng=';
+const GEOCODE_LOCATION_URL = 'https://maps.googleapis.com/maps/api/geocode/json?key='
+    + GEOCODE_KEY + '&address=';
 
 /**
  * Location module.
@@ -42,18 +43,21 @@ var TabTrekkerLocation = {
     getLocation: function(worker) {
         return Task.spawn(function*() {
 
+            var location;
+
             //user-defined location
             var userLocation = simplePrefs.prefs[LOCATION_PREF];
             if(userLocation) {
                 logger.log('Retrieved user-defined location.');
-                return {
-                    userLocation: userLocation,
-                    worker: worker
-                };
+                location = yield TabTrekkerLocation.geocodeLocation(userLocation);
+            }
+            //get geolocation
+            else {
+                location = yield TabTrekkerLocation.getGeoLocation();
             }
 
-            //get geolocation
-            return yield TabTrekkerLocation.getGeoLocation(worker);
+            location.worker = worker;
+            return location;
 
         }).then(null, function(error) {
             logger.error('Error getting location.', error.message);
@@ -64,7 +68,7 @@ var TabTrekkerLocation = {
     /**
      * Returns a promise that is fulfilled with the geolocation.
      */
-    getGeoLocation: function(worker) {
+    getGeoLocation: function() {
         return new Promise(function(resolve, reject) {
 
             //get geolocation permission
@@ -85,7 +89,6 @@ var TabTrekkerLocation = {
                         //make geocoding request
                         return TabTrekkerLocation.geocodeCoordinates(position).
                             then(function(geocodedPosition) {
-                                geocodedPosition.worker = worker;
                                 resolve(geocodedPosition);
                             }, function(error) {
                                 reject(error);
@@ -167,19 +170,73 @@ var TabTrekkerLocation = {
      * a geocoding request.
      */
     shouldGeocode: function(coords) {
-        var lat = coords.latitude;
-        var lng = coords.longitude;
         var cachedLat = parseFloat(simplePrefs.prefs[LOCATION_GEOLOCATION_LAT_PREF]);
         var cachedLng = parseFloat(simplePrefs.prefs[LOCATION_GEOLOCATION_LNG_PREF]);
         var name = simplePrefs.prefs[LOCATION_GEOCODED_NAME_PREF];
 
-        //no cached geolocation or location name
-        //or large difference between current and cached geolocations
-        return (!cachedLat && cachedLat !== 0)
-             || (!cachedLng && cachedLng !== 0)
-             || !name
-             || Math.abs(cachedLat - lat) >= LOCATION_MIN_LAT_DIFF
-             || Math.abs(cachedLng - lng) >= LOCATION_MIN_LNG_DIFF;
+        //missing cached geolocation or location name
+        if((!cachedLat && cachedLat !== 0)
+            || (!cachedLng && cachedLng !== 0)
+            || !name) {
+            return true;
+        }
+
+        if(coords) {
+            //large difference between current and cached geolocations
+            return (Math.abs(cachedLat - coords.latitude) >= LOCATION_MIN_LAT_DIFF)
+                || (Math.abs(cachedLng - coords.longitude) >= LOCATION_MIN_LNG_DIFF);
+        }
+
+        return false;
+    },
+
+
+    /**
+     * Returns a promise that is fulfilled with the response to the
+     * geocoding request of the location string.
+     */
+    geocodeLocation: function(location) {
+        return new Promise(function(resolve, reject) {
+            if(!location) {
+                reject(new Error('Cannot make geocode request without location.'));
+                return;
+            }
+
+            //only make geocoding request if needed
+            if(!TabTrekkerLocation.shouldGeocode(null)) {
+                resolve(TabTrekkerLocation.getCachedGeocodedPosition(null));
+                return;
+            }
+        
+            //clear cached geocoded position
+            TabTrekkerLocation.clearCachedGeocodedPosition();
+
+            //build request URL
+            var requestUrl = GEOCODE_LOCATION_URL + location;
+            var language = utils.getUserLanguage();
+            if(language) {
+                requestUrl += '&language=' + language;
+            }
+
+            logger.info('Making geocoding request with location:', requestUrl);
+
+            Request({
+                url: requestUrl,
+                onComplete: function(response) {
+                    if(response.status == 200) {
+                        //parse response and cache result
+                        var newPosition = TabTrekkerLocation.getGeocodedPosition(response);
+                        if(newPosition) {
+                            TabTrekkerLocation.cacheGeocodedPosition(newPosition);
+                            resolve(newPosition);
+                        }
+                    } else {
+                        logger.error('Geocoder request failed.');
+                    }
+                    reject(new Error('Geocoder request failed.'));
+                }
+            }).get();
+        });
     },
 
     /**
@@ -200,30 +257,33 @@ var TabTrekkerLocation = {
                 return;
             }
             
-            logger.info('Making geocoding request with coordinates:',
-                position.coords);
-
             //clear cached geocoded position
             TabTrekkerLocation.clearCachedGeocodedPosition();
 
             //build request URL
-            var requestUrl = GEOCODE_URL
+            var requestUrl = GEOCODE_COORDINATES_URL
                 + position.coords.latitude + ',' + position.coords.longitude;
             var language = utils.getUserLanguage();
             if(language) {
                 requestUrl += '&language=' + language;
             }
 
+            logger.info('Making geocoding request with coordinates:',
+                requestUrl);
+
             Request({
                 url: requestUrl,
                 onComplete: function(response) {
                     if(response.status == 200) {
                         //parse response and cache result
-                        var newPosition = TabTrekkerLocation.getGeocodedPosition(
-                            response, position);
+                        var newPosition = TabTrekkerLocation.getGeocodedPosition(response);
                         if(newPosition) {
-                            TabTrekkerLocation.cacheGeocodedPosition(newPosition);
-                            position = newPosition;
+                            //only use the geocoded location name
+                            //it is important to cache the original coordinates,
+                            //NOT the geocoded coordinates (otherwise the cache
+                            //won't work)
+                            position.location = newPosition.location;
+                            TabTrekkerLocation.cacheGeocodedPosition(position);
                         }
                     } else {
                         logger.warn('Geocoder request failed. Returning original position object.');
@@ -235,9 +295,9 @@ var TabTrekkerLocation = {
     },
 
     /**
-     * Returns the position containing the position's city.
+     * Returns the position containing coordinates and city.
      */
-    getGeocodedPosition: function(response, position) {
+    getGeocodedPosition: function(response) {
         var json = response.json;
         if(json.status !== 'OK') {
             logger.warn('Gecoding request failed.', json);
@@ -255,23 +315,35 @@ var TabTrekkerLocation = {
             }
         }
 
-        //city is required for a geocoded position
-        if(!city) {
-            logger.warn('Geocoding response did not contain city.');
-            return null;
-        }
+        //find coordinates
+        var location = json.results[0].geometry.location;
+        var coords = {
+            latitude: location ? location.lat : null,
+            longitude: location ? location.lng : null
+        };
 
-        //return position with city
-        position.location = city;
-        return position;
+        return {
+            coords: coords,
+            location: city
+        };
     },
 
     /**
      * Returns the position after adding the cached geocoded name.
      */
     getCachedGeocodedPosition: function(position) {
-        position.location = simplePrefs.prefs[LOCATION_GEOCODED_NAME_PREF];
-        return position;
+        //assuming that the passed in position already has coordinates
+        if(position) {
+            position.location = simplePrefs.prefs[LOCATION_GEOCODED_NAME_PREF];
+            return position;
+        }
+        return {
+            location: simplePrefs.prefs[LOCATION_GEOCODED_NAME_PREF],
+            coords: {
+                latitude: simplePrefs.prefs[LOCATION_GEOLOCATION_LAT_PREF],
+                longitude: simplePrefs.prefs[LOCATION_GEOLOCATION_LNG_PREF]
+            }
+        };
     },
 
     /**
@@ -298,5 +370,8 @@ var TabTrekkerLocation = {
         simplePrefs.prefs[LOCATION_GEOLOCATION_LNG_PREF] = '';
     }
 };
+
+//listen to preference changes
+simplePrefs.on(LOCATION_PREF, TabTrekkerLocation.clearCachedGeocodedPosition);
 
 exports.TabTrekkerLocation = TabTrekkerLocation;

@@ -150,13 +150,14 @@ var TabTrekkerWeather = {
      */
     getWeather: function(position) {
         return new Promise(function(resolve, reject) {
+
+            if(!position.worker) {
+                logger.error('Weather result is missing page worker.');
+            }
+
             //build request URL
             var requestUrl =  FORECAST_REQUEST_URL;
 
-            //use user-defined location
-            if(position.userLocation) {
-                requestUrl += '&q=' + position.userLocation;
-            }
             //use coordinates
             if(position.coords && position.coords.latitude != null
                 && position.coords.longitude != null) {
