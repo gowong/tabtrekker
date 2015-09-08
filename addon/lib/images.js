@@ -1,11 +1,12 @@
 'use strict';
 
 /* SDK Modules */
-const {Cu} = require('chrome');
+const {Cu, Ci} = require('chrome');
 Cu.import('resource://gre/modules/Downloads.jsm');
 Cu.import('resource://gre/modules/osfile.jsm');
 Cu.import('resource://gre/modules/Promise.jsm');
 Cu.import('resource://gre/modules/Task.jsm');
+Cu.import('resource://gre/modules/Services.jsm');
 const array = require('sdk/util/array');
 const simplePrefs = require('sdk/simple-prefs');
 const timers = require('sdk/timers');
@@ -29,6 +30,8 @@ const IMAGES_LASTCHOSEN_TIME_PREFS = 'images_lastchosen';
 const IMAGES_LASTUPDATED_TIME_PREFS = 'images_lastupdated';
 const IMAGES_IMAGE_SET_PREFS = 'images_image_set';
 //others
+const IMAGES_RESOURCE_URI_PROTOCOL = 'resource://';
+const IMAGES_RESOURCE_URI_PREFIX = IMAGES_RESOURCE_URI_PROTOCOL + 'tabtrekker_image_';
 const IMAGES_CHOOSE_INTERVAL_MILLIS = 5 * 60 * 1000; //5 minutes
 const IMAGES_DOWNLOAD_DELAY = 15 * 1000; //15 seconds
 const IMAGES_DOWNLOAD_DIR = 'images';
@@ -75,13 +78,28 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
      * Choose an image and notifies content scripts to display it.
      */
     displayImage: function(worker, chooseNewImage) {
+        //choose new image
         if(chooseNewImage || TabTrekkerImages.shouldChooseNewImage()) {
             TabTrekkerImages.chooseNewImage();
         }
-        var image = TabTrekkerImages.getChosenImage() || {};
-        image.fallback = TabTrekkerImages.getFallbackImage();
-        image[SHOW_IMAGE_INFO_PREF] = simplePrefs.prefs[SHOW_IMAGE_INFO_PREF];
-        utils.emit(tabtrekker.workers, worker, IMAGES_DISPLAY_MSG, image);
+
+        //get image to display
+        var data = TabTrekkerImages.getChosenImage() || {};
+        var image = data.image;
+        data.fallback = TabTrekkerImages.getFallbackImage();
+        data[SHOW_IMAGE_INFO_PREF] = simplePrefs.prefs[SHOW_IMAGE_INFO_PREF];
+
+        //point image's resource URI to image's file URI
+        if(image.resourceUri && image.fileUri) {
+            var baseImageResourceUri = image.resourceUri
+                .substr(IMAGES_RESOURCE_URI_PROTOCOL.length);
+            let res = Services.io.getProtocolHandler('resource')
+                .QueryInterface(Ci.nsIResProtocolHandler);
+            res.setSubstitution(baseImageResourceUri,
+                Services.io.newURI(image.fileUri, null, null));
+        }
+
+        utils.emit(tabtrekker.workers, worker, IMAGES_DISPLAY_MSG, data);
      },
 
      /**
@@ -312,8 +330,8 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
                         logger.info('Download complete', target);
                         //remove from in progress downloads
                         array.remove(TabTrekkerImages.inProgressDownloadTargets, target);
-                        //save downloaded image file uri
-                        TabTrekkerImages.saveImageFileUri(index, target);
+                        //save downloaded image uris
+                        TabTrekkerImages.saveImageUris(imageSet.id, index, target);
                     }, function(error) {
                         logger.error('Download failed', target);
                         //remove from in progress downloads
@@ -386,12 +404,16 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
     },
 
     /**
-     * Converts the path to a file URI and saves it for the specified image.
+     * Converts the path to a file and resource URI and saves it for the
+     * specified image.
      */
-    saveImageFileUri: function(id, path) {
+    saveImageUris: function(imageSetId, imageId, path) {
         var fileUri = OS.Path.toFileURI(path);
+        var resourceUri = IMAGES_RESOURCE_URI_PREFIX
+            + String(imageSetId) + '_' + String(imageId);
         var images = TabTrekkerImages.getImages();
-        images[id].fileUri = fileUri;
+        images[imageId].fileUri = fileUri;
+        images[imageId].resourceUri = resourceUri;
         TabTrekkerImages.saveImages(images);
     },
 

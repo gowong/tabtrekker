@@ -15,12 +15,12 @@ var TabTrekkerImages = {
      * Displays the image.
      */
     displayImage: function(data) {
-        var localImage = data.image.fileUri;
+        var localImage = data.image.resourceUri || data.image.fileUri;
         var remoteImage = data.image.imageUrl;
 
         //local image
         TabTrekkerImages.setImageBackground(localImage, data, function() {
-            
+
             //remote image
             TabTrekkerImages.setImageBackground(remoteImage, data, function() {
                 TabTrekkerImages.displayFallbackImage(data.fallback);
