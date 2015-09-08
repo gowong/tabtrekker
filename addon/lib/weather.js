@@ -10,6 +10,7 @@ const simplePrefs = require('sdk/simple-prefs');
 /* Modules */
 const location = require('./location').TabTrekkerLocation;
 const logger = require('./logger').TabTrekkerLogger;
+const secrets = require('./secrets').TabTrekkerSecrets;
 const utils = require('./utils').TabTrekkerUtils;
 var tabtrekker; //load on initialization to ensure main module is loaded
 
@@ -28,9 +29,9 @@ const WEATHER_LOCATION_NAME_PREFS = 'weather_location_name';
 const WEATHER_TEMPERATURE_PREFS = 'weather_temperature';
 const WEATHER_TEMPERATURE_UNITS_PREFS = 'weather_temperature_units';
 //others
-const OPENWEATHERMAP_APPID = '19c860e2c76bbe9e5f747af2250f751c';
-const OPENWEATHERMAP_URL = 'http://api.openweathermap.org/data/2.5/weather?APPID=';
-const OPENWEATHERMAP_REQUEST_URL = OPENWEATHERMAP_URL + OPENWEATHERMAP_APPID;
+const FORECAST_API_KEY = secrets.FORECAST_API_KEY;
+const FORECAST_REQUEST_URL = 'https://api.forecast.io/forecast/' + FORECAST_API_KEY + '/';
+const FORECAST_REQUEST_OPTIONS = '?exclude=minutely,hourly,daily,alerts,flags';
 const WEATHER_UPDATE_INTERVAL_MILLIS = 30 * 60 * 1000; //30 minutes
 const WEATHER_UPDATE_WAIT_MILLIS = 20 * 1000; //20 seconds
 
@@ -150,16 +151,16 @@ var TabTrekkerWeather = {
     getWeather: function(position) {
         return new Promise(function(resolve, reject) {
             //build request URL
-            var requestUrl =  OPENWEATHERMAP_REQUEST_URL;
+            var requestUrl =  FORECAST_REQUEST_URL;
 
             //use user-defined location
             if(position.userLocation) {
                 requestUrl += '&q=' + position.userLocation;
             }
             //use coordinates
-            else if(position.coords && position.coords.latitude != null
+            if(position.coords && position.coords.latitude != null
                 && position.coords.longitude != null) {
-                requestUrl += '&lat=' + position.coords.latitude + '&lon=' + position.coords.longitude;
+                requestUrl += String(position.coords.latitude) + ',' + String(position.coords.longitude);
             } 
             //no location provided
             else {
@@ -168,9 +169,14 @@ var TabTrekkerWeather = {
                     position.worker));
                 return;
             }
+
+            //add request options
+            requestUrl += FORECAST_REQUEST_OPTIONS;
+
             //temperature units
             var temperatureUnits = simplePrefs.prefs[TEMPERATURE_UNITS_PREF];
-            requestUrl += '&units=' + (temperatureUnits == 'C' ? 'metric' : 'imperial');
+            requestUrl += '&units=' + (temperatureUnits == 'C' ? 'si' : 'us');
+            
             //user's selected language
             var language = utils.getUserLanguage();
             if(language) {
@@ -260,9 +266,9 @@ var TabTrekkerWeather = {
      */
     getWeatherResult: function(response, temperatureUnits, position, worker) {
         var weather = {
-            conditions: TabTrekkerWeather.getConditions(response.weather),
-            location: position.location || response.name,
-            temperature: response.main ? response.main.temp : null,
+            conditions: TabTrekkerWeather.getConditions(response.currently),
+            location: position.location || _('current_location'),
+            temperature: response.currently ? response.currently.temperature : null,
             temperatureUnits: TabTrekkerWeather.getTemperatureUnitsStr(
                 temperatureUnits),
             worker: worker
@@ -307,22 +313,11 @@ var TabTrekkerWeather = {
      * Returns the weather conditions, containing the conditions icon and
      * description.
      */
-    getConditions: function(conditions) {
-        var iconCode;
-        var description;
-        if(conditions) {
-            //find first valid weather condition
-            for(var i = 0; i < conditions.length; i++) {
-                if(conditions[i] && conditions[i].icon && conditions[i].description) {
-                    iconCode = conditions[i].icon;
-                    description = conditions[i].description;
-                    break;
-                }
-            }
-        }
+    getConditions: function(currently) {
         return {
-            description: description || '',
-            icon: TabTrekkerWeather.getConditionsIcon(iconCode)
+            description: currently ? currently.summary : '',
+            icon: currently ? TabTrekkerWeather.getConditionsIcon(currently.icon)
+                : TabTrekkerWeather.getConditionsIcon('')
         };
     },
 
@@ -333,64 +328,32 @@ var TabTrekkerWeather = {
     getConditionsIcon: function(iconCode) {
         //map icon name to character in icon font
         switch(iconCode) {
-            // Day
-            //Clear sky
-            case '01d':
+            case 'clear-day':
                 return 'B';
-            //Few clouds
-            case '02d':
-                return 'H';
-            //Scattered clouds
-            case '03d':
-                return 'N';
-            //Broken clouds
-            case '04d':
-                return 'Y';
-            //Shower rain
-            case '09d':
-                return 'Q';
-            //Rain
-            case '10d':
-                return 'R';
-            //Thunderstorm
-            case '11d':
-                return '0';
-            //Snow
-            case '13d':
-                return 'W';
-            //Mist
-            case '50d':
-                return 'M';
-
-            //Night
-            //Clear sky
-            case '01n':
+            case 'clear-night':
                 return 'C';
-            //Few clouds
-            case '02n':
-                return 'I';
-            //Scattered clouds
-            case '03n':
-                return 'N';
-            //Broken clouds
-            case '04n':
-                return 'Y';
-            //Shower rain
-            case '09n':
-                return 'Q';
-            //Rain
-            case '10n':
+            case 'rain':
                 return 'R';
-            //Thunderstorm
-            case '11n':
-                return '0';
-            //Snow
-            case '13n':
+            case 'snow':
                 return 'W';
-            //Mist
-            case '50n':
+            case 'sleet':
+                return 'U';
+            case 'wind':
+                return 'F';
+            case 'fog':
                 return 'M';
-
+            case 'cloudy':
+                return 'Y';
+            case 'partly-cloudy-day':
+                return 'H';
+            case 'partly-cloudy-night':
+                return 'I';
+            //The following aren't currently returned by the Forecast API, but
+            //are defined here in case they are added in the future.
+            case 'hail':
+                return 'X';
+            case 'thunderstorm':
+                return '0';
             //N/A
             default:
                 return ')';
