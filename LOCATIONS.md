@@ -49,7 +49,8 @@
 - Petra, Jordan ***(Done)***
 - Chichen Itza, Mexico ***(Done)***
 - Parthenon, Greece
-- Machu Picchu, Peru
+- Machu Picchu, Peru ***(Done)***
+- Angkor Wat, Cambodia ***(Done)***
 - Taj Mahal, India
 - St. Basil's Cathedral, Moscow
 - Forbidden City, Beijing, China ***(Done)***

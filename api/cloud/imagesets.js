@@ -60,5 +60,9 @@ exports.ImageSets = [
     //26
     require('cloud/imagesets/forbidden_city.js').ImageSet,
     //27
-    require('cloud/imagesets/dubai.js').ImageSet
+    require('cloud/imagesets/dubai.js').ImageSet,
+    //28
+    require('cloud/imagesets/machu_picchu.js').ImageSet,
+    //29
+    require('cloud/imagesets/angkor_wat.js').ImageSet
 ];

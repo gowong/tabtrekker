@@ -39,7 +39,7 @@ exports.ImageSet = {
         {
             infoUrl: 'https://www.flickr.com/photos/glouk/6878482358',
             imageUrl: 'http://tabtrekker.parseapp.com/images/petra/8.jpg'
-        }
+        },
         {
             infoUrl: 'https://www.flickr.com/photos/glouk/6853257338',
             imageUrl: 'http://tabtrekker.parseapp.com/images/petra/9.jpg'

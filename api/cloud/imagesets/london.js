@@ -43,7 +43,7 @@ exports.ImageSet = {
         {
             infoUrl: 'https://www.flickr.com/photos/christianreimer/14871063270',
             imageUrl: 'http://tabtrekker.parseapp.com/images/london/9.jpg'
-        }
+        },
         {
             infoUrl: 'https://www.flickr.com/photos/nickschooley/6758864939',
             imageUrl: 'http://tabtrekker.parseapp.com/images/london/10.jpg'

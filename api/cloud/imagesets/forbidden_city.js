@@ -43,7 +43,7 @@ exports.ImageSet = {
         {
             infoUrl: 'https://www.flickr.com/photos/mal-b/6591040471',
             imageUrl: 'http://tabtrekker.parseapp.com/images/forbidden_city/9.jpg'
-        }
+        },
         {
             infoUrl: 'https://www.flickr.com/photos/nagy/39762455',
             imageUrl: 'http://tabtrekker.parseapp.com/images/forbidden_city/10.jpg'
