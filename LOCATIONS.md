@@ -3,7 +3,7 @@
 [https://www.google.com/maps/d/viewer?mid=zfrS83gUGM-c.k_3pQGmBdWTg](https://www.google.com/maps/d/viewer?mid=zfrS83gUGM-c.k_3pQGmBdWTg)
 
 ##Cities
-- Innsbruck, Austria
+- Innsbruck, Austria ***(Done)***
 - Rio de Janeiro, Brazil ***(Done)***
 - Paris, France ***(Done)***
 - Venice, Italy ***(Done)***
@@ -47,7 +47,7 @@
 - Bagan, Myanmar
 - Pyramids of Giza, Egypt
 - Petra, Jordan
-- Chichen Itza, Mexico
+- Chichen Itza, Mexico ***(Done)***
 - Parthenon, Greece
 - Machu Picchu, Peru
 - Taj Mahal, India
