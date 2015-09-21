@@ -53,7 +53,7 @@
 - Angkor Wat, Cambodia ***(Done)***
 - Taj Mahal, India
 - St. Basil's Cathedral, Moscow
-- Forbidden City, Beijing, China ***(Done)***
+- Forbidden City, China ***(Done)***
 - *Castles*
     - Neuschwanstein Castle, Germany ***(Done)***
     - Matsumoto Castle, Japan ***(Done)***

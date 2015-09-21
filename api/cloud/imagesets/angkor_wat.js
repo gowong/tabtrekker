@@ -30,19 +30,19 @@ exports.ImageSet = {
         },
         {
             infoUrl: 'https://www.flickr.com/photos/image-catalog/19146403798',
-            imageUrl: 'http://tabtrekker.parseapp.com/images/angkor_wat/5.jpg'
-        },
-        {
-            infoUrl: 'https://www.flickr.com/photos/heyitschili/6988419092',
             imageUrl: 'http://tabtrekker.parseapp.com/images/angkor_wat/6.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/miguelitosql/5951112293',
+            infoUrl: 'https://www.flickr.com/photos/heyitschili/6988419092',
             imageUrl: 'http://tabtrekker.parseapp.com/images/angkor_wat/7.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/97238650@N08/9041891490',
+            infoUrl: 'https://www.flickr.com/photos/miguelitosql/5951112293',
             imageUrl: 'http://tabtrekker.parseapp.com/images/angkor_wat/8.jpg'
+        },
+        {
+            infoUrl: 'https://www.flickr.com/photos/97238650@N08/9041891490',
+            imageUrl: 'http://tabtrekker.parseapp.com/images/angkor_wat/9.jpg'
         }
     ]
 };
