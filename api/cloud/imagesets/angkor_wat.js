@@ -44,6 +44,5 @@ exports.ImageSet = {
             infoUrl: 'https://www.flickr.com/photos/97238650@N08/9041891490',
             imageUrl: 'http://tabtrekker.parseapp.com/images/angkor_wat/8.jpg'
         }
-
     ]
 };

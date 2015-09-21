@@ -1,7 +1,7 @@
 'use strict';
 
 exports.ImageSet = {
-    name: 'Forbidden City, Beijing, China',
+    name: 'Forbidden City, China',
     infoUrl: 'http://en.wikipedia.org/wiki/Forbidden_City',
     images: [
         {
