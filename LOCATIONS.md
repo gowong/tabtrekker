@@ -14,9 +14,9 @@
 - San Francisco, USA ***(Done)***
 - Washington D.C., USA ***(Done)***
 - Cape Town, South Africa
-- Dubai, United Arab Emriates
+- Dubai, United Arab Emriates ***(Done)***
 - Toronto, Canada ***(Done)***
-- London, UK
+- London, UK ***(Done)***
 - Hong Kong, China
 - Kuala Lumpur, Malaysia
 - Sydney, Australia
@@ -46,13 +46,14 @@
 - Meteora, Greece ***(Done)***
 - Bagan, Myanmar
 - Pyramids of Giza, Egypt
-- Petra, Jordan
+- Petra, Jordan ***(Done)***
 - Chichen Itza, Mexico ***(Done)***
 - Parthenon, Greece
-- Machu Picchu, Peru
+- Machu Picchu, Peru ***(Done)***
+- Angkor Wat, Cambodia ***(Done)***
 - Taj Mahal, India
 - St. Basil's Cathedral, Moscow
-- Forbidden City, Beijing, China
+- Forbidden City, China ***(Done)***
 - *Castles*
     - Neuschwanstein Castle, Germany ***(Done)***
     - Matsumoto Castle, Japan ***(Done)***
