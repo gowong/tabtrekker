@@ -52,5 +52,17 @@ exports.ImageSets = [
     //22
     require('cloud/imagesets/innsbruck.js').ImageSet,
     //23
-    require('cloud/imagesets/chichen_itza.js').ImageSet
+    require('cloud/imagesets/chichen_itza.js').ImageSet,
+    //24
+    require('cloud/imagesets/petra.js').ImageSet,
+    //25
+    require('cloud/imagesets/london.js').ImageSet,
+    //26
+    require('cloud/imagesets/forbidden_city.js').ImageSet,
+    //27
+    require('cloud/imagesets/dubai.js').ImageSet,
+    //28
+    require('cloud/imagesets/machu_picchu.js').ImageSet,
+    //29
+    require('cloud/imagesets/angkor_wat.js').ImageSet
 ];
