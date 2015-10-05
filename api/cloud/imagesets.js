@@ -64,5 +64,9 @@ exports.ImageSets = [
     //28
     require('cloud/imagesets/machu_picchu.js').ImageSet,
     //29
-    require('cloud/imagesets/angkor_wat.js').ImageSet
+    require('cloud/imagesets/angkor_wat.js').ImageSet,
+    //30
+    require('cloud/imagesets/faroe_islands.js').ImageSet,
+    //31
+    require('cloud/imagesets/bagan.js').ImageSet
 ];

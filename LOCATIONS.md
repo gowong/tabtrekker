@@ -44,7 +44,7 @@
 ##Historical Landmarks
 - Great Wall of China ***(Done)***
 - Meteora, Greece ***(Done)***
-- Bagan, Myanmar
+- Bagan, Myanmar ***(Done)***
 - Pyramids of Giza, Egypt
 - Petra, Jordan ***(Done)***
 - Chichen Itza, Mexico ***(Done)***
@@ -63,7 +63,7 @@
 - Atlantic Ocean Road, Norway ***(Done)***
 
 ##Islands
-- Gásadalur, Faroe Islands
+- Faroe Islands ***(Done)***
 - Bora Bora, French Polynesia ***(Done)***
 - Santorini, Greece
 - Malé, Maldives
