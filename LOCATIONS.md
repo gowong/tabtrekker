@@ -32,6 +32,7 @@
 - Provence, France
 - Tuscany, Italy ***(Done)***
 - Tulip Fields in Netherlands
+- Mu Cang Chai, Vietnam
 
 ##Nature
 - Giant’s Causeway, Ireland
@@ -58,9 +59,11 @@
     - Neuschwanstein Castle, Germany ***(Done)***
     - Matsumoto Castle, Japan ***(Done)***
     - Edinburgh Castle, Scotland
+    - Mont Saint-Michel, France
 
 ##Modern Landmarks
 - Atlantic Ocean Road, Norway ***(Done)***
+- Millau Viaduct, France
 
 ##Islands
 - Faroe Islands ***(Done)***
