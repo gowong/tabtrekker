@@ -26,7 +26,7 @@
 - *Coastal*
     - Hallstatt, Austria ***(Done)***
     - Manarola, Italy ***(Done)***
-    - Reine, Norway
+    - Reine, Norway ***(Done)***
 
 ##Fields, Hills, Plains
 - Provence, France

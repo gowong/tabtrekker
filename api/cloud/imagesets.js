@@ -68,5 +68,7 @@ exports.ImageSets = [
     //30
     require('cloud/imagesets/faroe_islands.js').ImageSet,
     //31
-    require('cloud/imagesets/bagan.js').ImageSet
+    require('cloud/imagesets/bagan.js').ImageSet,
+    //32
+    require('cloud/imagesets/reine.js').ImageSet
 ];
