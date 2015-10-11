@@ -1,5 +1,8 @@
 #Changelog
 
+##v1.1.7 - October 10, 2015
+* Reduce weather update frequency.
+
 ##v1.1.6 - September 7, 2015
 * Switched weather provider to Forecast for more accurate weather updates.
 * Fixed images not loading on Firefox 42+.
