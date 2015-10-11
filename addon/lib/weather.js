@@ -32,7 +32,7 @@ const WEATHER_TEMPERATURE_UNITS_PREFS = 'weather_temperature_units';
 const FORECAST_API_KEY = secrets.FORECAST_API_KEY;
 const FORECAST_REQUEST_URL = 'https://api.forecast.io/forecast/' + FORECAST_API_KEY + '/';
 const FORECAST_REQUEST_OPTIONS = '?exclude=minutely,hourly,daily,alerts,flags';
-const WEATHER_UPDATE_INTERVAL_MILLIS = 2 * 60 * 60 * 1000; //2 hours
+const WEATHER_UPDATE_INTERVAL_MILLIS = 3 * 60 * 60 * 1000; //3 hours
 const WEATHER_UPDATE_WAIT_MILLIS = 20 * 1000; //20 seconds
 
 /**
