@@ -8,6 +8,8 @@ const NEXTIMAGE_MSG = 'menu_next_image';
 const SETTINGS_MSG = 'menu_settings';
 //preferences
 const SHOW_MENU_PREF = 'show_menu';
+//other
+const DROPDOWN_TRANSITION = 200;
 
 //called on document ready
 $(function() {
@@ -19,6 +21,11 @@ $(function() {
         if(TabTrekkerImages.shouldShowNextImage()) {
             TabTrekkerMenu.handleClick(NEXTIMAGE_MSG, event);
         }
+    });
+    //dropdown animation
+    $('.dropdown').on('show.bs.dropdown hide.bs.dropdown', function(event) {
+        $(this).find('.dropdown-menu').first().stop(true, true)
+            .fadeToggle(DROPDOWN_TRANSITION);
     });
 });
 
