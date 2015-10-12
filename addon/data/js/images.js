@@ -5,34 +5,57 @@
 const IMAGES_DISPLAY_MSG = 'images_display';
 //preferences
 const SHOW_IMAGE_INFO_PREF = 'show_image_info';
+//other
+const IMAGE_LOADED_CLASS = 'image_loaded';
+const HIDE_IMAGE_DELAY = 300;
+const DISPLAY_IMAGE_TRANSITION = 500;
 
 /**
  * Images module.
  */
 var TabTrekkerImages = {
 
+    displayImageTimer: null,
+
     /**
-     * Displays the image.
+     * Receives the image data.
      */
-    displayImage: function(data) {
+    receiveImageData: function(data) {
+        if(TabTrekkerImages.isImageDisplayed()) {
+            TabTrekkerImages.hideImage();
+            //wait a bit for the hide image transition before displaying the
+            //new image
+            TabTrekkerImages.displayImageTimer = setTimeout(function() {
+                TabTrekkerImages.loadAndDisplayImage(data);
+            }, HIDE_IMAGE_DELAY);
+        } else {
+            TabTrekkerImages.loadAndDisplayImage(data);
+        }
+    },
+
+    /**
+     * Tries to load and display the image, automatically falling back
+     * to backup images if needed.
+     */
+    loadAndDisplayImage: function(data) {
         var localImage = data.image.resourceUri || data.image.fileUri;
         var remoteImage = data.image.imageUrl;
 
         //local image
-        TabTrekkerImages.setImageBackground(localImage, data, function() {
+        TabTrekkerImages.displayImage(localImage, data, function() {
 
             //remote image
-            TabTrekkerImages.setImageBackground(remoteImage, data, function() {
+            TabTrekkerImages.displayImage(remoteImage, data, function() {
                 TabTrekkerImages.displayFallbackImage(data.fallback);
             });
         });
     },
 
     /**
-     * Tries to load and set the background image.
+     * Tries to load and display the image.
      * Callback is called if the image fails to load.
      */
-    setImageBackground: function(imageSrc, data, callback) {
+    displayImage: function(imageSrc, data, callback) {
 
         if(!imageSrc) {
             callback();
@@ -53,8 +76,7 @@ var TabTrekkerImages = {
             }
 
             //set background image
-            var backgroundImage = 'url(' + imageSrc + ')';
-            $(document.body).css('background-image', backgroundImage);
+            TabTrekkerImages.setBackgroundImage(imageSrc);
 
             //set image info
             $('#image_set_info').text(data.imageSetName);
@@ -76,6 +98,51 @@ var TabTrekkerImages = {
     },
 
     /**
+     * Displays the fallback image.
+     */
+    displayFallbackImage: function(fallbackImage) {
+        TabTrekkerImages.setBackgroundImage(fallbackImage);
+        TabTrekkerImages.setImageInfoVisibility('never');
+    },
+
+    /**
+     * Sets the background image.
+     */
+    setBackgroundImage: function(imageSrc) {
+        var backgroundImage = $('#background_image');
+        backgroundImage.css('background-image', 'url(' + imageSrc + ')');
+        backgroundImage.css('opacity', 1);
+        //wait until the display image transition is done before removing
+        //the timer
+        setTimeout(function() {
+            TabTrekkerImages.displayImageTimer = null;
+        }, DISPLAY_IMAGE_TRANSITION);
+    },
+
+    /**
+     * Hides the image.
+     */
+    hideImage: function() {
+        $(document.body).addClass(IMAGE_LOADED_CLASS);
+        $('#background_image').css('opacity', 0);
+    },
+
+    /**
+     * Returns true whether there is an image displayed.
+     */
+    isImageDisplayed: function() {
+        return $('#background_image').css('opacity') === '1';
+    },
+
+    /**
+     * Returns true if the next image should be shown.
+     */
+    shouldShowNextImage: function() {
+        //if there is a display image in progress
+        return !TabTrekkerImages.displayImageTimer;
+    },
+
+    /**
      * Sets visibility of the image info based on user preferences.
      */
     setImageInfoVisibility: function(visbilityPref) {
@@ -91,19 +158,8 @@ var TabTrekkerImages = {
                 $('#image_info_container').css('display', 'none');
                 break;
         }
-    },
-
-    /**
-     * Displays the fallback image.
-     */
-    displayFallbackImage: function(fallback) {
-        //set background image
-        var fallbackImage = 'url(' + fallback + ')';
-        $(document.body).css('background-image', fallbackImage);
-        //hide image info
-        TabTrekkerImages.setImageInfoVisibility('never');
     }
 };
 
 //listen for messages
-self.port.on(IMAGES_DISPLAY_MSG, TabTrekkerUtils.receiveMessage(TabTrekkerImages.displayImage));
+self.port.on(IMAGES_DISPLAY_MSG, TabTrekkerUtils.receiveMessage(TabTrekkerImages.receiveImageData));
