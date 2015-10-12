@@ -132,6 +132,7 @@ input:focus::-moz-placeholder {
     margin: 0 auto 10px auto;
     height: 56px;
     width: 56px;
+    object-fit: cover;
 }
 /* Microsoft tiles with background colors */
 #history_list > li > a > object.ms_tile_color {
