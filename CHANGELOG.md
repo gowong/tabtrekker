@@ -1,5 +1,9 @@
 #Changelog
 
+##v1.1.8 - October 13, 2015
+* Improved image transitions.
+* Bug fixes.
+
 ##v1.1.7 - October 10, 2015
 * Reduce weather update frequency.
 
