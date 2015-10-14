@@ -4,6 +4,9 @@
 //messages
 const HISTORY_MSG = 'history';
 const HISTORY_UPDATE_ICON_MSG = 'history_update_icon';
+//other
+const ICON_MIN_WIDTH = 56;
+const ICON_MIN_HEIGHT = 56;
 
 /**
  * History module.
@@ -64,18 +67,24 @@ var TabTrekkerHistory = {
             return;
         }
 
-        //find object inside link list item with specified url
-        var object = $('#history_list > li > a[href="' + url + '"]').find('object:first-child');
-        
-        //set icon
-        $(object).attr('data', iconUrl);
-        
-        //microsoft tile image styling
-        if(TabTrekkerHistory.useMsTileImage(icon) && data.icon.hasOwnProperty('msTileColor') 
-            && data.icon.msTileColor) {
-            $(object).css('background-color', data.icon.msTileColor);
-            $(object).addClass('ms_tile_color');
-        }
+        TabTrekkerHistory.isIconValid(iconUrl, function(error) {
+            if (error) {
+                return;
+            }
+            //find object inside link list item with specified url
+            var object = $('#history_list > li > a[href="' + url + '"]').find('object:first-child');
+            
+            //set icon
+            $(object).attr('data', iconUrl);
+            
+            //microsoft tile image styling
+            if(TabTrekkerHistory.useMsTileImage(icon) && data.icon.hasOwnProperty('msTileColor') 
+                && data.icon.msTileColor) {
+                $(object).css('background-color', data.icon.msTileColor);
+                $(object).addClass('ms_tile_color');
+            }
+        });
+
     },
 
     /**
@@ -98,6 +107,39 @@ var TabTrekkerHistory = {
      */
     useMsTileImage: function(icon) {
         return icon.msTileImage; //ms tile image is the top choice
+    },
+
+    /**
+     * Checks whether the icon is valid for use in the history list.
+     * An error returned in the callback means that the icon is not valid.
+     */
+    isIconValid: function(iconUrl, callback) {
+        $(document.createElement('img')).on('load', function() {
+
+            //check that the icon was actually loaded
+            if(!this.complete || (this.naturalWidth === 0)) {
+                callback(new Error('Icon failed to load.'));
+            }
+            //icon must be a certain width and height
+            else if(this.width < ICON_MIN_WIDTH || this.height < ICON_MIN_HEIGHT) {
+                callback(new Error('Icon is too small.'));
+            } 
+            //icon is valid
+            else {
+                callback();
+            }
+
+            $(this).remove();
+
+        }).on('error', function() {
+            callback(new Error('Icon failed to load.'));
+            $(this).remove();
+        }).attr('src', iconUrl).each(function() {
+            //fail-safe for cached images which sometimes don't trigger load events
+            if(this.complete) {
+                $(this).load();
+            }
+        });
     }
 };
 
