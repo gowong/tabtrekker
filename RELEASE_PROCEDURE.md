@@ -7,7 +7,7 @@
 4. Upload strings for translation and download latest translations.
 5. Update changelog.
 6. Update screenshots and addon description (if needed).
-7. Build XPI and copy to `tabtrekker/releases`.
+7. Build XPI and copy to `tabtrekker/releases`. Be sure to build the XPI on a Mac. Building on any other system will package with the wrong line endings.
 8. Submit XPI to Mozilla Addons.
 9. Commit release changes and XPI. Tag release commit. Rebase master to develop.
 
