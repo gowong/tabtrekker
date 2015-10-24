@@ -140,6 +140,7 @@ pageMod.PageMod({
                         self.data.url('js/search.js'),
                         self.data.url('js/time.js'),
                         self.data.url('js/weather.js')],
+    attachTo: ['existing', 'top'],
     onAttach: function(worker) {
         //immediately add worker
         utils.addWorker(TabTrekkerMain.workers, worker);
