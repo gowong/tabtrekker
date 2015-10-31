@@ -4,7 +4,7 @@ Explore the world one tab at a time with this Firefox addon.
 ##Development
 1. Install npm
 1. Install jpm `npm install jpm --global`
-1. Start Firefox with a separate dev profile using: `jpm run --profile=~/firefox-dev/profiles/dev`
+1. Start Firefox with a separate dev profile using: `jpm run --profile=~/firefox-dev/profiles/dev` *(Note: replace ~ with the absolute path to your home directory)*
 1. Install [Extension Auto-Installer](https://addons.mozilla.org/en-US/firefox/addon/autoinstaller/).
 1. (Optional) Install [Locale Switcher](https://addons.mozilla.org/en-US/firefox/addon/locale-switcher/).
 1. (Optional) Install any [language packs](https://addons.mozilla.org/en-US/firefox/language-tools/) that you want to test.
