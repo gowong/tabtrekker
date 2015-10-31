@@ -7,7 +7,7 @@
     "description": "Explore the world one tab at a time.",
     "author": "Gordon Wong",
     "homepage": "www.tabtrekker.com",
-    "icon": "data/images/icon-512.png",
+    "icon": "resource://jid1-AahxeYITR16k5Q-at-jetpack/data/images/icon-512.png",
     "main": "lib/main.js",
     "permissions": {
         "private-browsing": true
