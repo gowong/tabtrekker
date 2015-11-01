@@ -69,19 +69,19 @@ input:focus::-moz-placeholder {
     right: 0;
     bottom: 0;
     left: 0;
-    width: 2.5em;
-    height: 2.5em;
+    width: 60px;
+    height: 40px;
     opacity: 0;
     z-index: 1;
     transition: opacity .3s ease;
 }
-#image_spinner > .sk-cube1 {
+#image_spinner > .rect1, #image_spinner > .rect2 {
     background-color: #60AAB2;
 }
-#image_spinner > .sk-cube2 {
+#image_spinner > .rect3, #image_spinner > .rect4 {
     background-color: #226661;
 }
-#image_spinner > .sk-cube3 {
+#image_spinner > .rect5, #image_spinner > .rect6 {
     background-color: #1A4E4A;
 }
 #top_menu_container {
