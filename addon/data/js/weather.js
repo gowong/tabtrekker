@@ -53,7 +53,7 @@ var TabTrekkerWeather = {
      * Shows loading spinner indicating that the weather is being updated.
      */
      showLoadingSpinner: function() {
-        $('#weather_spinner').css('visibility', 'visible');
+        $('#weather_spinner').css('opacity', 1);
         $('#weather_double_bounce1').css('animation-play-state', 'running');
         $('#weather_double_bounce2').css('animation-play-state', 'running');
      },
@@ -62,7 +62,7 @@ var TabTrekkerWeather = {
      * Hides loading spinner.
      */
     hideLoadingSpinner: function() {
-        $('#weather_spinner').css('visibility', 'hidden');
+        $('#weather_spinner').css('opacity', 0);
         $('#weather_double_bounce1').css('animation-play-state', 'paused');
         $('#weather_double_bounce2').css('animation-play-state', 'paused');
     },
