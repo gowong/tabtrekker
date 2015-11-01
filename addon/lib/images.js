@@ -20,6 +20,7 @@ var tabtrekker; //load on initialization to ensure main module is loaded
 
 /* Constants */
 //messages
+const IMAGES_SHOW_LOADING_MSG = 'images_show_loading';
 const IMAGES_DISPLAY_MSG = 'images_display';
 //preferences
 const SHOW_IMAGE_INFO_PREF = 'show_image_info';
@@ -58,8 +59,10 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
         tabtrekker = require('./main').TabTrekkerMain;
         logger.log('Initializing images.');
         return Task.spawn(function*() {
-            //request new images
             if(TabTrekkerImages.shouldUpdate()) {
+                //show loading spinner
+                utils.emit(tabtrekker.workers, worker, IMAGES_SHOW_LOADING_MSG);
+                //request new images
                 yield TabTrekkerImages.updateImages(worker);
             }
 
