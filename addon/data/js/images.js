@@ -11,6 +11,7 @@ const IMAGE_LOADED_CLASS = 'image_loaded';
 const SHOW_IMAGE_DELAY = 50;
 const HIDE_IMAGE_DELAY = 300;
 const DISPLAY_IMAGE_TRANSITION = 500;
+const LOADING_TRANSITION = 300;
 
 /**
  * Images module.
@@ -150,20 +151,36 @@ var TabTrekkerImages = {
      * Shows the image loading spinner.
      */
     showLoadingSpinner: function() {
-        $('#image_spinner').css('opacity', 1);
+        $('#image_spinner_container').css({
+            opacity: 1,
+            'z-index': 1
+        });
+        $('#image_spinner > div').each(function() {
+            $(this).css('animation-play-state', 'running');
+        });
     },
 
     /**
      * Hides the image loading spinner.
      */
     hideLoadingSpinner: function(callback, delay) {
-        var imageSpinner = $('#image_spinner');
-        if(imageSpinner.css('opacity') === '1') {
+        var imageSpinnerContainer = $('#image_spinner_container');
+        //wait a short delay to crossfade hiding the spinner and showing the image
+        if(imageSpinnerContainer.css('opacity') === '1') {
             setTimeout(callback, delay);
         } else {
             callback();
         }
-        imageSpinner.css('opacity', 0);
+        //immediately set opacity to start CSS transition
+        imageSpinnerContainer.css('opacity', 0);
+
+        //hide spinner after transition finishes
+        setTimeout(function() {
+            imageSpinnerContainer.css('z-index', -1);
+            $('#image_spinner > div').each(function() {
+                $(this).css('animation-play-state', 'paused');
+            });
+        }, LOADING_TRANSITION);
     },
 
     /**
