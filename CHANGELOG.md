@@ -1,5 +1,9 @@
 #Changelog
 
+##v1.1.9 - November 1, 2015
+* Improved experience when loading new images.
+* Bug fixes.
+
 ##v1.1.8 - October 13, 2015
 * Improved image transitions.
 * Bug fixes.
