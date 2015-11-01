@@ -76,13 +76,13 @@ input:focus::-moz-placeholder {
     transition: opacity .3s ease;
 }
 #image_spinner > .rect1, #image_spinner > .rect2 {
-    background-color: #60AAB2;
+    background-color: rgba(75, 75, 75, 0.75);
 }
 #image_spinner > .rect3, #image_spinner > .rect4 {
-    background-color: #226661;
+    background-color: rgba(75, 75, 75, 0.75);
 }
 #image_spinner > .rect5, #image_spinner > .rect6 {
-    background-color: #1A4E4A;
+    background-color: rgba(75, 75, 75, 0.75);
 }
 #top_menu_container {
     position: fixed;
