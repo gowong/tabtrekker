@@ -2,11 +2,13 @@
 
 /* Constants */
 //messages
+const IMAGES_SHOW_LOADING_MSG = 'images_show_loading';
 const IMAGES_DISPLAY_MSG = 'images_display';
 //preferences
 const SHOW_IMAGE_INFO_PREF = 'show_image_info';
 //other
 const IMAGE_LOADED_CLASS = 'image_loaded';
+const SHOW_IMAGE_DELAY = 50;
 const HIDE_IMAGE_DELAY = 300;
 const DISPLAY_IMAGE_TRANSITION = 500;
 
@@ -69,14 +71,16 @@ var TabTrekkerImages = {
 
             $(this).remove();
 
-            //check that the image was actually loaded
+            //if image wasn't actually loaded
             if(!this.complete || (this.naturalWidth === 0)) {
                 callback();
                 return;
             }
 
-            //set background image
-            TabTrekkerImages.setBackgroundImage(imageSrc);
+            //hide loading spinner then set background image
+            TabTrekkerImages.hideLoadingSpinner(function() {
+                TabTrekkerImages.setBackgroundImage(imageSrc);
+            }, SHOW_IMAGE_DELAY);
 
             //set image info
             $('#image_set_info').text(data.imageSetName);
@@ -143,6 +147,26 @@ var TabTrekkerImages = {
     },
 
     /**
+     * Shows the image loading spinner.
+     */
+    showLoadingSpinner: function() {
+        $('#image_spinner').css('opacity', 1);
+    },
+
+    /**
+     * Hides the image loading spinner.
+     */
+    hideLoadingSpinner: function(callback, delay) {
+        var imageSpinner = $('#image_spinner');
+        if(imageSpinner.css('opacity') === '1') {
+            setTimeout(callback, delay);
+        } else {
+            callback();
+        }
+        imageSpinner.css('opacity', 0);
+    },
+
+    /**
      * Sets visibility of the image info based on user preferences.
      */
     setImageInfoVisibility: function(visbilityPref) {
@@ -162,4 +186,5 @@ var TabTrekkerImages = {
 };
 
 //listen for messages
+self.port.on(IMAGES_SHOW_LOADING_MSG, TabTrekkerUtils.receiveMessage(TabTrekkerImages.showLoadingSpinner));
 self.port.on(IMAGES_DISPLAY_MSG, TabTrekkerUtils.receiveMessage(TabTrekkerImages.receiveImageData));
