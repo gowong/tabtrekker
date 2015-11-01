@@ -311,3 +311,16 @@ input:focus::-moz-placeholder {
     font-size: 0.8125em;
     font-weight: 500;
 }
+#weather_spinner {
+    top: -0.05em;
+    right: 0.25em;
+    width: 0.5em;
+    height: 0.5em;
+    transition: opacity .5s ease;
+}
+#weather_spinner > .double_bounce1 {
+    background-color: rgba(255, 255, 255, 0.85);
+}
+#weather_spinner > .double_bounce2 {
+    background-color: rgba(255, 255, 255, 0.6);
+}
