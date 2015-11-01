@@ -15,4 +15,4 @@ Explore the world one tab at a time with this Firefox addon.
 [Help translate TabTrekker!](https://gowong.oneskyapp.com/collaboration/project?id=47644)
 
 ##Compatibility
-TabTrekker has been confirmed to work on Firefox 31.0 - 43.0a2
+TabTrekker has been confirmed to work on Firefox 38.0 - 43.0a2
