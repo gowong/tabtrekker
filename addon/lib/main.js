@@ -45,11 +45,11 @@ var TabTrekkerMain = {
             // Use NewTabURL module in Firefox 41+
             var newTabUrl = TabTrekkerMain.getNewTabUrlModule();
             if(newTabUrl) {
-                newTabUrl.override(self.data.url(HTML_PAGE));
+                newTabUrl.override(TabTrekkerMain.getNewTabUrl());
             }
             // Always set new tab url preference (to avoid conflicts with 
             // other tab addons that read the preference, such as Tabs Mix Plus)
-            globalPrefs.set(GLOBAL_NEWTAB_PREF, self.data.url(HTML_PAGE));
+            globalPrefs.set(GLOBAL_NEWTAB_PREF, TabTrekkerMain.getNewTabUrl());
         } else if(!keepExistingPage) {
             TabTrekkerMain.resetNewTabPage();
         }
@@ -62,7 +62,7 @@ var TabTrekkerMain = {
     setHomePage: function(keepExistingPage) {
         if(simplePrefs.prefs[HOME_ENABLED_PREF]) {
             logger.log('Overriding home page preference.');
-            globalPrefs.set(GLOBAL_HOME_PREF, self.data.url(HTML_PAGE));
+            globalPrefs.set(GLOBAL_HOME_PREF, TabTrekkerMain.getNewTabUrl());
         } else if(!keepExistingPage) {
             TabTrekkerMain.resetHomePage();
         }
@@ -100,6 +100,13 @@ var TabTrekkerMain = {
         } catch (e) {
             return null;
         }
+    },
+
+    /**
+     * Returns the URL for the new tab page.
+     */
+    getNewTabUrl: function() {
+        return self.data.url(HTML_PAGE);
     }
 };
 
@@ -125,7 +132,7 @@ simplePrefs.on(HOME_ENABLED_PREF, function() { TabTrekkerMain.setHomePage(false)
 
 //load content scripts
 pageMod.PageMod({
-    include: self.data.url(HTML_PAGE),
+    include: TabTrekkerMain.getNewTabUrl(),
     contentScriptFile: [self.data.url('js/jquery-2.1.3.min.js'),
                         self.data.url('js/bootstrap.min.js'),
                         self.data.url('js/moment-with-locales.min.js'),
