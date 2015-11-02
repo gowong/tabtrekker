@@ -47,10 +47,9 @@ var TabTrekkerMain = {
             if(newTabUrl) {
                 newTabUrl.override(self.data.url(HTML_PAGE));
             }
-            // Set new tab url preference
-            else {
-                globalPrefs.set(GLOBAL_NEWTAB_PREF, self.data.url(HTML_PAGE));
-            }
+            // Always set new tab url preference (to avoid conflicts with 
+            // other tab addons that read the preference, such as Tabs Mix Plus)
+            globalPrefs.set(GLOBAL_NEWTAB_PREF, self.data.url(HTML_PAGE));
         } else if(!keepExistingPage) {
             TabTrekkerMain.resetNewTabPage();
         }
@@ -79,10 +78,9 @@ var TabTrekkerMain = {
         if(newTabUrl) {
             newTabUrl.reset();
         }
-        // Set new tab url preference
-        else {
-            globalPrefs.reset(GLOBAL_NEWTAB_PREF);
-        }
+        // Always set new tab url preference (to avoid conflicts with 
+        // other tab addons that read the preference, such as Tabs Mix Plus)
+        globalPrefs.reset(GLOBAL_NEWTAB_PREF);
     },
 
     /**
