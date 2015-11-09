@@ -1,14 +1,13 @@
 {
     "name": "tabtrekker",
-    "id": "jid1-AahxeYITR16k5Q@jetpack",
+    "id": "jid1-AahxeYITR16k5Q",
     "license": "MPL 2.0",
     "version": "1.1.10",
     "title": "TabTrekker",
     "description": "Explore the world one tab at a time.",
     "author": "Gordon Wong",
     "homepage": "www.tabtrekker.com",
-    "icon": "resource://jid1-AahxeYITR16k5Q-at-jetpack/data/images/icon-512.png",
-    "main": "lib/main.js",
+    "icon": "data/images/icon-512.png",
     "permissions": {
         "private-browsing": true
     },
