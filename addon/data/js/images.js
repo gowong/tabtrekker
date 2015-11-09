@@ -151,11 +151,12 @@ var TabTrekkerImages = {
      * Shows the image loading spinner.
      */
     showLoadingSpinner: function() {
-        $('#image_spinner_container').css({
+        var imageSpinner = $('#image_spinner');
+        imageSpinner.css({
             opacity: 1,
             'z-index': 1
         });
-        $('#image_spinner > div').each(function() {
+        imageSpinner.children('div').each(function() {
             $(this).css('animation-play-state', 'running');
         });
     },
@@ -164,20 +165,20 @@ var TabTrekkerImages = {
      * Hides the image loading spinner.
      */
     hideLoadingSpinner: function(callback, delay) {
-        var imageSpinnerContainer = $('#image_spinner_container');
+        var imageSpinner = $('#image_spinner');
         //wait a short delay to crossfade hiding the spinner and showing the image
-        if(imageSpinnerContainer.css('opacity') === '1') {
+        if(imageSpinner.css('opacity') === '1') {
             setTimeout(callback, delay);
         } else {
             callback();
         }
         //immediately set opacity to start CSS transition
-        imageSpinnerContainer.css('opacity', 0);
+        imageSpinner.css('opacity', 0);
 
         //hide spinner after transition finishes
         setTimeout(function() {
-            imageSpinnerContainer.css('z-index', -1);
-            $('#image_spinner > div').each(function() {
+            imageSpinner.css('z-index', -1);
+            imageSpinner.children('div').each(function() {
                 $(this).css('animation-play-state', 'paused');
             });
         }, LOADING_TRANSITION);
