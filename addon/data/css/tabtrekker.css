@@ -62,15 +62,6 @@ input:focus::-moz-placeholder {
     transition: opacity .6s ease;
     opacity: 0;
 }
-#image_spinner_container {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-    opacity: 0;
-    z-index: -1;
-    transition: opacity .3s ease;
-}
 #image_spinner {
     position: absolute;
     margin: auto;
@@ -80,6 +71,9 @@ input:focus::-moz-placeholder {
     left: 0;
     width: 60px;
     height: 40px;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity .3s ease;
 }
 #image_spinner > .rect1, #image_spinner > .rect2 {
     background-color: rgba(75, 75, 75, 0.75);
