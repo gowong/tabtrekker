@@ -91,12 +91,15 @@ input:focus::-moz-placeholder {
     padding: 0.5em 1.25em 1.25em 1.25em;
 }
 #top_menu {
+    /* Remove whitespace between the list items */
+    display: flex;
     padding: 0;
     margin: 0;
     list-style-type: none;
 }
 #top_menu > li {
     display: inline-block;
+    margin-left: 5px;
 }
 #top_menu > li a {
     border-radius: 3px;
@@ -126,7 +129,7 @@ input:focus::-moz-placeholder {
 #history_list:after {
     position: absolute;
     top: -6px;
-    left: 154px;
+    left: 152px;
     border-right: 6px solid transparent;
     border-bottom: 6px solid rgba(255, 255, 255, 0.9);
     border-left: 6px solid transparent;
