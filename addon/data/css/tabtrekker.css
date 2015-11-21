@@ -118,7 +118,6 @@ input:focus::-moz-placeholder {
 }
 #top_menu > li {
     display: inline-block;
-    margin-left: 5px;
 }
 /* Top menu button icons */
 #top_menu > li > a, #top_menu > li > div > a {
@@ -138,7 +137,7 @@ input:focus::-moz-placeholder {
 }
 /* Dropdown triangle */
 #history_list:after {
-    left: 139px;
+    left: 154px;
 }
 #history_list > li {
     display: inline-block;
