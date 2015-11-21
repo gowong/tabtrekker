@@ -25,31 +25,6 @@
         <div class="rect6"></div>
     </div>
 
-    <!-- About modal -->
-    <div id="about_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="about_modal_title" aria-hidden="true">
-        <div class="modal-dialog">
-            <div id="about_modal_content" class="modal-content">
-                <div id="about_modal_body" class="modal-body">
-                    <a href="http://tabtrekker.com"><img id="about_modal_icon" src="images/icon-512.png"></img></a><br>
-                    <span id="about_modal_title" data-l10n-id="addon_title"></span>
-                    <br>
-                    <span id="about_modal_description" data-l10n-id="about_description_allcaps"></span>
-                    <br><br>
-                    <!-- donate link -->
-                    <a id="about_donate_link" href="http://tabtrekker.com/donate" class="btn btn-success" data-l10n-id="donate"></a>
-                    <!-- rate link -->
-                    <a id="about_rate_link" href="http://tabtrekker.com/rate" class="btn btn-default" data-l10n-id="rate"></a>
-                    <br><br>
-                    <span data-l10n-id="about_author"></span>
-                    <a href="http://gordonwong.com" data-l10n-id="about_author_name"></a>
-                    <br>
-                    <span data-l10n-id="about_weather"></span>
-                </div>
-                <a id="about_modal_close" class="clickable" data-dismiss="modal" data-l10n-id="close"></a>
-            </div>
-        </div>
-    </div>
-
     <!-- Top menu -->
     <div id="top_menu_container" class="hover_container">
         <ul id="top_menu" class="hover_item">
@@ -57,7 +32,7 @@
             <li>
                 <div class="dropdown">
                     <a class="dropdown-toggle clickable white_text white_text_shadow glyphicon glyphicon-th" data-toggle="dropdown"></a>
-                    <ul id="history_list" class="dropdown-menu dropdown-menu-right"></ul>
+                    <ul id="history_list" class="tt_dropdown_menu dropdown-menu dropdown-menu-right"></ul>
                 </div>
             </li>
             <!-- Next image -->
@@ -70,7 +45,26 @@
             </li>
             <!-- About -->
             <li>
-                <a id="about" class="clickable white_text white_text_shadow glyphicon glyphicon-info-sign" data-toggle="modal" data-target="#about_modal"></a>
+                <div class="dropdown">
+                    <a class="dropdown-toggle clickable white_text white_text_shadow glyphicon glyphicon-info-sign" data-toggle="dropdown"></a>
+                    <div id="about_dropdown" class="tt_dropdown_menu dropdown-menu dropdown-menu-right">
+                        <a href="http://tabtrekker.com"><img id="about_dropdown_icon" src="images/icon-512.png"></img></a>
+                        <br>
+                        <span id="about_dropdown_title" data-l10n-id="addon_title"></span>
+                        <br>
+                        <span id="about_dropdown_description" data-l10n-id="about_description_allcaps"></span>
+                        <br><br>
+                        <!-- donate link -->
+                        <a id="about_donate_link" href="http://tabtrekker.com/donate" class="btn btn-success" data-l10n-id="donate"></a>
+                        <!-- rate link -->
+                        <a id="about_rate_link" href="http://tabtrekker.com/rate" class="btn btn-default" data-l10n-id="rate"></a>
+                        <br><br>
+                        <span data-l10n-id="about_author"></span>
+                        <a href="http://gordonwong.com" data-l10n-id="about_author_name"></a>
+                        <br>
+                        <span data-l10n-id="about_weather"></span>
+                    </div>
+                </div>
             </li>
         </ul>
     </div>
