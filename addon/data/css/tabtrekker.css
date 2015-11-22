@@ -219,15 +219,16 @@ input:focus::-moz-placeholder {
     font-weight: 400;
 }
 #about_dropdown_description {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 400;
 }
 #about_donate_link {
     margin-right: 5px;
-    transition: background .3s ease;
+    transition: all .3s ease;
 }
 #about_rate_link {
     padding: 7px 12px;
+    transition: all .3s ease;
 }
 #search_container {
     height: 50vh;
