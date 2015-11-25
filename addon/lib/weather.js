@@ -33,6 +33,7 @@ const WEATHER_UNLOCKED_APP_KEY = secrets.WEATHER_UNLOCKED_APP_KEY;
 const WEATHER_UNLOCKED_APP_ID = secrets.WEATHER_UNLOCKED_APP_ID;
 const WEATHER_UNLOCKED_REQUEST_URL = 'http://api.weatherunlocked.com/api/current/';
 const WEATHER_UNLOCKED_REQUEST_OPTIONS = '?app_id=' + WEATHER_UNLOCKED_APP_ID + '&app_key=' + WEATHER_UNLOCKED_APP_KEY;
+const WEATHER_UNLOCKED_REQUEST_HEADERS = {Accept: 'application/json'};
 const WEATHER_UPDATE_INTERVAL_MILLIS = 3 * 60 * 60 * 1000; //3 hours
 const WEATHER_UPDATE_WAIT_MILLIS = 20 * 1000; //20 seconds
 
@@ -186,6 +187,7 @@ var TabTrekkerWeather = {
             //make weather request
             Request({
                 url: requestUrl,
+                headers: WEATHER_UNLOCKED_REQUEST_HEADERS,
                 onComplete: function(response) {
                     if(response.status != 200) {
                         reject(new TabTrekkerWeather.WeatherException(
