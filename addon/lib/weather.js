@@ -29,9 +29,10 @@ const WEATHER_LOCATION_NAME_PREFS = 'weather_location_name';
 const WEATHER_TEMPERATURE_PREFS = 'weather_temperature';
 const WEATHER_TEMPERATURE_UNITS_PREFS = 'weather_temperature_units';
 //others
-const FORECAST_API_KEY = secrets.FORECAST_API_KEY;
-const FORECAST_REQUEST_URL = 'https://api.forecast.io/forecast/' + FORECAST_API_KEY + '/';
-const FORECAST_REQUEST_OPTIONS = '?exclude=minutely,hourly,daily,alerts,flags';
+const WEATHER_UNLOCKED_APP_KEY = secrets.WEATHER_UNLOCKED_APP_KEY;
+const WEATHER_UNLOCKED_APP_ID = secrets.WEATHER_UNLOCKED_APP_ID;
+const WEATHER_UNLOCKED_REQUEST_URL = 'http://api.weatherunlocked.com/api/current/';
+const WEATHER_UNLOCKED_REQUEST_OPTIONS = '?app_id=' + WEATHER_UNLOCKED_APP_ID + '&app_key=' + WEATHER_UNLOCKED_APP_KEY;
 const WEATHER_UPDATE_INTERVAL_MILLIS = 3 * 60 * 60 * 1000; //3 hours
 const WEATHER_UPDATE_WAIT_MILLIS = 20 * 1000; //20 seconds
 
@@ -156,7 +157,7 @@ var TabTrekkerWeather = {
             }
 
             //build request URL
-            var requestUrl =  FORECAST_REQUEST_URL;
+            var requestUrl =  WEATHER_UNLOCKED_REQUEST_URL;
 
             //use coordinates
             if(position.coords && position.coords.latitude != null
@@ -172,12 +173,8 @@ var TabTrekkerWeather = {
             }
 
             //add request options
-            requestUrl += FORECAST_REQUEST_OPTIONS;
+            requestUrl += WEATHER_UNLOCKED_REQUEST_OPTIONS;
 
-            //temperature units
-            var temperatureUnits = simplePrefs.prefs[TEMPERATURE_UNITS_PREF];
-            requestUrl += '&units=' + (temperatureUnits == 'C' ? 'si' : 'us');
-            
             //user's selected language
             var language = utils.getUserLanguage();
             if(language) {
@@ -197,7 +194,7 @@ var TabTrekkerWeather = {
                         return;
                     }
                     var weather = TabTrekkerWeather.getWeatherResult(
-                        response.json, temperatureUnits, position, position.worker);
+                        response.json, position, position.worker);
                     //cache result and resolve promise
                     TabTrekkerWeather.cacheWeatherResult(weather);
                     resolve(weather);
@@ -265,11 +262,13 @@ var TabTrekkerWeather = {
     /**
      * Returns the formatted weather result.
      */
-    getWeatherResult: function(response, temperatureUnits, position, worker) {
+    getWeatherResult: function(response, position, worker) {
+        var temperatureUnits = simplePrefs.prefs[TEMPERATURE_UNITS_PREF];
+        var temperatureKey = (temperatureUnits === 'C' ? 'temp_c' : 'temp_f');
         var weather = {
-            conditions: TabTrekkerWeather.getConditions(response.currently),
+            conditions: TabTrekkerWeather.getConditions(response),
             location: position.location || _('current_location'),
-            temperature: response.currently ? response.currently.temperature : null,
+            temperature: response[temperatureKey],
             temperatureUnits: TabTrekkerWeather.getTemperatureUnitsStr(
                 temperatureUnits),
             worker: worker
@@ -314,10 +313,10 @@ var TabTrekkerWeather = {
      * Returns the weather conditions, containing the conditions icon and
      * description.
      */
-    getConditions: function(currently) {
+    getConditions: function(response) {
         return {
-            description: currently ? currently.summary : '',
-            icon: currently ? TabTrekkerWeather.getConditionsIcon(currently.icon)
+            description: response ? response.wx_desc : '',
+            icon: response ? TabTrekkerWeather.getConditionsIcon(response.wx_icon)
                 : TabTrekkerWeather.getConditionsIcon('')
         };
     },
@@ -327,34 +326,70 @@ var TabTrekkerWeather = {
      * conditions.
      */
     getConditionsIcon: function(iconCode) {
+        var suffixIndex = iconCode.indexOf('.gif');
+        if (suffixIndex >= 0) {
+            iconCode = iconCode.substring(0, suffixIndex);
+        }
         //map icon name to character in icon font
         switch(iconCode) {
-            case 'clear-day':
-                return 'B';
-            case 'clear-night':
-                return 'C';
-            case 'rain':
-                return 'R';
-            case 'snow':
+            case 'Blizzard':
+            case 'HeavySnow':
+            case 'HeavySnowSwrsDay':
+            case 'HeavySnowSwrsNight':
+            case 'ModSnow':
+            case 'ModSnowSwrsDay':
+            case 'ModSnowSwrsNight':
                 return 'W';
-            case 'sleet':
-                return 'U';
-            case 'wind':
-                return 'F';
-            case 'fog':
-                return 'M';
-            case 'cloudy':
+            case 'Clear':
+                return 'C';
+            case 'CloudRainThunder':
+            case 'CloudSleetSnowThunder':
+                return 'Z';
+            case 'PartCloudRainThunderDay':
+            case 'PartCloudRainThunderNight':
+            case 'PartCloudSleetSnowThunderDay':
+            case 'PartCloudSleetSnowThunderNight':
+                return 'O';
+            case 'Cloudy':
                 return 'Y';
-            case 'partly-cloudy-day':
+            case 'Fog':
+            case 'Mist':
+                return 'M';
+            case 'FreezingDrizzle':
+            case 'IsoRainSwrsDay':
+            case 'IsoRainSwrsNight':
+            case 'OccLightRain':
+                return 'Q';
+            case 'FreezingFog':
+                return 'F';
+            case 'FreezingRain':
+            case 'HeavyRain':
+            case 'HeavyRainSwrsDay':
+            case 'HeavyRainSwrsNight':
+            case 'ModRain':
+            case 'ModRainSwrsDay':
+                return 'R';
+            case 'HeavySleet':
+            case 'HeavySleetSwrsDay':
+            case 'HeavySleetSwrsNight':
+            case 'IsoSleetSwrsDay':
+            case 'IsoSleetSwrsNight':
+            case 'IsoSnowSwrsDay':
+            case 'IsoSnowSwrsNight':
+            case 'ModSleet':
+            case 'ModSleetSwrsDay':
+            case 'ModSleetSwrsNight':
+            case 'OccLightSleet':
+            case 'OccLightSnow':
+                return 'U';
+            case 'Overcast':
+                return 'E';
+            case 'PartlyCloudyDay':
                 return 'H';
-            case 'partly-cloudy-night':
+            case 'PartlyCloudyNight':
                 return 'I';
-            //The following aren't currently returned by the Forecast API, but
-            //are defined here in case they are added in the future.
-            case 'hail':
-                return 'X';
-            case 'thunderstorm':
-                return '0';
+            case 'Sunny':
+                return 'B';
             //N/A
             default:
                 return ')';
