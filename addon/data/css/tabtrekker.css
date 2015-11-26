@@ -30,6 +30,39 @@ input:focus::-moz-placeholder {
 }
 
 /* Classes */
+.accent-color-1 {
+    /* Use inherited color */
+}
+.accent-color-2 {
+    color: #E53935;
+}
+.accent-color-3 {
+    color: #F06292;
+}
+.accent-color-4 {
+    color: #9C27B0;
+}
+.accent-color-5 {
+    color: #3F51B5;
+}
+.accent-color-6 {
+    color: #2196F3;
+}
+.accent-color-7 {
+    color: #00BCD4;
+}
+.accent-color-8 {
+    color: #4CAF50;
+}
+.accent-color-9 {
+    color: #FF9800;
+}
+.accent-color-10 {
+    color: #795548;
+}
+.accent-color-11 {
+    color: #607D8B;
+}
 .clickable {
     cursor: pointer;
 }
@@ -175,7 +208,7 @@ input:focus::-moz-placeholder {
 #history_list > li > a > object.ms_tile_color {
     padding: 5px;
 }
-/* Small icons */
+/* Web page title "initials", Small icons */
 #history_list > li > a > object > span {
     background-color: rgba(0, 0, 0, 0.05);
     background-size: 16px;
@@ -184,14 +217,11 @@ input:focus::-moz-placeholder {
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 3px;
     display: block;
-    font-size: 16px;
+    font-size: 22px;
+    font-weight: 400;
     line-height: 56px;
     height: 100%;
     width: 100%;
-}
-/* Generic web page icon */
-#history_list > li > a > object > span.glyphicon {
-    color: rgba(25, 25, 25, 0.85);
 }
 /* Link titles */
 #history_list > li > a > span {

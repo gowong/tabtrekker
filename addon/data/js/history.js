@@ -7,6 +7,8 @@ const HISTORY_UPDATE_ICON_MSG = 'history_update_icon';
 //other
 const ICON_MIN_WIDTH = 56;
 const ICON_MIN_HEIGHT = 56;
+const ACCENT_COLOR_CLASS = 'accent-color-';
+const NUM_ACCENT_COLORS = 11;
 
 /**
  * History module.
@@ -36,7 +38,14 @@ var TabTrekkerHistory = {
         if(favicon) {
             objFallback.style.backgroundImage = 'url(' + favicon + ')';
         } else {
-            objFallback.className = 'glyphicon glyphicon-file';
+            //display the first two letters of the title or base domain
+            var initials = result.title || result.baseDomain;
+            initials = initials.substring(0, 2).toUpperCase();
+            objFallback.textContent = initials;
+
+            //choose a random accent color for the text
+            var randAccentColor = String(Math.floor((Math.random() * NUM_ACCENT_COLORS) + 1));
+            objFallback.className = ACCENT_COLOR_CLASS + randAccentColor;
         }
 
         //create elements
