@@ -4,7 +4,7 @@
 1. Update version in `package.json`.
 2. Set `TabTrekkerConfig.dev` to `false`.
 3. Turn off `TabTrekkerLogger` logging.
-4. Upload strings for translation and download latest translations.
+4. Download latest translations (resolve any merge conflicts). Upload latest translations (do English first).
 5. Update changelog.
 6. Update screenshots and addon description (if needed).
 7. Build XPI `cfx xpi` and copy the XPI to `tabtrekker/releases`. Be sure to build the XPI on a Mac. Building on any other system will package with the wrong line endings.

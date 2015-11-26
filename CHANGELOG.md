@@ -1,5 +1,9 @@
 #Changelog
 
+##v1.2 - November 25, 2015
+* Switched weather provider to Weather Unlocked.
+* Minor UI updates and fixes.
+
 ##v1.1.11 - November 8, 2015
 * Bug fixes.
 
