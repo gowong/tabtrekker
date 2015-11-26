@@ -6,7 +6,7 @@
 
 [OneSky's](https://gowong.oneskyapp.com/) translation service and those who helped translate TabTrekker
 
-[Forecast](https://developer.forecast.io/) - weather info
+[Weather Unlocked](https://developer.weatherunlocked.com/) - weather info
 
 [Parse](https://www.parse.com/) - backend and hosting
 
