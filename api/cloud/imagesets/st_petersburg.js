@@ -13,11 +13,11 @@ exports.ImageSet = {
             imageUrl: 'http://tabtrekker.parseapp.com/images/st_petersburg/1.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/24557420@N05/9572576698',
+            infoUrl: 'https://www.flickr.com/photos/mariano-mantel/8661871664',
             imageUrl: 'http://tabtrekker.parseapp.com/images/st_petersburg/2.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/101190336@N02/14526873315',
+            infoUrl: 'https://www.flickr.com/photos/24557420@N05/9572576698',
             imageUrl: 'http://tabtrekker.parseapp.com/images/st_petersburg/3.jpg'
         },
         {
@@ -25,7 +25,7 @@ exports.ImageSet = {
             imageUrl: 'http://tabtrekker.parseapp.com/images/st_petersburg/4.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/randomthawts/9979890066/',
+            infoUrl: 'https://www.flickr.com/photos/randomthawts/9979890066',
             imageUrl: 'http://tabtrekker.parseapp.com/images/st_petersburg/5.jpg'
         },
         {
@@ -37,12 +37,16 @@ exports.ImageSet = {
             imageUrl: 'http://tabtrekker.parseapp.com/images/st_petersburg/7.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/ninara/8150501269',
+            infoUrl: 'https://www.flickr.com/photos/101190336@N02/14526873315',
             imageUrl: 'http://tabtrekker.parseapp.com/images/st_petersburg/8.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/brj_bringin_the_shit_up_in_here_bitches/14992548189',
+            infoUrl: 'https://www.flickr.com/photos/ninara/8150501269',
             imageUrl: 'http://tabtrekker.parseapp.com/images/st_petersburg/9.jpg'
+        },
+        {
+            infoUrl: 'https://www.flickr.com/photos/fsadykov/16071895936',
+            imageUrl: 'http://tabtrekker.parseapp.com/images/st_petersburg/10.jpg'
         }
     ]
 };
