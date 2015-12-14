@@ -1,7 +1,8 @@
 #TabTrekker
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/558c8d1d8ddc419fa5fa501558288155)](https://www.codacy.com/app/gowong/tabtrekker)
 
-Explore the world one tab at a time with this Firefox addon.
+Explore the world one tab at a time.
+TabTrekker is a Firefox addon that replaces the new tab page.
 
 ##Development
 1. Start Firefox with a separate dev profile using: `cfx run --profiledir=~/firefox-dev/profiles/dev`
