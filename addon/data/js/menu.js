@@ -11,24 +11,6 @@ const SHOW_MENU_PREF = 'show_menu';
 //other
 const DROPDOWN_TRANSITION = 200;
 
-//called on document ready
-$(function() {
-    //register click handlers
-    $('#settings').click(function(event) {
-        TabTrekkerMenu.handleClick(SETTINGS_MSG, event);
-    });
-    $('#next_image').click(function(event) {
-        if(TabTrekkerImages.shouldShowNextImage()) {
-            TabTrekkerMenu.handleClick(NEXTIMAGE_MSG, event);
-        }
-    });
-    //dropdown animation
-    $('.dropdown').on('show.bs.dropdown hide.bs.dropdown', function(event) {
-        $(this).find('.dropdown-menu').first().stop(true, true)
-            .fadeToggle(DROPDOWN_TRANSITION);
-    });
-});
-
 /**
  * Menu module.
  */
@@ -75,6 +57,24 @@ var TabTrekkerMenu = {
         $('#top_menu_container').css('display', 'none');
     }
 };
+
+//called on document ready
+$(function() {
+    //register click handlers
+    $('#settings').click(function(event) {
+        TabTrekkerMenu.handleClick(SETTINGS_MSG, event);
+    });
+    $('#next_image').click(function(event) {
+        if(TabTrekkerImages.shouldShowNextImage()) {
+            TabTrekkerMenu.handleClick(NEXTIMAGE_MSG, event);
+        }
+    });
+    //dropdown animation
+    $('.dropdown').on('show.bs.dropdown hide.bs.dropdown', function(event) {
+        $(this).find('.dropdown-menu').first().stop(true, true)
+            .fadeToggle(DROPDOWN_TRANSITION);
+    });
+});
 
 //listen for messages
 self.port.on(HIDE_MENU_MSG, TabTrekkerUtils.receiveMessage(TabTrekkerMenu.hideMenu));

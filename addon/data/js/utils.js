@@ -1,12 +1,5 @@
 'use strict';
 
-$(function() {
-    //listen to window events
-    $(window).on('beforeunload', function() {
-        TabTrekkerUtils.loaded = false;
-    });
-});
-
 /**
  * Utils module.
  */
@@ -27,3 +20,11 @@ var TabTrekkerUtils = {
         };
     }
 };
+
+//called on document ready
+$(function() {
+    //listen to window events
+    $(window).on('beforeunload', function() {
+        TabTrekkerUtils.loaded = false;
+    });
+});

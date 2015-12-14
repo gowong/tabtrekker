@@ -132,36 +132,36 @@ var TabTrekkerLocation = {
 
             //prompt user for geolocation permission
             var activeBrowserWindow = windowUtils.getMostRecentBrowserWindow();
-            let prompt = activeBrowserWindow.PopupNotifications.show(
-                            activeBrowserWindow.gBrowser.selectedBrowser,
-                            'geolocation',
-                            _('geolocation_prompt_message'),
-                            null,
-                            {
-                                label: _('geolocation_prompt_share'),
-                                accessKey: 'A',
-                                callback: function() {
-                                    logger.info('Geolocation allowed.');
-                                    simplePrefs.prefs[LOCATION_ALLOW_GEOLOCATION_PREF] = true;
-                                    finish(true);
-                                }
-                            },
-                            [{
-                                label: _('geolocation_prompt_nevershare'),
-                                accessKey: 'N',
-                                callback: function() {
-                                    logger.info('Geolocation not allowed.');
-                                    simplePrefs.prefs[LOCATION_ALLOW_GEOLOCATION_PREF] = false;
-                                    finish(false);
-                                }
-                            }],
-                            {
-                                eventCallback: function(event) {
-                                    if (event === 'dismissed' && !done) {
-                                        reject(new Error('Geolocation permission prompt dismissed.'));
-                                    }
-                                }
-                            });
+            activeBrowserWindow.PopupNotifications.show(
+                activeBrowserWindow.gBrowser.selectedBrowser,
+                'geolocation',
+                _('geolocation_prompt_message'),
+                null,
+                {
+                    label: _('geolocation_prompt_share'),
+                    accessKey: 'A',
+                    callback: function() {
+                        logger.info('Geolocation allowed.');
+                        simplePrefs.prefs[LOCATION_ALLOW_GEOLOCATION_PREF] = true;
+                        finish(true);
+                    }
+                },
+                [{
+                    label: _('geolocation_prompt_nevershare'),
+                    accessKey: 'N',
+                    callback: function() {
+                        logger.info('Geolocation not allowed.');
+                        simplePrefs.prefs[LOCATION_ALLOW_GEOLOCATION_PREF] = false;
+                        finish(false);
+                    }
+                }],
+                {
+                    eventCallback: function(event) {
+                        if (event === 'dismissed' && !done) {
+                            reject(new Error('Geolocation permission prompt dismissed.'));
+                        }
+                    }
+                });
         });
     },
 
