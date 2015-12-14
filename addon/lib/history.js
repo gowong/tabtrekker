@@ -132,7 +132,7 @@ var TabTrekkerHistory = {
             var attrs = element.attributes;
 
             //link tags
-            if(element.nodeName == 'LINK') {
+            if(element.nodeName === 'LINK') {
                 var rel = attrs.getNamedItem('rel');
                 if(rel && rel.value) {
                     var href = attrs.getNamedItem('href') ? 
@@ -150,7 +150,7 @@ var TabTrekkerHistory = {
                 }
             }
             //meta tags
-            else if(element.nodeName == 'META') {
+            else if(element.nodeName === 'META') {
                 var content = attrs.getNamedItem('content') ? 
                     attrs.getNamedItem('content').value : null;
 

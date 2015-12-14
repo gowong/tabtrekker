@@ -58,7 +58,7 @@ var TabTrekkerUtils = {
             .getService(Ci.nsIXULChromeRegistry)
             .getSelectedLocale('global');
         var end = locale.indexOf('-');
-        end = end == -1 ? locale.length : end;
+        end = (end === -1) ? locale.length : end;
         var language = locale.substring(0, end);
         return language;
     }
