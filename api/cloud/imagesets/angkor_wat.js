@@ -5,44 +5,40 @@ exports.ImageSet = {
     infoUrl: 'http://en.wikipedia.org/wiki/Angkor_Wat',
     images: [
         {
-            infoUrl: 'https://www.flickr.com/photos/shankaronline/7294720358',
+            infoUrl: 'https://www.flickr.com/photos/jerryluo0520/8214565553',
             imageUrl: 'http://tabtrekker.parseapp.com/images/angkor_wat/0.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/jrm_tomburg/9354935322',
+            infoUrl: 'https://www.flickr.com/photos/image-catalog/19146403798',
             imageUrl: 'http://tabtrekker.parseapp.com/images/angkor_wat/1.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/davelau/1070423631',
+            infoUrl: 'https://www.flickr.com/photos/cx15/4168189805',
             imageUrl: 'http://tabtrekker.parseapp.com/images/angkor_wat/2.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/126412580@N04/14787023834',
+            infoUrl: 'https://www.flickr.com/photos/miguelitosql/5951178035',
             imageUrl: 'http://tabtrekker.parseapp.com/images/angkor_wat/3.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/9084427@N07/16558631219',
+            infoUrl: 'https://www.flickr.com/photos/iwanttobeanomad/21320904985',
             imageUrl: 'http://tabtrekker.parseapp.com/images/angkor_wat/4.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/aschaf/11902304005',
+            infoUrl: 'https://www.flickr.com/photos/christianhaugen/3434464711',
             imageUrl: 'http://tabtrekker.parseapp.com/images/angkor_wat/5.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/image-catalog/19146403798',
+            infoUrl: 'https://www.flickr.com/photos/johnbrennan/2277099760',
             imageUrl: 'http://tabtrekker.parseapp.com/images/angkor_wat/6.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/heyitschili/6988419092',
+            infoUrl: 'https://www.flickr.com/photos/galactic/6848059168',
             imageUrl: 'http://tabtrekker.parseapp.com/images/angkor_wat/7.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/miguelitosql/5951112293',
+            infoUrl: 'https://www.flickr.com/photos/balintfoeldesi/11753707934',
             imageUrl: 'http://tabtrekker.parseapp.com/images/angkor_wat/8.jpg'
-        },
-        {
-            infoUrl: 'https://www.flickr.com/photos/97238650@N08/9041891490',
-            imageUrl: 'http://tabtrekker.parseapp.com/images/angkor_wat/9.jpg'
         }
     ]
 };
