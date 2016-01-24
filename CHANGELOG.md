@@ -1,5 +1,8 @@
 #Changelog
 
+##v1.2.1 - January 23, 2016
+* Fix new tab page not being set in Firefox 44.
+
 ##v1.2 - November 25, 2015
 * Switched weather provider to Weather Unlocked.
 * Minor UI updates and fixes.
