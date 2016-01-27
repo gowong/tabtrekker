@@ -1,13 +1,10 @@
 'use strict';
 
 /* SDK Modules */
-const {Cc, Ci} = require('chrome');
 const globalPrefs = require('sdk/preferences/service');
 const pageMod = require('sdk/page-mod');
 const simplePrefs = require('sdk/simple-prefs');
 const self = require('sdk/self');
-const aboutNewTabService = Cc['@mozilla.org/browser/aboutnewtab-service;1']
-    .getService(Ci.nsIAboutNewTabService);
 
 /* Modules */
 const history = require('./history').TabTrekkerHistory;
@@ -50,11 +47,6 @@ var TabTrekkerMain = {
             if(newTabUrl) {
                 newTabUrl.override(TabTrekkerMain.getNewTabUrl());
             }
-            // Use AboutNewTabService in Firefox 44 (NewTabURL.jsm was removed in Firefox 44)
-            // TODO remove usage of AboutNewTabService when NewTabURL.jsm is added back in Firefox 45/46
-            else {
-                aboutNewTabService.newTabURL = TabTrekkerMain.getNewTabUrl();
-            }
             // Always set new tab url preference (to avoid conflicts with 
             // other tab addons that read the preference, such as Tabs Mix Plus)
             globalPrefs.set(GLOBAL_NEWTAB_PREF, TabTrekkerMain.getNewTabUrl());
@@ -85,11 +77,6 @@ var TabTrekkerMain = {
         var newTabUrl = TabTrekkerMain.getNewTabUrlModule();
         if(newTabUrl) {
             newTabUrl.reset();
-        }
-        // Use AboutNewTabService in Firefox 44 (NewTabURL.jsm was removed in Firefox 44)
-        // TODO remove usage of AboutNewTabService when NewTabURL.jsm is added back in Firefox 45/46
-        else {
-            aboutNewTabService.resetNewTabURL();
         }
         // Always set new tab url preference (to avoid conflicts with 
         // other tab addons that read the preference, such as Tabs Mix Plus)
