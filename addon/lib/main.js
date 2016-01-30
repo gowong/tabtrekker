@@ -145,6 +145,11 @@ pageMod.PageMod({
                         self.data.url('js/search.js'),
                         self.data.url('js/time.js'),
                         self.data.url('js/weather.js')],
+    contentStyleFile: [self.data.url('css/bootstrap.min.css'),
+                       self.data.url('css/meteocons.css'),
+                       self.data.url('css/tabtrekker.css'),
+                       self.data.url('css/spinner.css'),
+                       self.data.url('css/typeahead.css')],
     attachTo: ['existing', 'top'],
     onAttach: function(worker) {
         //immediately add worker
