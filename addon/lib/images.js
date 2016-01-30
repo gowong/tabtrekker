@@ -8,6 +8,7 @@ Cu.import('resource://gre/modules/Promise.jsm');
 Cu.import('resource://gre/modules/Task.jsm');
 Cu.import('resource://gre/modules/Services.jsm');
 const array = require('sdk/util/array');
+const self = require('sdk/self');
 const simplePrefs = require('sdk/simple-prefs');
 const timers = require('sdk/timers');
 
@@ -192,7 +193,7 @@ const IMAGES_UPDATE_WAIT_MILLIS = 15 * 1000; //15 seconds
         var fallbackId = simplePrefs.prefs[IMAGES_FALLBACK_ID_PREFS];
         fallbackId = fallbackId == null ? 0 : ((fallbackId + 1) % IMAGES_FALLBACKS.length);
         simplePrefs.prefs[IMAGES_FALLBACK_ID_PREFS] = fallbackId;
-        return IMAGES_FALLBACKS[fallbackId];
+        return self.data.url(IMAGES_FALLBACKS[fallbackId]);
     },
 
     /**
