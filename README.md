@@ -14,3 +14,6 @@ TabTrekker is a Firefox addon that replaces the new tab page.
 
 ##Translations
 [Help translate TabTrekker!](https://gowong.oneskyapp.com/collaboration/project?id=47644)
+
+## Compatibility
+Firefox 39+ is supported.
