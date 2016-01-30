@@ -23,6 +23,7 @@ const NEWTAB_ENABLED_PREF = 'newtab_enabled';
 const GLOBAL_HOME_PREF = 'browser.startup.homepage';
 const GLOBAL_NEWTAB_PREF = 'browser.newtab.url';
 //others
+const ABOUT_NEWTAB = 'about:newtab';
 const HTML_PAGE = 'tabtrekker.html';
 
 /**
@@ -132,7 +133,7 @@ simplePrefs.on(HOME_ENABLED_PREF, function() { TabTrekkerMain.setHomePage(false)
 
 //load content scripts
 pageMod.PageMod({
-    include: TabTrekkerMain.getNewTabUrl(),
+    include: [ABOUT_NEWTAB, TabTrekkerMain.getNewTabUrl()],
     contentScriptFile: [self.data.url('js/jquery-2.1.3.min.js'),
                         self.data.url('js/bootstrap.min.js'),
                         self.data.url('js/moment-with-locales.min.js'),
