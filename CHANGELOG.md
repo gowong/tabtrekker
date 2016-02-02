@@ -1,5 +1,8 @@
 #Changelog
 
+##v1.2.1 - February 1, 2016
+* Fix new tab page on Firefox 46.
+
 ##v1.2 - November 25, 2015
 * Switched weather provider to Weather Unlocked.
 * Minor UI updates and fixes.
