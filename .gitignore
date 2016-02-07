@@ -3,7 +3,8 @@ addon/*.xpi
 addon/lib/secrets.js
 
 # Parse files
-api/config/global.json
+.parse.local
+.parse.project
 
 # Mac OS
 .DS_STORE
