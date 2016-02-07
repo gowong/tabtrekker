@@ -5,36 +5,44 @@ exports.ImageSet = {
     infoUrl: 'https://en.wikipedia.org/wiki/Toronto',
     images: [
         {
-            infoUrl: 'https://www.flickr.com/photos/prayitnophotography/8216501686',
+            infoUrl: 'https://www.flickr.com/photos/caribb/17835540051',
             imageUrl: 'http://tabtrekker.parseapp.com/images/toronto/0.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/nickharris1/11442896445',
+            infoUrl: 'https://www.flickr.com/photos/anotherangle/17002180158',
             imageUrl: 'http://tabtrekker.parseapp.com/images/toronto/1.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/markwatmough/4912755309',
+            infoUrl: 'https://www.flickr.com/photos/anotherangle/21472321623',
             imageUrl: 'http://tabtrekker.parseapp.com/images/toronto/2.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/cityoftoronto/10731914695',
+            infoUrl: 'https://www.flickr.com/photos/anotherangle/12179156255',
             imageUrl: 'http://tabtrekker.parseapp.com/images/toronto/3.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/iliaal/3581827370',
+            infoUrl: 'https://www.flickr.com/photos/veggiefrog/8000901398',
             imageUrl: 'http://tabtrekker.parseapp.com/images/toronto/4.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/alkoby/3963934171',
+            infoUrl: 'https://www.flickr.com/photos/thelastminute/19128515490',
             imageUrl: 'http://tabtrekker.parseapp.com/images/toronto/5.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/caribb/17595160369',
+            infoUrl: 'https://www.flickr.com/photos/16462767@N00/3286021531',
             imageUrl: 'http://tabtrekker.parseapp.com/images/toronto/6.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/markwatmough/4960189905',
+            infoUrl: 'https://www.flickr.com/photos/bribri/2764297068',
             imageUrl: 'http://tabtrekker.parseapp.com/images/toronto/7.jpg'
+        },
+        {
+            infoUrl: 'https://www.flickr.com/photos/dexxus/2704487136',
+            imageUrl: 'http://tabtrekker.parseapp.com/images/toronto/8.jpg'
+        },
+        {
+            infoUrl: 'https://www.flickr.com/photos/anotherangle/20448493902',
+            imageUrl: 'http://tabtrekker.parseapp.com/images/toronto/9.jpg'
         }
     ]
 };
