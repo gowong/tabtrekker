@@ -10,11 +10,16 @@ Time, weather, search, and most visited websites are easily accessible as well.
 <b>Frequently Asked Questions (FAQ)</b>
 <b>==========================</b>
 
+<b>All images shown are for the same location.</b>
+<ul>
+<li>TabTrekker cycles through images from a new location every 24 hours.</li>
+</ul>
+
 <b>New tab page is blank or doesn't load.</b>
 <ul>
 <li>Check that none of your installed addons are preventing new tabs from loading.
 <em> For example, Tab Mix Plus has an option that replaces all new tabs with a blank page.</em></li>
-<li>Enter <em>about:config</em> in your address bar and search for <em>browser.newtab.url</em>. The value should look something like this <em>resource://jid1-aahxeyitr16k5q-at-jetpack/data/tabtrekker.html</em></li>
+<li>Enter <em>about:config</em> in your address bar and search for <em>browser.newtab.url</em>. The value should look something like this <em>resource://jid1-aahxeyitr16k5q-at-jetpack/tabtrekker/data/tabtrekker.html</em></li>
 <li>Try reinstalling TabTrekker if the steps above don't fix the issue.</li>
 </ul>
 
