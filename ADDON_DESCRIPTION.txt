@@ -13,6 +13,12 @@ Time, weather, search, and most visited websites are easily accessible as well.
 <b>All images shown are for the same location.</b>
 <ul>
 <li>TabTrekker cycles through images from a new location every 24 hours.</li>
+<li>If the location is not changing even after waiting 24 hours, follow these steps:</li>
+  <ol>
+    <li>Open about:config and search for <em>extensions.jid1-AahxeYITR16k5Q@jetpack.images_lastupdated</em></li>
+    <li>Right click the preference and click reset.</li>
+    <li>Open a new tab and you should see the loading screen. Wait for it to finish and see if the location changes.</li>
+  </ol>
 </ul>
 
 <b>New tab page is blank or doesn't load.</b>
