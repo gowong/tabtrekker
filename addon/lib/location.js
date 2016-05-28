@@ -22,7 +22,7 @@ const LOCATION_GEOLOCATION_LAT_PREF = 'location_geolocation_latitude';
 const LOCATION_GEOLOCATION_LNG_PREF = 'location_geolocation_longitude';
 const LOCATION_GEOCODED_NAME_PREF = 'location_geocoded_name';
 //others
-//geolocation coordinates at the same location usually differ by about 0.00001
+//geolocation coordinates at the same location usually differ by about 0.001
 const LOCATION_MIN_LAT_DIFF = 0.001;
 const LOCATION_MIN_LNG_DIFF = 0.001;
 const GEOCODE_KEY = secrets.GEOCODE_KEY;
