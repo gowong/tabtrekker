@@ -1,5 +1,8 @@
 #Changelog
 
+##v1.2.2 - June 12, 2016
+* Update translations.
+
 ##v1.2.1 - February 1, 2016
 * Fix new tab page on Firefox 46.
 
