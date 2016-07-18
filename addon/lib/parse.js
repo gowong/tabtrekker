@@ -21,7 +21,7 @@ const PARSE_VIEWED_IMAGE_SET_IDS_SS = 'parse_viewed_image_set_ids';
 const PARSE_IMAGE_SET_ID_PREFS = 'parse_image_set_id';
 const PARSE_VIEWED_IMAGE_SET_IDS_PREFS = 'parse_viewed_image_set_ids';
 //others
-const PARSE_GET_NEXT_IMAGE_SET_URL ='https://api.parse.com/1/functions/getNextImageSet';
+const PARSE_GET_NEXT_IMAGE_SET_URL = 'https://app.tabtrekker.com/parse/functions/getNextImageSet';
 
 /**
  * Parse backend module.
