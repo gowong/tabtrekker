@@ -1,7 +1,7 @@
 'use strict';
 
 /* Modules */
-var imageSets = require('cloud/imagesets.js').ImageSets;
+var imageSets = require('./imagesets.js').ImageSets;
 
 /**
  * Responds with the next image set.
