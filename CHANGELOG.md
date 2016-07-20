@@ -1,5 +1,8 @@
 #Changelog
 
+##v1.2.3 - July 19, 2016
+* Migrate off of Parse, which is shutting down.
+
 ##v1.2.2 - June 12, 2016
 * Update translations.
 
