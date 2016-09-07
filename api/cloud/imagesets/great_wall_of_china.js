@@ -6,43 +6,43 @@ exports.ImageSet = {
     images: [
         {
             infoUrl: 'https://www.flickr.com/photos/stuckincustoms/1194563275',
-            imageUrl: 'http://app.tabtrekker.com/images/great_wall_of_china/0.jpg'
+            imageUrl: 'https://app.tabtrekker.com/images/great_wall_of_china/0.jpg'
         },
         {
             infoUrl: 'https://www.flickr.com/photos/stealthtractor/5048291474',
-            imageUrl: 'http://app.tabtrekker.com/images/great_wall_of_china/1.jpg'
+            imageUrl: 'https://app.tabtrekker.com/images/great_wall_of_china/1.jpg'
         },
         {
             infoUrl: 'https://www.flickr.com/photos/curious_e/8405791998',
-            imageUrl: 'http://app.tabtrekker.com/images/great_wall_of_china/2.jpg'
+            imageUrl: 'https://app.tabtrekker.com/images/great_wall_of_china/2.jpg'
         },
         {
             infoUrl: 'https://www.flickr.com/photos/chrisschoenbohm/4526250264',
-            imageUrl: 'http://app.tabtrekker.com/images/great_wall_of_china/3.jpg'
+            imageUrl: 'https://app.tabtrekker.com/images/great_wall_of_china/3.jpg'
         },
         {
             infoUrl: 'https://www.flickr.com/photos/stuckincustoms/7821247204',
-            imageUrl: 'http://app.tabtrekker.com/images/great_wall_of_china/4.jpg'
+            imageUrl: 'https://app.tabtrekker.com/images/great_wall_of_china/4.jpg'
         },
         {
             infoUrl: 'https://www.flickr.com/photos/stuckincustoms/8694036696',
-            imageUrl: 'http://app.tabtrekker.com/images/great_wall_of_china/5.jpg'
+            imageUrl: 'https://app.tabtrekker.com/images/great_wall_of_china/5.jpg'
         },
         {
             infoUrl: 'https://www.flickr.com/photos/39997856@N03/5031433674',
-            imageUrl: 'http://app.tabtrekker.com/images/great_wall_of_china/6.jpg'
+            imageUrl: 'https://app.tabtrekker.com/images/great_wall_of_china/6.jpg'
         },
         {
             infoUrl: 'https://www.flickr.com/photos/39877441@N05/12376653023',
-            imageUrl: 'http://app.tabtrekker.com/images/great_wall_of_china/7.jpg'
+            imageUrl: 'https://app.tabtrekker.com/images/great_wall_of_china/7.jpg'
         },
         {
             infoUrl: 'https://www.flickr.com/photos/matt512/4065627169',
-            imageUrl: 'http://app.tabtrekker.com/images/great_wall_of_china/8.jpg'
+            imageUrl: 'https://app.tabtrekker.com/images/great_wall_of_china/8.jpg'
         },
         {
             infoUrl: 'https://www.flickr.com/photos/aftab/2321135958',
-            imageUrl: 'http://app.tabtrekker.com/images/great_wall_of_china/9.jpg'
+            imageUrl: 'https://app.tabtrekker.com/images/great_wall_of_china/9.jpg'
         }
     ]
 };
