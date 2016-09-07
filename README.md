@@ -7,6 +7,8 @@ TabTrekker is a Firefox addon that replaces the new tab page.
 ##Development
 1. Install npm
 1. Install jpm `npm install jpm --global`
+1. Create a folder for Firefox development profiles `mkdir -p $HOME/firefox-dev/profiles/dev`
+1. Cd into the `addon` directory `cd addon`
 1. Start Firefox with a separate dev profile using: `jpm run --profile=~/firefox-dev/profiles/dev` *(Note: replace ~ with the absolute path to your home directory)*
 1. Install [Extension Auto-Installer](https://addons.mozilla.org/en-US/firefox/addon/autoinstaller/).
 1. (Optional) Install [Locale Switcher](https://addons.mozilla.org/en-US/firefox/addon/locale-switcher/).
