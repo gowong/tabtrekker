@@ -1,0 +1,26 @@
+{
+  "apps" : [{
+    "name"        : "parse-wrapper",
+    "script"      : "/usr/bin/parse-server",
+    "watch"       : [ "tabtrekker" ],
+    "autorestart" : true,
+    "merge_logs"  : true,
+    "cwd"         : "/home/tabtrekker",
+    "env": {
+      "PARSE_SERVER_CLOUD_CODE_MAIN": "/home/tabtrekker/tabtrekker/api/cloud/main.js",
+      "PARSE_SERVER_DATABASE_URI": "mongodb://parse:Mogwpcgdb123@app.tabtrekker.com:27017/tabtrekker?ssl=true",
+      "PARSE_SERVER_APPLICATION_ID": "",
+      "PARSE_SERVER_MASTER_KEY": "",
+      "PARSE_SERVER_REST_API_KEY": "",
+      //"VERBOSE": "1",// Logs every single request, uses a lot of disk space
+      "PARSE_SERVER_LOGS_FOLDER": "/home/tabtrekker/logs"
+    }
+  }]
+}
+~
+~
+~
+~
+~
+~
+~
