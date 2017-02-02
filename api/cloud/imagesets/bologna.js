@@ -13,7 +13,7 @@ exports.ImageSet = {
             imageUrl: 'https://app.tabtrekker.com/images/bologna/1.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/truusbobjantoo/5922866525',
+            infoUrl: 'https://www.flickr.com/photos/playerest/15368568725',
             imageUrl: 'https://app.tabtrekker.com/images/bologna/2.jpg'
         },
         {
@@ -21,27 +21,27 @@ exports.ImageSet = {
             imageUrl: 'https://app.tabtrekker.com/images/bologna/3.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/curtisperry/9303842619',
+            infoUrl: 'https://www.flickr.com/photos/robertotaddeo/11821136354',
             imageUrl: 'https://app.tabtrekker.com/images/bologna/4.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/tony709/15767306645',
+            infoUrl: 'https://www.flickr.com/photos/127226743@N02/26616054891',
             imageUrl: 'https://app.tabtrekker.com/images/bologna/5.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/vgm8383/1299339710',
+            infoUrl: 'https://www.flickr.com/photos/105105658@N03/22780526147',
             imageUrl: 'https://app.tabtrekker.com/images/bologna/6.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/39997856@N03/5487521862',
+            infoUrl: 'https://www.flickr.com/photos/niyantha/5197740176',
             imageUrl: 'https://app.tabtrekker.com/images/bologna/7.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/67611651@N03/15211157445',
+            infoUrl: 'https://www.flickr.com/photos/52995564@N07/7328999436',
             imageUrl: 'https://app.tabtrekker.com/images/bologna/8.jpg'
         },
         {
-            infoUrl: 'https://www.flickr.com/photos/chrischabot/8461833009',
+            infoUrl: 'https://www.flickr.com/photos/delphinidaesy/22678309928',
             imageUrl: 'https://app.tabtrekker.com/images/bologna/9.jpg'
         }
     ]
