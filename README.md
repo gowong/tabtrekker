@@ -18,9 +18,9 @@ TabTrekker is a Firefox addon that replaces the new tab page.
 
 ##Adding new images
 1. Add location to [LOCATIONS.md](LOCATIONS.md)
-2. Create a new imageset file in `api/cloud/imagesets`
-3. Add the imageset to the list of imagesets `api/cloud/imagesets.js`
-3. Add your images to a folder in `api/public/images/<location_name>`
+2. Create a new imageset file in [api/cloud/imagesets/](api/cloud/imagesets/)
+3. Add the imageset to the list of imagesets [api/cloud/imagesets.js](api/cloud/imagesets.js)
+3. Add your images to a folder in [api/public/images/](api/public/images/)
 
 ##Translations
 [Help translate TabTrekker!](https://gowong.oneskyapp.com/collaboration/project?id=47644)
