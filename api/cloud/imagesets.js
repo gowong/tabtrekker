@@ -70,5 +70,7 @@ exports.ImageSets = [
     //31
     require('./imagesets/bagan.js').ImageSet,
     //32
-    require('./imagesets/reine.js').ImageSet
+    require('./imagesets/reine.js').ImageSet,
+    // 33
+    require('./imagesets/bologna.js').ImageSet
 ];
