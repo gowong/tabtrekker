@@ -20,7 +20,7 @@
 - Hong Kong, China
 - Kuala Lumpur, Malaysia
 - Sydney, Australia
-- Bologna, Italy
+- Bologna, Italy ***(Done)***
 
 ##Towns, Villages
 - Cappadocia, Turkey
