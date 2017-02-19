@@ -13,5 +13,6 @@
 10. Commit release changes and XPI. Tag release commit. Rebase master to develop.
 
 ##API
-1. In `tabtrekker/api`, update Parse command line tool by running `parse update`.
-2. Run `parse deploy TabTrekkerProd`.
+1. Pull latest code and server will auto-restart.
+1. ~~In `tabtrekker/api`, update Parse command line tool by running `parse update`.~~
+2. ~~Run `parse deploy TabTrekkerProd`.~~
