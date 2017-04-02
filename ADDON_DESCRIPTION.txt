@@ -1,3 +1,7 @@
+<b>================================================================================================</b>
+<b>TabTrekker is not being actively developed at this time. Feel free to view the source code and contribute <a href="https://github.com/gowong/tabtrekker">here</a>.</b>
+<b>================================================================================================</b>
+
 TabTrekker brings stunning photos to your new tab page and or home page. Explore new locations every day by visiting sprawling cities, quaint villages, breathtaking nature parks, and more.
 
 Time, weather, search, and most visited websites are easily accessible as well.
@@ -7,10 +11,9 @@ Time, weather, search, and most visited websites are easily accessible as well.
 <a href="https://github.com/gowong/tabtrekker">Report issues and view the source code.</a>
 
 
-<b>Frequently Asked Questions (FAQ)</b>
-<b>==========================</b>
-
-<b>All images shown are for the same location.</b>
+Frequently Asked Questions (FAQ)
+==============================
+All images shown are for the same location.
 <ul>
 <li>TabTrekker cycles through images from a new location every 24 hours.</li>
 <li>If the location is not changing even after waiting 24 hours, follow these steps:</li>
@@ -21,7 +24,7 @@ Time, weather, search, and most visited websites are easily accessible as well.
   </ol>
 </ul>
 
-<b>New tab page is blank or doesn't load.</b>
+New tab page is blank or doesn't load.
 <ul>
 <li>Check that none of your installed addons are preventing new tabs from loading.
 <em> For example, Tab Mix Plus has an option that replaces all new tabs with a blank page.</em></li>
